@@ -1,0 +1,8 @@
+---
+title: "Take-home_Ex01"
+author: "Li Ziyi"
+---
+
+# **Data Overview**
+
+From the first look at the data,

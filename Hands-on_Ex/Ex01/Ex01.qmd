@@ -238,7 +238,7 @@ ggplot(data = exam_data,
 # Plotting barchart for requested analysis (slide 60)
 
 ```{r}
-#Don't know how to do this part...
+#Don't know how to do this part... Remember to check prof's updated slides
 ggplot(data = exam_data,
        aes(x = ENGLISH,
            fill = GENDER)) +

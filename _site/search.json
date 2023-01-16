@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "Visual-Analytics-Applications",
     "section": "",
-    "text": "This is a compilation of my full attempts of the module.\n\nGetting Started"
+    "text": "This is a compilation of my full attempts of the module."
   },
   {
     "objectID": "about.html",
@@ -40,5 +40,12 @@
     "title": "Hands-on Ex01",
     "section": "Using ggplot2 and group by genders",
     "text": "Using ggplot2 and group by genders\n\nggplot(data = exam_data,\n       aes(x = MATHS,\n           fill = GENDER)) +\n  geom_histogram(bins = 20,\n                 boundary = 100,\n                 color = 'grey30')"
+  },
+  {
+    "objectID": "Take-home_Ex/Ex01/Take-home_Ex01.html",
+    "href": "Take-home_Ex/Ex01/Take-home_Ex01.html",
+    "title": "Take-home_Ex01",
+    "section": "",
+    "text": "Data Overview\nFrom the first looking at the data,"
   }
 ]
