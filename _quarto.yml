@@ -6,9 +6,15 @@ website:
   navbar:
     left:
       - href: index.qmd
+        text: "Hands-on Exercise"
+        menu: 
+          - text: "Exercise 1"
+            href: "Hands-on_Ex/Ex01/Ex01.html"
+
+    right:
+      - href: index.qmd
         text: Home
       - about.qmd
-
 format:
   html:
     theme: cosmo

@@ -2,10 +2,6 @@
 title: "Visual-Analytics-Applications"
 ---
 
-This is a Quarto website.
+This is a compilation of my full attempts of the module.
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
-
-```{r}
-1 + 1
-```
+# Getting Started
