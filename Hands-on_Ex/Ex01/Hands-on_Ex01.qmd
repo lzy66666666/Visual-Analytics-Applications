@@ -1,0 +1,253 @@
+---
+title: "Hands-on Ex01"
+author: "Li Ziyi"
+---
+
+# Getting Started
+
+## Install and launch R packages
+
+The code chunk below uses p_load() of pacman package to check if tidyverse packages are installed in the computer. If they are, then they will be launched into R.
+
+```{r}
+pacman::p_load(tidyverse)
+```
+
+## Importing the data
+
+```{r}
+exam_data <- read_csv("data/Exam_data.csv")
+```
+
+# Plotting a simple bar chart
+
+```{r}
+
+ggplot(data = exam_data,
+       aes(x = RACE)) +
+  geom_bar()
+```
+
+# Plotting a simple histogram
+
+## Using R Graphics
+
+```{r}
+
+hist(exam_data$MATHS)
+```
+
+## Using ggplot2
+
+```{r}
+
+ggplot(data = exam_data,
+       aes(x = MATHS)) +
+  geom_histogram(bins = 20,
+                 boundary = 100,
+                 color = 'green',
+                 fill = 'navy') +
+  ggtitle("Distribution of Maths scores")
+```
+
+## Using ggplot2 and group by genders
+
+```{r}
+
+ggplot(data = exam_data,
+       aes(x = MATHS,
+           fill = GENDER)) +
+  geom_histogram(bins = 20,
+                 boundary = 100,
+                 color = 'grey30')
+```
+
+# Plotting a simple density estimate
+
+```{r}
+
+ggplot(data = exam_data,
+       aes(x = MATHS,
+           color = GENDER)) +
+  geom_density()
+```
+
+# Plotting a simple boxplot with data points
+
+```{r}
+
+ggplot(data = exam_data,
+       aes(y = MATHS,
+           x = GENDER)) +
+  geom_boxplot() +
+  geom_point(position = 'jitter',
+             size = 0.5)
+```
+
+# Plotting a simple violin plot together with boxplot
+
+```{r}
+
+ggplot(data = exam_data,
+       aes(y = MATHS,
+           x = GENDER)) +
+  geom_violin(fill = 'light green') + 
+  geom_boxplot(alpha = 0.25) +
+  stat_summary(geom = 'point',
+               fun.y = 'mean',
+               color = 'maroon',
+               size = 3)
+```
+
+# Plotting a simple scatter plot (maths vs english)
+
+```{r}
+
+ggplot(data = exam_data,
+       aes(y = MATHS,
+           x = ENGLISH)) +
+  geom_point(color = 'pink') +
+  geom_smooth(size = 0.25)
+```
+
+# Plotting trellis using facet
+
+```{r}
+
+ggplot(data = exam_data,
+       aes(x = MATHS)) +
+  geom_histogram(bins = 20) +
+  facet_wrap(~ CLASS)
+```
+
+# Plotting trellis using facet_grid
+
+```{r}
+
+ggplot(data = exam_data,
+       aes(x = MATHS)) +
+  geom_histogram(bins = 20) +
+  facet_grid(~ CLASS)
+```
+
+# Plotting trellis boxplot using facet_grid (slides 43)
+
+```{r}
+
+ggplot(data = exam_data,
+       aes(y = MATHS,
+           x = CLASS)) +
+  geom_boxplot(alpha = 0.5) +
+  facet_grid(~ GENDER)
+```
+
+# Plotting trellis boxplot using facet_grid (slides 44)
+
+```{r}
+
+ggplot(data = exam_data,
+       aes(y = MATHS,
+           x = CLASS)) +
+  geom_boxplot(alpha = 0.5) +
+  facet_grid(GENDER ~ .)
+```
+
+# Plotting trellis boxplot using facet_grid (slides 45)
+
+```{r}
+
+ggplot(data = exam_data,
+       aes(y = MATHS,
+           x = GENDER)) +
+  geom_boxplot() +
+  facet_grid(GENDER ~ CLASS) 
+```
+
+# Plotting boxplot by fixing y&x range
+
+```{r}
+
+ggplot(data = exam_data,
+       aes(y = MATHS,
+           x = ENGLISH)) +
+  geom_point() +
+  geom_smooth(method = lm,
+              size = 0.5) +
+  coord_cartesian(xlim = c(0, 100),
+                  ylim = c(0, 100)) + 
+  theme_classic()
+```
+
+# Plotting barchart with requested theme (slide 53)
+
+```{r}
+
+ggplot(data = exam_data,
+       aes(y = RACE)) +
+  geom_bar() +
+  theme_minimal() +
+  theme(panel.background = element_rect(fill = 'light blue', color = 'white', size = 1, linetype = 'solid'),
+        panel.grid.major = element_line(color = 'white', linetype = 'solid'),
+        panel.grid.minor = element_line(color = 'white', linetype = 'solid'))
+```
+
+# Plotting barchart using requested format (slide 55)
+
+```{r}
+
+ggplot(data = exam_data,
+       aes(x = reorder(RACE, RACE, function(x)-length(x)))) +
+  geom_bar() +
+  ylim(c(0,230))+
+  geom_text(stat = 'count',
+            aes(label = paste(after_stat(count), ', ', round(after_stat(count)/sum(count) * 100, 1), '%')),
+            color = 'black',
+            size = 3,
+            vjust = -0.5) +
+  xlab('Race') +
+  ylab('No. of Pupils')
+  # theme_minimal() +
+  # theme(panel.background = element_rect(fill = 'grey80', color = 'white', size = 1, linetype = 'solid'),
+  #       panel.grid.major = element_line(color = 'white', linetype = 'solid', linewidth = 0.5),
+  #       panel.grid.minor = element_line(color = 'white', linetype = 'solid', linewidth = 0.5),
+  #       axis.title.y = element_text(angle = 0))
+```
+
+# Plotting barchart using requested format (slide 59)
+
+```{r}
+
+ggplot(data = exam_data,
+       aes(x = MATHS)) +
+  geom_histogram(bins = 20,
+                 fill = 'light blue',
+                 color = 'black') + 
+  geom_vline(aes(xintercept = mean(MATHS, na.rm = T),
+                 color = 'red',
+                 linetype = 'dashed'),
+             show.legend = F) +
+    geom_vline(aes(xintercept = median(MATHS, na.rm = T),
+                 color = 'black',
+                 linetype = 'dashed'),
+             show.legend = F) +
+  xlab('MATHS') +
+  ylab('count')
+
+```
+
+# Plotting barchart for requested analysis (slide 60)
+
+```{r}
+#Don't know how to do this part...
+ggplot(data = exam_data,
+       aes(x = ENGLISH,
+           fill = GENDER)) +
+  geom_histogram() +
+  facet_grid(~ GENDER) +
+  geom_histogram(aes(x = ENGLISH),
+                 alpha = 0.5) +  
+  xlab('ENGLISH') +
+  ylab('count')
+
+```
+---

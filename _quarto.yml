@@ -5,8 +5,7 @@ website:
   title: "Visual-Analytics-Applications"
   navbar:
     left:
-      - href: index.qmd
-        text: "Hands-on Exercise"
+      - text: "Hands-on Exercise"
         menu: 
           - text: "Exercise 1"
             href: "Hands-on_Ex/Ex01/Ex01.html"
