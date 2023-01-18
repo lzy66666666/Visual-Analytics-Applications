@@ -19,7 +19,7 @@ website:
       - about.qmd
 format:
   html:
-    theme: cosmo
+    theme: morph
     css: styles.css
     toc: true
 

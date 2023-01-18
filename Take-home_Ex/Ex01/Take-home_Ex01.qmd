@@ -1,8 +1,99 @@
 ---
-title: "Take-home_Ex01"
+title: "Take-home Exercise 01"
 author: "Li Ziyi"
+date: "Report Last Run: `r Sys.time()`"
 ---
 
-# **Data Overview**
+## 1. Introduction
 
-From the first look at the data,
+In this exercise, the basic demographic structure of Singapore top 9 biggest planning areas categorised by gender and age group is being studied.
+
+Data used is extracted from [Department of Statistics, Singapore](https://www.singstat.gov.sg/find-data/search-by-theme/population/geographic-distribution/latest-data). The population data snapshot from June 2022 is being studied mainly.
+
+## 2. Data Preparation
+
+Inside the downloaded excel file, there are "Total" elements inside all columns. To load into Tableau for visualization and therefore, for better analysis purpose, we will need to do some basic data cleaning.
+
+```{r}
+#| echo: false
+library(knitr)
+
+```
+
+### Data Cleaning
+
+With the raw excel file not to be touched, a new Excel document is created to consolidate all needed raw data with the same table headers pasted over.
+
+Given that planning area level data are to be studied, "Total Planning Area" and "Total Male and Female" data are removed as they are now redundant. If needed, total could be easily computed inside Tableau by summing up all the rest data.
+
+Both male and female data are copied and consolidated into our new Excel files. A new column "Gender" is introduced. All data entries pasted are tagged accordingly based on the raw data.
+
+Save the Excel data file and rename it properly.
+
+```{r fig.align = 'center', fig.cap = "Excel data prepared", fig.cap.align = 'center', echo=FALSE}
+include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications/lzy66666666/Visual-Analytics-Applications/Take-home_Ex/Ex01/Img/Excel_data.PNG")
+```
+
+### Data Loading
+
+Open a new Tableau workbook and import data using the Excel file.
+
+For easier data manipulation later on, switch the data type of '2022' to integer from text (highlighted in yellow).
+
+```{r fig.align = 'center', fig.cap = "Tableau data loading", fig.cap.align = 'center', echo = FALSE}
+include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications/lzy66666666/Visual-Analytics-Applications/Take-home_Ex/Ex01/Img/Tableau_data_loading.PNG")
+```
+
+## 3. Data Visualisation
+
+Age-sex pyramid was taught be an analytical visualisation commonly used by demographers to reveal the structure of population by gender and age group.
+
+### Overall Singaporean Population Pyramid
+
+Two calculated fields are created to facilitate the visualisation preparation:
+
+``` {{r}}
+# | output: asis
+Male:
+if [Gender]="MALE"
+then [2022]
+END
+
+Female:
+if [Gender]="MALE"
+then [2022]
+END
+```
+
+To produce the desired visualisation, follow below steps:
+
+-   Drag the 'Age Group' from Data panel into Filters section, select 'All' and de-select 'Total' option at the bottom of the list.
+
+-   Drag the 'Subzone' from Data panel into Filters section, select 'All' and de-select 'Total' option inside the list.
+
+-   Drag the 'Type of Dwelling' from Data panel into Filters section, select 'Total' option at the bottom of the list.
+
+-   Drag the two created measures from Data panel into columns bar.
+
+-   Drag the 'Age Group' from Data panel into rows bar.
+
+-   Sort the 'Age Group' by clicking the white downwards pointing arrow, choose 'Sort' and sort by 'Alphabetic' in descending order.
+
+-   Drag the line '5-9' inside the worksheet from 'Age Group' column to one line above '0-4'. With this, the age group should have been sorted in a descending manner entirely.
+
+-   Drag the 'Female' from Data panel into Marks section 'Color'. Choose a color that you would like to assign to Female population data. Here, color pink is used.
+
+-   Drag the 'Male' from Data panel into Marks section 'Color', Choose a color that you would like to assign to Male population data. Here, color blue is used.
+
+Therefore, a population pyramid of Singapore has been completed. See below.
+```{r fig.align = 'center', fig.cap = "Population pyramid of Singapore", fig.cap.align = "center", echo = FALSE}
+include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications/lzy66666666/Visual-Analytics-Applications/Take-home_Ex/Ex01/Img/SG_Pyramid.png")
+```
+
+
+### Selection of Nine Planning Areas
+Sort the total population grouped by subzone, we will select the top 9 area for our this study.
+
+```{r fig.align = 'center', fig.cap = "Top 9 planning area by total population", fig.cap.align = "center", echo = FALSE}
+include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications/lzy66666666/Visual-Analytics-Applications/Take-home_Ex/Ex01/Img/Total_top_9.png")
+```
