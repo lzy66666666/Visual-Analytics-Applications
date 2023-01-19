@@ -135,7 +135,7 @@ In this exercise, the nine planning areas are requested to be presented on a sin
 
 -   Drag the 'Planning Area' text from Data panel into rows bar.
 
-The trellis display is therefore completed. 
+The trellis display is therefore completed.
 
 ```{r fig.align = 'center', fig.cap = "Top 9 planning area population pyramid", fig.cap.align = "center", echo = FALSE}
 include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications/lzy66666666/Visual-Analytics-Applications/Take-home_Ex/Ex01/Img/SG_top9areas_Trellis.png")
@@ -151,3 +151,12 @@ include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications
 
 ## 4. Observation and Insights (not more than 500 words)
 
+### i. "Constrictive" pyramid (or "negative growth pyramid")
+
+The type of population pyramid of Singapore
+
+### ii. The population pyramid of Singapore from 2022 remains like the one from 2017.
+
+### iii. Females outnumber males in Singapore Based on June 2022 data. 
+
+This trend is observed in majority age groups. Zooming into each group, only for age 19 and below, number of males is observed to be higher. This is interesting.

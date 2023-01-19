@@ -176,6 +176,12 @@
       <column caption='Labels' datatype='string' name='[Calculation_1131247984952020992]' role='dimension' type='nominal'>
         <calculation class='tableau' formula='if [Top N Planning Area]&#13;&#10;then &quot;Top &quot; + str([Parameters].[Parameter 1]) + &quot; Planning Areas&quot;&#13;&#10;else &quot;Others&quot;&#13;&#10;END' />
       </column>
+      <column caption='Male Color' datatype='string' name='[Calculation_370984073201123329]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='str(if [Gender]=&quot;MALE&quot;&#13;&#10;then 1&#13;&#10;else 0&#13;&#10;end)' />
+      </column>
+      <column caption='Female Color' datatype='string' name='[Calculation_370984073201336322]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='str(if [Gender]=&quot;FEMALE&quot;&#13;&#10;then 1&#13;&#10;else 0&#13;&#10;end)' />
+      </column>
       <column caption='Female' datatype='integer' name='[Calculation_609674852744388608]' role='measure' type='quantitative'>
         <calculation class='tableau' formula='if [Gender]=&quot;FEMALE&quot;&#13;&#10;THEN[2022]&#13;&#10;END' />
       </column>
@@ -184,6 +190,8 @@
       </column>
       <column datatype='string' name='[Planning Area]' role='dimension' type='nominal' />
       <_.fcp.ObjectModelTableType.true...column caption='2022M&amp;F' datatype='table' name='[__tableau_internal_object_id__].[2022M&amp;F_86302E625F3D4323BBAC309560376B5E]' role='measure' type='quantitative' />
+      <column-instance column='[Calculation_370984073201123329]' derivation='None' name='[none:Calculation_370984073201123329:nk]' pivot='key' type='nominal' />
+      <column-instance column='[Calculation_370984073201336322]' derivation='None' name='[none:Calculation_370984073201336322:nk]' pivot='key' type='nominal' />
       <group caption='Top N Planning Area' name='[Top N Planning Area]' name-style='unqualified' user:ui-builder='filter-group'>
         <groupfilter count='[Parameters].[Parameter 1]' end='top' function='end' units='records' user:ui-marker='end' user:ui-top-by-field='true'>
           <groupfilter direction='DESC' expression='SUM([2022])' function='order' user:ui-marker='order'>
@@ -192,6 +200,26 @@
         </groupfilter>
       </group>
       <layout _.fcp.SchemaViewerObjectModel.false...dim-percentage='0.5' _.fcp.SchemaViewerObjectModel.false...measure-percentage='0.4' dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
+      <style>
+        <style-rule element='mark'>
+          <encoding attr='color' field='[none:Calculation_370984073201336322:nk]' type='palette'>
+            <map to='#dcd4d0'>
+              <bucket>&quot;0&quot;</bucket>
+            </map>
+            <map to='#ff9da7'>
+              <bucket>&quot;1&quot;</bucket>
+            </map>
+          </encoding>
+          <encoding attr='color' field='[none:Calculation_370984073201123329:nk]' type='palette'>
+            <map to='#4e79a7'>
+              <bucket>&quot;1&quot;</bucket>
+            </map>
+            <map to='#dcd4d0'>
+              <bucket>&quot;0&quot;</bucket>
+            </map>
+          </encoding>
+        </style-rule>
+      </style>
       <semantic-values>
         <semantic-value key='[Country].[Name]' value='&quot;Singapore&quot;' />
       </semantic-values>
@@ -203,6 +231,8 @@
         <field-sort-custom-order field='2022' />
         <field-sort-custom-order field='Calculation_609674852744601601' />
         <field-sort-custom-order field='Calculation_609674852744388608' />
+        <field-sort-custom-order field='Female (copy)_1748522609260654594' />
+        <field-sort-custom-order field='Calculation_1748522609260101633' />
         <field-sort-custom-order field='Gender' />
       </field-sort-info>
       <datasource-dependencies datasource='Parameters'>
@@ -231,7 +261,452 @@
       </_.fcp.ObjectModelEncapsulateLegacy.true...object-graph>
     </datasource>
   </datasources>
+  <actions>
+    <action caption='Highlight 1 (generated)' name='[Action1_D976931E09B8459980D97950F9C093D5]'>
+      <activation auto-clear='true' type='on-select' />
+      <source type='sheet' worksheet='Trellis comparison of Female and Male population in Top 9 Population Areas of Singapore broken down by age group 2022' />
+      <command command='tsc:brush'>
+        <param name='field-captions' value='Female Color' />
+        <param name='target' value='Trellis comparison of Female and Male population in Top 9 Population Areas of Singapore broken down by age group 2022' />
+      </command>
+    </action>
+  </actions>
   <worksheets>
+    <worksheet name='A comparison of Female and Male population in Singapore broken down by age group 2022'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run>A comparison of </run>
+            <run fontcolor='#ffa9a7'>Female</run>
+            <run> and </run>
+            <run fontcolor='#4e79a7'>Male</run>
+            <run> population in Singapore broken down by age group 2022</run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='2022M&amp;F (SG_Residents_Jun2022_Merged)' name='federated.0ewukna0yphxib12ymrcj107z9nr' />
+          </datasources>
+          <datasource-dependencies datasource='federated.0ewukna0yphxib12ymrcj107z9nr'>
+            <column datatype='integer' name='[2022]' role='measure' type='quantitative' />
+            <column datatype='string' name='[Age Group]' role='dimension' type='nominal' />
+            <column caption='Male Color' datatype='string' name='[Calculation_370984073201123329]' role='dimension' type='nominal'>
+              <calculation class='tableau' formula='str(if [Gender]=&quot;MALE&quot;&#13;&#10;then 1&#13;&#10;else 0&#13;&#10;end)' />
+            </column>
+            <column caption='Female Color' datatype='string' name='[Calculation_370984073201336322]' role='dimension' type='nominal'>
+              <calculation class='tableau' formula='str(if [Gender]=&quot;FEMALE&quot;&#13;&#10;then 1&#13;&#10;else 0&#13;&#10;end)' />
+            </column>
+            <column caption='Female' datatype='integer' name='[Calculation_609674852744388608]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='if [Gender]=&quot;FEMALE&quot;&#13;&#10;THEN[2022]&#13;&#10;END' />
+            </column>
+            <column caption='Male' datatype='integer' name='[Calculation_609674852744601601]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='if [Gender]=&quot;MALE&quot;&#13;&#10;then [2022]&#13;&#10;END' />
+            </column>
+            <column datatype='string' name='[Gender]' role='dimension' type='nominal' />
+            <column datatype='string' name='[Planning Area]' role='dimension' type='nominal' />
+            <column datatype='string' name='[Subzone]' role='dimension' type='nominal' />
+            <column datatype='string' name='[Type of Dwelling]' role='dimension' type='nominal' />
+            <column-instance column='[Age Group]' derivation='None' name='[none:Age Group:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Calculation_370984073201123329]' derivation='None' name='[none:Calculation_370984073201123329:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Calculation_370984073201336322]' derivation='None' name='[none:Calculation_370984073201336322:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Gender]' derivation='None' name='[none:Gender:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Planning Area]' derivation='None' name='[none:Planning Area:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Subzone]' derivation='None' name='[none:Subzone:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Type of Dwelling]' derivation='None' name='[none:Type of Dwelling:nk]' pivot='key' type='nominal' />
+            <column-instance column='[2022]' derivation='Sum' name='[sum:2022:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Calculation_609674852744388608]' derivation='Sum' name='[sum:Calculation_609674852744388608:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Calculation_609674852744601601]' derivation='Sum' name='[sum:Calculation_609674852744601601:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <filter class='categorical' column='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Age Group:nk]'>
+            <groupfilter function='except' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[none:Age Group:nk]' />
+              <groupfilter function='union'>
+                <groupfilter function='member' level='[none:Age Group:nk]' member='&quot;Total&quot;' />
+                <groupfilter function='member' level='[none:Age Group:nk]' member='%null%' />
+              </groupfilter>
+            </groupfilter>
+          </filter>
+          <manual-sort column='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Age Group:nk]' direction='ASC'>
+            <dictionary>
+              <bucket>&quot;90 &amp; Over&quot;</bucket>
+              <bucket>&quot;85 - 89&quot;</bucket>
+              <bucket>&quot;80 - 84&quot;</bucket>
+              <bucket>&quot;75 - 79&quot;</bucket>
+              <bucket>&quot;70 - 74&quot;</bucket>
+              <bucket>&quot;65 - 69&quot;</bucket>
+              <bucket>&quot;60 - 64&quot;</bucket>
+              <bucket>&quot;55 - 59&quot;</bucket>
+              <bucket>&quot;50 - 54&quot;</bucket>
+              <bucket>&quot;45 - 49&quot;</bucket>
+              <bucket>&quot;40 - 44&quot;</bucket>
+              <bucket>&quot;35 - 39&quot;</bucket>
+              <bucket>&quot;30 - 34&quot;</bucket>
+              <bucket>&quot;25 - 29&quot;</bucket>
+              <bucket>&quot;20 - 24&quot;</bucket>
+              <bucket>&quot;15 - 19&quot;</bucket>
+              <bucket>&quot;10 - 14&quot;</bucket>
+              <bucket>&quot;5 - 9&quot;</bucket>
+              <bucket>&quot;0 - 4&quot;</bucket>
+            </dictionary>
+          </manual-sort>
+          <filter class='categorical' column='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Gender:nk]'>
+            <groupfilter function='except' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[none:Gender:nk]' />
+              <groupfilter function='union'>
+                <groupfilter function='member' level='[none:Gender:nk]' member='&quot;TOTAL&quot;' />
+                <groupfilter function='member' level='[none:Gender:nk]' member='%null%' />
+              </groupfilter>
+            </groupfilter>
+          </filter>
+          <filter class='categorical' column='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Planning Area:nk]'>
+            <groupfilter function='except' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[none:Planning Area:nk]' />
+              <groupfilter function='member' level='[none:Planning Area:nk]' member='%null%' />
+            </groupfilter>
+          </filter>
+          <filter class='categorical' column='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Subzone:nk]'>
+            <groupfilter function='except' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[none:Subzone:nk]' />
+              <groupfilter function='union'>
+                <groupfilter function='member' level='[none:Subzone:nk]' member='&quot;Total&quot;' />
+                <groupfilter function='member' level='[none:Subzone:nk]' member='%null%' />
+              </groupfilter>
+            </groupfilter>
+          </filter>
+          <filter class='categorical' column='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Type of Dwelling:nk]'>
+            <groupfilter function='member' level='[none:Type of Dwelling:nk]' member='&quot;Total&quot;' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
+          </filter>
+          <slices>
+            <column>[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Age Group:nk]</column>
+            <column>[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Subzone:nk]</column>
+            <column>[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Type of Dwelling:nk]</column>
+            <column>[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Planning Area:nk]</column>
+            <column>[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Gender:nk]</column>
+          </slices>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='axis'>
+            <encoding attr='space' class='0' field='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:2022:qk]' field-type='quantitative' reverse='true' scope='cols' type='space' />
+            <format attr='title' class='0' field='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:2022:qk]' scope='cols' value='Female' />
+            <format attr='title' class='1' field='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:2022:qk]' scope='cols' value='Male' />
+          </style-rule>
+          <style-rule element='header'>
+            <format attr='background-color' field='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:2022:qk]' value='#ffffff' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane id='8' selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <customized-tooltip>
+              <formatted-text>
+                <run fontcolor='#787878'>Age Group:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Age Group:nk]>]]></run>
+                <run>Æ&#10;</run>
+                <run fontcolor='#787878'>2022:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:2022:qk]>]]></run>
+                <run>Æ&#10;</run>
+                <run fontcolor='#787878'>Female:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744388608:qk]>]]></run>
+                <run>Æ&#10;</run>
+                <run fontcolor='#787878'>Male:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744601601:qk]>]]></run>
+              </formatted-text>
+            </customized-tooltip>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-color' value='#4e79a7' />
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='false' />
+              </style-rule>
+            </style>
+          </pane>
+          <pane id='9' selection-relaxation-option='selection-relaxation-allow' x-axis-name='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:2022:qk]'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <color column='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Calculation_370984073201336322:nk]' />
+              <text column='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744388608:qk]' />
+            </encodings>
+            <customized-tooltip>
+              <formatted-text>
+                <run fontcolor='#787878'>Age Group:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Age Group:nk]>]]></run>
+                <run>Æ&#10;</run>
+                <run fontcolor='#787878'>Female:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744388608:qk]>]]></run>
+              </formatted-text>
+            </customized-tooltip>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-mode' value='all' />
+                <format attr='mark-color' value='#4e79a7' />
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='false' />
+              </style-rule>
+            </style>
+          </pane>
+          <pane id='10' selection-relaxation-option='selection-relaxation-allow' x-axis-name='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:2022:qk]' x-index='1'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <color column='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Calculation_370984073201123329:nk]' />
+              <text column='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744601601:qk]' />
+            </encodings>
+            <customized-tooltip>
+              <formatted-text>
+                <run fontcolor='#787878'>Age Group:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Age Group:nk]>]]></run>
+                <run>Æ&#10;</run>
+                <run fontcolor='#787878'>Male:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744601601:qk]>]]></run>
+              </formatted-text>
+            </customized-tooltip>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-color' value='#4e79a7' />
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='false' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows>[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Age Group:nk]</rows>
+        <cols>([federated.0ewukna0yphxib12ymrcj107z9nr].[sum:2022:qk] + [federated.0ewukna0yphxib12ymrcj107z9nr].[sum:2022:qk])</cols>
+      </table>
+      <simple-id uuid='{D7B43FF2-4CD7-4794-842B-677A3081B301}' />
+    </worksheet>
+    <worksheet name='A comparison of Female and Male population in Top 9 Population Areas of Singapore broken down by age group 2022'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run>A comparison of </run>
+            <run fontcolor='#ffa9a7'>Female</run>
+            <run> and </run>
+            <run fontcolor='#4e79a7'>Male</run>
+            <run> population in </run>
+            <run bold='true'>Top 9</run>
+            <run> Population Areas of Singapore broken down by age group 2022</run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='2022M&amp;F (SG_Residents_Jun2022_Merged)' name='federated.0ewukna0yphxib12ymrcj107z9nr' />
+          </datasources>
+          <datasource-dependencies datasource='federated.0ewukna0yphxib12ymrcj107z9nr'>
+            <column datatype='integer' name='[2022]' role='measure' type='quantitative' />
+            <column datatype='string' name='[Age Group]' role='dimension' type='nominal' />
+            <column caption='Male Color' datatype='string' name='[Calculation_370984073201123329]' role='dimension' type='nominal'>
+              <calculation class='tableau' formula='str(if [Gender]=&quot;MALE&quot;&#13;&#10;then 1&#13;&#10;else 0&#13;&#10;end)' />
+            </column>
+            <column caption='Female Color' datatype='string' name='[Calculation_370984073201336322]' role='dimension' type='nominal'>
+              <calculation class='tableau' formula='str(if [Gender]=&quot;FEMALE&quot;&#13;&#10;then 1&#13;&#10;else 0&#13;&#10;end)' />
+            </column>
+            <column caption='Female' datatype='integer' name='[Calculation_609674852744388608]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='if [Gender]=&quot;FEMALE&quot;&#13;&#10;THEN[2022]&#13;&#10;END' />
+            </column>
+            <column caption='Male' datatype='integer' name='[Calculation_609674852744601601]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='if [Gender]=&quot;MALE&quot;&#13;&#10;then [2022]&#13;&#10;END' />
+            </column>
+            <column datatype='string' name='[Gender]' role='dimension' type='nominal' />
+            <column datatype='string' name='[Planning Area]' role='dimension' type='nominal' />
+            <column datatype='string' name='[Subzone]' role='dimension' type='nominal' />
+            <column datatype='string' name='[Type of Dwelling]' role='dimension' type='nominal' />
+            <column-instance column='[Age Group]' derivation='None' name='[none:Age Group:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Calculation_370984073201123329]' derivation='None' name='[none:Calculation_370984073201123329:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Calculation_370984073201336322]' derivation='None' name='[none:Calculation_370984073201336322:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Gender]' derivation='None' name='[none:Gender:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Planning Area]' derivation='None' name='[none:Planning Area:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Subzone]' derivation='None' name='[none:Subzone:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Type of Dwelling]' derivation='None' name='[none:Type of Dwelling:nk]' pivot='key' type='nominal' />
+            <column-instance column='[2022]' derivation='Sum' name='[sum:2022:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Calculation_609674852744388608]' derivation='Sum' name='[sum:Calculation_609674852744388608:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Calculation_609674852744601601]' derivation='Sum' name='[sum:Calculation_609674852744601601:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <filter class='categorical' column='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Age Group:nk]'>
+            <groupfilter function='except' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[none:Age Group:nk]' />
+              <groupfilter function='union'>
+                <groupfilter function='member' level='[none:Age Group:nk]' member='&quot;Total&quot;' />
+                <groupfilter function='member' level='[none:Age Group:nk]' member='%null%' />
+              </groupfilter>
+            </groupfilter>
+          </filter>
+          <manual-sort column='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Age Group:nk]' direction='ASC'>
+            <dictionary>
+              <bucket>&quot;90 &amp; Over&quot;</bucket>
+              <bucket>&quot;85 - 89&quot;</bucket>
+              <bucket>&quot;80 - 84&quot;</bucket>
+              <bucket>&quot;75 - 79&quot;</bucket>
+              <bucket>&quot;70 - 74&quot;</bucket>
+              <bucket>&quot;65 - 69&quot;</bucket>
+              <bucket>&quot;60 - 64&quot;</bucket>
+              <bucket>&quot;55 - 59&quot;</bucket>
+              <bucket>&quot;50 - 54&quot;</bucket>
+              <bucket>&quot;45 - 49&quot;</bucket>
+              <bucket>&quot;40 - 44&quot;</bucket>
+              <bucket>&quot;35 - 39&quot;</bucket>
+              <bucket>&quot;30 - 34&quot;</bucket>
+              <bucket>&quot;25 - 29&quot;</bucket>
+              <bucket>&quot;20 - 24&quot;</bucket>
+              <bucket>&quot;15 - 19&quot;</bucket>
+              <bucket>&quot;10 - 14&quot;</bucket>
+              <bucket>&quot;5 - 9&quot;</bucket>
+              <bucket>&quot;0 - 4&quot;</bucket>
+            </dictionary>
+          </manual-sort>
+          <filter class='categorical' column='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Gender:nk]'>
+            <groupfilter function='except' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[none:Gender:nk]' />
+              <groupfilter function='union'>
+                <groupfilter function='member' level='[none:Gender:nk]' member='&quot;TOTAL&quot;' />
+                <groupfilter function='member' level='[none:Gender:nk]' member='%null%' />
+              </groupfilter>
+            </groupfilter>
+          </filter>
+          <filter class='categorical' column='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Planning Area:nk]'>
+            <groupfilter function='union' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
+              <groupfilter function='member' level='[none:Planning Area:nk]' member='&quot;Bedok&quot;' />
+              <groupfilter function='member' level='[none:Planning Area:nk]' member='&quot;Choa Chu Kang&quot;' />
+              <groupfilter function='member' level='[none:Planning Area:nk]' member='&quot;Hougang&quot;' />
+              <groupfilter function='member' level='[none:Planning Area:nk]' member='&quot;Jurong West&quot;' />
+              <groupfilter function='member' level='[none:Planning Area:nk]' member='&quot;Punggol&quot;' />
+              <groupfilter function='member' level='[none:Planning Area:nk]' member='&quot;Sengkang&quot;' />
+              <groupfilter function='member' level='[none:Planning Area:nk]' member='&quot;Tampines&quot;' />
+              <groupfilter function='member' level='[none:Planning Area:nk]' member='&quot;Woodlands&quot;' />
+              <groupfilter function='member' level='[none:Planning Area:nk]' member='&quot;Yishun&quot;' />
+            </groupfilter>
+          </filter>
+          <filter class='categorical' column='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Subzone:nk]'>
+            <groupfilter function='except' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[none:Subzone:nk]' />
+              <groupfilter function='union'>
+                <groupfilter function='member' level='[none:Subzone:nk]' member='&quot;Total&quot;' />
+                <groupfilter function='member' level='[none:Subzone:nk]' member='%null%' />
+              </groupfilter>
+            </groupfilter>
+          </filter>
+          <filter class='categorical' column='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Type of Dwelling:nk]'>
+            <groupfilter function='member' level='[none:Type of Dwelling:nk]' member='&quot;Total&quot;' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
+          </filter>
+          <slices>
+            <column>[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Age Group:nk]</column>
+            <column>[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Subzone:nk]</column>
+            <column>[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Type of Dwelling:nk]</column>
+            <column>[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Planning Area:nk]</column>
+            <column>[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Gender:nk]</column>
+          </slices>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='axis'>
+            <encoding attr='space' class='0' field='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:2022:qk]' field-type='quantitative' reverse='true' scope='cols' type='space' />
+          </style-rule>
+          <style-rule element='quick-filter'>
+            <format attr='font-size' value='8' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane id='2' selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <customized-tooltip>
+              <formatted-text>
+                <run fontcolor='#787878'>Age Group:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Age Group:nk]>]]></run>
+                <run>Æ&#10;</run>
+                <run fontcolor='#787878'>Female:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744388608:qk]>]]></run>
+                <run>Æ&#10;</run>
+                <run fontcolor='#787878'>Male:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744601601:qk]>]]></run>
+              </formatted-text>
+            </customized-tooltip>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-color' value='#4e79a7' />
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='false' />
+              </style-rule>
+            </style>
+          </pane>
+          <pane id='3' selection-relaxation-option='selection-relaxation-allow' x-axis-name='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:2022:qk]'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <color column='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Calculation_370984073201336322:nk]' />
+              <text column='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744388608:qk]' />
+            </encodings>
+            <customized-tooltip>
+              <formatted-text>
+                <run fontcolor='#787878'>Age Group:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Age Group:nk]>]]></run>
+                <run>Æ&#10;</run>
+                <run fontcolor='#787878'>Female:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744388608:qk]>]]></run>
+                <run>Æ&#10;</run>
+                <run fontcolor='#787878'>Male:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744601601:qk]>]]></run>
+              </formatted-text>
+            </customized-tooltip>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-color' value='#4e79a7' />
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='false' />
+              </style-rule>
+            </style>
+          </pane>
+          <pane id='4' selection-relaxation-option='selection-relaxation-allow' x-axis-name='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:2022:qk]' x-index='1'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <color column='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Calculation_370984073201123329:nk]' />
+              <text column='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744601601:qk]' />
+            </encodings>
+            <customized-tooltip>
+              <formatted-text>
+                <run fontcolor='#787878'>Age Group:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Age Group:nk]>]]></run>
+                <run>Æ&#10;</run>
+                <run fontcolor='#787878'>Female:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744388608:qk]>]]></run>
+                <run>Æ&#10;</run>
+                <run fontcolor='#787878'>Male:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744601601:qk]>]]></run>
+              </formatted-text>
+            </customized-tooltip>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-color' value='#4e79a7' />
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='false' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows>[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Age Group:nk]</rows>
+        <cols>([federated.0ewukna0yphxib12ymrcj107z9nr].[sum:2022:qk] + [federated.0ewukna0yphxib12ymrcj107z9nr].[sum:2022:qk])</cols>
+      </table>
+      <simple-id uuid='{B96E37A9-DC1F-4839-9109-03DC44CA67F7}' />
+    </worksheet>
     <worksheet name='Population Pyramid_SG_2022'>
       <table>
         <view>
@@ -313,29 +788,7 @@
           </style-rule>
         </style>
         <panes>
-          <pane selection-relaxation-option='selection-relaxation-allow'>
-            <view>
-              <breakdown value='auto' />
-            </view>
-            <mark class='Automatic' />
-            <style>
-              <style-rule element='mark'>
-                <format attr='mark-color' value='#ff9da7' />
-              </style-rule>
-            </style>
-          </pane>
-          <pane id='1' selection-relaxation-option='selection-relaxation-allow' x-axis-name='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744388608:qk]'>
-            <view>
-              <breakdown value='auto' />
-            </view>
-            <mark class='Automatic' />
-            <style>
-              <style-rule element='mark'>
-                <format attr='mark-color' value='#ff9da7' />
-              </style-rule>
-            </style>
-          </pane>
-          <pane id='2' selection-relaxation-option='selection-relaxation-allow' x-axis-name='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744601601:qk]'>
+          <pane id='4' selection-relaxation-option='selection-relaxation-allow'>
             <view>
               <breakdown value='auto' />
             </view>
@@ -343,6 +796,34 @@
             <style>
               <style-rule element='mark'>
                 <format attr='mark-color' value='#4e79a7' />
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='true' />
+              </style-rule>
+            </style>
+          </pane>
+          <pane id='5' selection-relaxation-option='selection-relaxation-allow' x-axis-name='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744388608:qk]'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-color' value='#ff9da7' />
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='true' />
+              </style-rule>
+            </style>
+          </pane>
+          <pane id='6' selection-relaxation-option='selection-relaxation-allow' x-axis-name='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744601601:qk]'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-color' value='#4e79a7' />
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='true' />
               </style-rule>
             </style>
           </pane>
@@ -460,6 +941,8 @@
             <style>
               <style-rule element='mark'>
                 <format attr='mark-color' value='#ff9da7' />
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='true' />
               </style-rule>
             </style>
           </pane>
@@ -471,6 +954,8 @@
             <style>
               <style-rule element='mark'>
                 <format attr='mark-color' value='#ff9da7' />
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='true' />
               </style-rule>
             </style>
           </pane>
@@ -482,6 +967,8 @@
             <style>
               <style-rule element='mark'>
                 <format attr='mark-color' value='#4e79a7' />
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='true' />
               </style-rule>
             </style>
           </pane>
@@ -575,6 +1062,8 @@
             <style>
               <style-rule element='mark'>
                 <format attr='mark-color' value='#4e79a7' />
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='true' />
               </style-rule>
             </style>
           </pane>
@@ -584,7 +1073,40 @@
       </table>
       <simple-id uuid='{4ADECA7A-5ED5-4E7B-9219-169EA754B1BC}' />
     </worksheet>
-    <worksheet name='Trellis_Population Pyramid_Top_9_Area_SG_2022'>
+    <worksheet name='Raw_Worksheets-&gt;'>
+      <table>
+        <view>
+          <datasources />
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+          </pane>
+        </panes>
+        <rows />
+        <cols />
+      </table>
+      <simple-id uuid='{D47AA156-7CE6-4BDF-A554-3C8DEFF1F6B8}' />
+    </worksheet>
+    <worksheet name='Trellis comparison of Female and Male population in Top 9 Population Areas of Singapore broken down by age group 2022'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run>Trellis comparison of </run>
+            <run fontcolor='#ffa9a7'>Female</run>
+            <run> and </run>
+            <run fontcolor='#4e79a7'>Male</run>
+            <run> population in </run>
+            <run bold='true'>Top 9</run>
+            <run> Population Areas of Singapore broken down by age group 2022</run>
+          </formatted-text>
+        </title>
+      </layout-options>
       <table>
         <view>
           <datasources>
@@ -593,6 +1115,12 @@
           <datasource-dependencies datasource='federated.0ewukna0yphxib12ymrcj107z9nr'>
             <column datatype='integer' name='[2022]' role='measure' type='quantitative' />
             <column datatype='string' name='[Age Group]' role='dimension' type='nominal' />
+            <column caption='Male Color' datatype='string' name='[Calculation_370984073201123329]' role='dimension' type='nominal'>
+              <calculation class='tableau' formula='str(if [Gender]=&quot;MALE&quot;&#13;&#10;then 1&#13;&#10;else 0&#13;&#10;end)' />
+            </column>
+            <column caption='Female Color' datatype='string' name='[Calculation_370984073201336322]' role='dimension' type='nominal'>
+              <calculation class='tableau' formula='str(if [Gender]=&quot;FEMALE&quot;&#13;&#10;then 1&#13;&#10;else 0&#13;&#10;end)' />
+            </column>
             <column caption='Female' datatype='integer' name='[Calculation_609674852744388608]' role='measure' type='quantitative'>
               <calculation class='tableau' formula='if [Gender]=&quot;FEMALE&quot;&#13;&#10;THEN[2022]&#13;&#10;END' />
             </column>
@@ -604,9 +1132,13 @@
             <column datatype='string' name='[Subzone]' role='dimension' type='nominal' />
             <column datatype='string' name='[Type of Dwelling]' role='dimension' type='nominal' />
             <column-instance column='[Age Group]' derivation='None' name='[none:Age Group:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Calculation_370984073201123329]' derivation='None' name='[none:Calculation_370984073201123329:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Calculation_370984073201336322]' derivation='None' name='[none:Calculation_370984073201336322:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Gender]' derivation='None' name='[none:Gender:nk]' pivot='key' type='nominal' />
             <column-instance column='[Planning Area]' derivation='None' name='[none:Planning Area:nk]' pivot='key' type='nominal' />
             <column-instance column='[Subzone]' derivation='None' name='[none:Subzone:nk]' pivot='key' type='nominal' />
             <column-instance column='[Type of Dwelling]' derivation='None' name='[none:Type of Dwelling:nk]' pivot='key' type='nominal' />
+            <column-instance column='[2022]' derivation='Sum' name='[sum:2022:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_609674852744388608]' derivation='Sum' name='[sum:Calculation_609674852744388608:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_609674852744601601]' derivation='Sum' name='[sum:Calculation_609674852744601601:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
@@ -642,6 +1174,15 @@
               <bucket>&quot;0 - 4&quot;</bucket>
             </dictionary>
           </manual-sort>
+          <filter class='categorical' column='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Gender:nk]'>
+            <groupfilter function='except' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[none:Gender:nk]' />
+              <groupfilter function='union'>
+                <groupfilter function='member' level='[none:Gender:nk]' member='&quot;TOTAL&quot;' />
+                <groupfilter function='member' level='[none:Gender:nk]' member='%null%' />
+              </groupfilter>
+            </groupfilter>
+          </filter>
           <filter class='categorical' column='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Planning Area:nk]'>
             <groupfilter function='union' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
               <groupfilter function='member' level='[none:Planning Area:nk]' member='&quot;Bedok&quot;' />
@@ -672,41 +1213,28 @@
             <column>[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Subzone:nk]</column>
             <column>[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Type of Dwelling:nk]</column>
             <column>[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Planning Area:nk]</column>
+            <column>[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Gender:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
         <style>
           <style-rule element='axis'>
-            <encoding attr='space' class='0' field='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744388608:qk]' field-type='quantitative' reverse='true' scope='cols' type='space' />
+            <encoding attr='space' class='0' field='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:2022:qk]' field-type='quantitative' major-origin='0' major-show='false' major-spacing='10000.0' minor-origin='0' minor-show='false' minor-spacing='1000.0' reverse='true' scope='cols' type='space' />
+            <format attr='title' class='0' field='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:2022:qk]' scope='cols' value='Female' />
+            <format attr='title' class='1' field='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:2022:qk]' scope='cols' value='Male' />
+            <encoding attr='space' class='1' field='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:2022:qk]' field-type='quantitative' major-origin='0' major-show='false' major-spacing='10000.0' minor-origin='0' minor-show='false' minor-spacing='1000.0' scope='cols' type='space' />
+            <format attr='height' field='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:2022:qk]' value='37' />
+          </style-rule>
+          <style-rule element='refline'>
+            <format attr='fill-above' id='refline0' value='#00000000' />
+            <format attr='fill-below' id='refline0' value='#00000000' />
           </style-rule>
           <style-rule element='quick-filter'>
             <format attr='font-size' value='8' />
           </style-rule>
         </style>
         <panes>
-          <pane selection-relaxation-option='selection-relaxation-allow'>
-            <view>
-              <breakdown value='auto' />
-            </view>
-            <mark class='Automatic' />
-            <style>
-              <style-rule element='mark'>
-                <format attr='mark-color' value='#ff9da7' />
-              </style-rule>
-            </style>
-          </pane>
-          <pane id='1' selection-relaxation-option='selection-relaxation-allow' x-axis-name='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744388608:qk]'>
-            <view>
-              <breakdown value='auto' />
-            </view>
-            <mark class='Automatic' />
-            <style>
-              <style-rule element='mark'>
-                <format attr='mark-color' value='#ff9da7' />
-              </style-rule>
-            </style>
-          </pane>
-          <pane id='2' selection-relaxation-option='selection-relaxation-allow' x-axis-name='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744601601:qk]'>
+          <pane id='2' selection-relaxation-option='selection-relaxation-allow'>
             <view>
               <breakdown value='auto' />
             </view>
@@ -717,9 +1245,58 @@
               </style-rule>
             </style>
           </pane>
+          <pane id='3' selection-relaxation-option='selection-relaxation-allow' x-axis-name='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:2022:qk]'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <color column='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Calculation_370984073201336322:nk]' />
+              <text column='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744388608:qk]' />
+            </encodings>
+            <customized-label>
+              <formatted-text>
+                <run>&lt;</run>
+                <run>[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744388608:qk]</run>
+                <run>&gt;</run>
+              </formatted-text>
+            </customized-label>
+            <style>
+              <style-rule element='datalabel'>
+                <format attr='color-mode' value='auto' />
+                <format attr='font-size' value='6' />
+              </style-rule>
+              <style-rule element='mark'>
+                <format attr='mark-color' value='#4e79a7' />
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='false' />
+              </style-rule>
+            </style>
+          </pane>
+          <pane id='4' selection-relaxation-option='selection-relaxation-allow' x-axis-name='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:2022:qk]' x-index='1'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <color column='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Calculation_370984073201123329:nk]' />
+              <text column='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744601601:qk]' />
+            </encodings>
+            <style>
+              <style-rule element='datalabel'>
+                <format attr='color-mode' value='auto' />
+                <format attr='font-size' value='6' />
+              </style-rule>
+              <style-rule element='mark'>
+                <format attr='mark-color' value='#4e79a7' />
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='false' />
+              </style-rule>
+            </style>
+          </pane>
         </panes>
         <rows>[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Age Group:nk]</rows>
-        <cols>([federated.0ewukna0yphxib12ymrcj107z9nr].[none:Planning Area:nk] * ([federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744388608:qk] + [federated.0ewukna0yphxib12ymrcj107z9nr].[sum:Calculation_609674852744601601:qk]))</cols>
+        <cols>([federated.0ewukna0yphxib12ymrcj107z9nr].[none:Planning Area:nk] * ([federated.0ewukna0yphxib12ymrcj107z9nr].[sum:2022:qk] + [federated.0ewukna0yphxib12ymrcj107z9nr].[sum:2022:qk]))</cols>
       </table>
       <simple-id uuid='{0B5033C4-C90F-4588-A801-1E102D008DBC}' />
     </worksheet>
@@ -727,34 +1304,36 @@
   <dashboards>
     <dashboard _.fcp.AccessibleZoneTabOrder.true...enable-sort-zone-taborder='true' name='SG_Population Pyramid'>
       <style />
-      <size maxheight='800' maxwidth='1000' minheight='800' minwidth='1000' />
+      <size sizing-mode='automatic' />
       <zones>
         <zone h='100000' id='4' type-v2='layout-basic' w='100000' x='0' y='0'>
-          <zone h='98000' id='31' param='horz' type-v2='layout-flow' w='98400' x='800' y='1000'>
-            <zone h='98000' id='29' type-v2='layout-basic' w='98400' x='800' y='1000'>
-              <zone h='49000' id='3' name='Population Pyramid_SG_2022' w='49200' x='800' y='1000'>
-                <zone-style>
-                  <format attr='border-color' value='#000000' />
-                  <format attr='border-style' value='none' />
-                  <format attr='border-width' value='0' />
-                  <format attr='margin' value='4' />
-                </zone-style>
-              </zone>
-              <zone h='49000' id='5' name='Trellis_Population Pyramid_Top_9_Area_SG_2022' w='98400' x='800' y='50000'>
-                <zone-style>
-                  <format attr='border-color' value='#000000' />
-                  <format attr='border-style' value='none' />
-                  <format attr='border-width' value='0' />
-                  <format attr='margin' value='4' />
-                </zone-style>
-              </zone>
-              <zone h='49000' id='28' name='Population_by_Areas_2022' w='49200' x='50000' y='1000'>
-                <zone-style>
-                  <format attr='border-color' value='#000000' />
-                  <format attr='border-style' value='none' />
-                  <format attr='border-width' value='0' />
-                  <format attr='margin' value='4' />
-                </zone-style>
+          <zone h='98464' id='58' param='horz' type-v2='layout-flow' w='99166' x='417' y='768'>
+            <zone h='98464' id='31' param='horz' type-v2='layout-flow' w='99166' x='417' y='768'>
+              <zone h='98464' id='29' type-v2='layout-basic' w='99166' x='417' y='768'>
+                <zone h='49232' id='5' name='Trellis comparison of Female and Male population in Top 9 Population Areas of Singapore broken down by age group 2022' w='99166' x='417' y='50000'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                  </zone-style>
+                </zone>
+                <zone h='49232' id='28' name='Population_by_Areas_2022' w='49591' x='49992' y='768'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                  </zone-style>
+                </zone>
+                <zone h='49232' id='56' name='A comparison of Female and Male population in Singapore broken down by age group 2022' w='49575' x='417' y='768'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                  </zone-style>
+                </zone>
               </zone>
             </zone>
           </zone>
@@ -770,9 +1349,9 @@
         <devicelayout auto-generated='true' name='Phone'>
           <size maxheight='900' minheight='900' sizing-mode='vscroll' />
           <zones>
-            <zone h='100000' id='33' type-v2='layout-basic' w='100000' x='0' y='0'>
-              <zone h='98000' id='32' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
-                <zone fixed-size='280' h='49000' id='3' is-fixed='true' name='Population Pyramid_SG_2022' w='49200' x='800' y='1000'>
+            <zone h='100000' id='62' type-v2='layout-basic' w='100000' x='0' y='0'>
+              <zone h='98142' id='61' param='vert' type-v2='layout-flow' w='99034' x='483' y='929'>
+                <zone fixed-size='280' h='49071' id='56' is-fixed='true' name='A comparison of Female and Male population in Singapore broken down by age group 2022' w='49510' x='483' y='929'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -781,7 +1360,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='280' h='49000' id='28' is-fixed='true' name='Population_by_Areas_2022' w='49200' x='50000' y='1000'>
+                <zone fixed-size='280' h='49071' id='28' is-fixed='true' name='Population_by_Areas_2022' w='49524' x='49993' y='929'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -790,7 +1369,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='280' h='49000' id='5' is-fixed='true' name='Trellis_Population Pyramid_Top_9_Area_SG_2022' w='98400' x='800' y='50000'>
+                <zone fixed-size='280' h='49071' id='5' is-fixed='true' name='Trellis comparison of Female and Male population in Top 9 Population Areas of Singapore broken down by age group 2022' w='99034' x='483' y='50000'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -813,8 +1392,8 @@
       <simple-id uuid='{6C9422BB-DB1B-4F24-837E-BAFB253CF1F0}' />
     </dashboard>
   </dashboards>
-  <windows pres-mode='true' saved-dpi-scale-factor='1.25' source-height='37'>
-    <window class='worksheet' name='Population Pyramid_SG_2022'>
+  <windows saved-dpi-scale-factor='1.25' source-height='37'>
+    <window class='worksheet' name='A comparison of Female and Male population in Singapore broken down by age group 2022'>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -834,11 +1413,17 @@
             <card type='title' />
           </strip>
         </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card pane-specification-id='10' param='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Calculation_370984073201123329:nk]' type='color' />
+            <card pane-specification-id='9' param='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Calculation_370984073201336322:nk]' type='color' />
+          </strip>
+        </edge>
       </cards>
       <viewpoint>
         <zoom type='entire-view' />
       </viewpoint>
-      <simple-id uuid='{2BED518B-E640-43F9-A7BD-924E7E0A7F28}' />
+      <simple-id uuid='{62EA5F73-A09A-4F46-ACCF-FB196FB1A260}' />
     </window>
     <window class='worksheet' name='Population_by_Areas_2022'>
       <cards>
@@ -869,6 +1454,136 @@
       </cards>
       <simple-id uuid='{F33F9666-F926-4B7B-9E12-FF2825A93581}' />
     </window>
+    <window class='worksheet' name='A comparison of Female and Male population in Top 9 Population Areas of Singapore broken down by age group 2022'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='bottom'>
+          <strip size='300'>
+            <card param='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Planning Area:nk]' type='filter' values='relevant' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card pane-specification-id='3' param='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Calculation_370984073201336322:nk]' type='color' />
+            <card pane-specification-id='4' param='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Calculation_370984073201123329:nk]' type='color' />
+          </strip>
+        </edge>
+      </cards>
+      <simple-id uuid='{5866FDDB-6A61-46F9-AD63-AD4366B28705}' />
+    </window>
+    <window class='worksheet' name='Trellis comparison of Female and Male population in Top 9 Population Areas of Singapore broken down by age group 2022'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card pane-specification-id='3' param='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Calculation_370984073201336322:nk]' type='color' />
+            <card pane-specification-id='4' param='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Calculation_370984073201123329:nk]' type='color' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <zoom type='entire-view' />
+      </viewpoint>
+      <simple-id uuid='{A27762D9-7BB0-406D-9F9F-05248CBE1070}' />
+    </window>
+    <window class='dashboard' maximized='true' name='SG_Population Pyramid'>
+      <viewpoints>
+        <viewpoint name='A comparison of Female and Male population in Singapore broken down by age group 2022'>
+          <zoom type='entire-view' />
+        </viewpoint>
+        <viewpoint name='Population_by_Areas_2022'>
+          <zoom type='fit-width' />
+        </viewpoint>
+        <viewpoint name='Trellis comparison of Female and Male population in Top 9 Population Areas of Singapore broken down by age group 2022'>
+          <zoom type='entire-view' />
+        </viewpoint>
+      </viewpoints>
+      <active id='-1' />
+      <simple-id uuid='{D139CF1D-EA60-43DE-B019-7CD4AAAE9BC9}' />
+    </window>
+    <window class='worksheet' name='Raw_Worksheets-&gt;'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='title' />
+          </strip>
+        </edge>
+      </cards>
+      <simple-id uuid='{CD874310-714B-41F9-9F39-F689DE8D99A9}' />
+    </window>
+    <window class='worksheet' name='Population Pyramid_SG_2022'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='title' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <zoom type='entire-view' />
+      </viewpoint>
+      <simple-id uuid='{2BED518B-E640-43F9-A7BD-924E7E0A7F28}' />
+    </window>
     <window class='worksheet' name='Population Pyramid_Top_9_Area_SG_2022'>
       <cards>
         <edge name='left'>
@@ -896,47 +1611,6 @@
         </edge>
       </cards>
       <simple-id uuid='{A89DDAF9-3AAB-40BA-BC9A-9C4FE85809BD}' />
-    </window>
-    <window class='worksheet' name='Trellis_Population Pyramid_Top_9_Area_SG_2022'>
-      <cards>
-        <edge name='left'>
-          <strip size='160'>
-            <card type='pages' />
-            <card type='filters' />
-            <card type='marks' />
-          </strip>
-        </edge>
-        <edge name='top'>
-          <strip size='2147483647'>
-            <card type='columns' />
-          </strip>
-          <strip size='2147483647'>
-            <card type='rows' />
-          </strip>
-          <strip size='2147483647'>
-            <card type='title' />
-          </strip>
-        </edge>
-      </cards>
-      <viewpoint>
-        <zoom type='entire-view' />
-      </viewpoint>
-      <simple-id uuid='{A27762D9-7BB0-406D-9F9F-05248CBE1070}' />
-    </window>
-    <window class='dashboard' maximized='true' name='SG_Population Pyramid'>
-      <viewpoints>
-        <viewpoint name='Population Pyramid_SG_2022'>
-          <zoom type='entire-view' />
-        </viewpoint>
-        <viewpoint name='Population_by_Areas_2022'>
-          <zoom type='fit-width' />
-        </viewpoint>
-        <viewpoint name='Trellis_Population Pyramid_Top_9_Area_SG_2022'>
-          <zoom type='entire-view' />
-        </viewpoint>
-      </viewpoints>
-      <active id='4' />
-      <simple-id uuid='{D139CF1D-EA60-43DE-B019-7CD4AAAE9BC9}' />
     </window>
   </windows>
 </workbook>
