@@ -86,14 +86,68 @@ To produce the desired visualisation, follow below steps:
 -   Drag the 'Male' from Data panel into Marks section 'Color', Choose a color that you would like to assign to Male population data. Here, color blue is used.
 
 Therefore, a population pyramid of Singapore has been completed. See below.
+
 ```{r fig.align = 'center', fig.cap = "Population pyramid of Singapore", fig.cap.align = "center", echo = FALSE}
 include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications/lzy66666666/Visual-Analytics-Applications/Take-home_Ex/Ex01/Img/SG_Pyramid.png")
 ```
 
-
 ### Selection of Nine Planning Areas
-Sort the total population grouped by subzone, we will select the top 9 area for our this study.
+
+The task requested nine planning areas to be presented on a single view.
+
+To find out areas to work on, it's more of my interest to filter based on total population. Below are actions that I have taken to achieve that.
+
+-   Drag the '2022' values from Data panel into columns bar.
+
+-   Drag the 'Planning Area' text from Data panel into rows bar.
+
+-   Drag the 'Age Group' item from Data panel into Filters section, select 'Total'.
+
+-   Drag the 'Subzone' item from Data panel into Filters section, select 'Total'.
+
+-   Drag the 'Type of Dwelling' item from Data panel into Filters section, select 'Total'.
+
+-   Drag the 'Gender' item from Data panel into Filters section, select 'TOTAL'.
+
+-   Sort the 'Planning' by clicking the white downwards pointing arrow, choose 'Sort' and sort by 'Field' in descending order. Choose the field to be sorted with to be '2022' from the drop-down list. The aggregation we use here remains 'Sum'.
+
+This would enable us to visualise the top few planning areas according to total area population. However, to make the list of top area more clearly, additional calculated fields 'Labels' and 'Top N Planning Area' were created, together with an additional parameter 'Top Planning Areas'. Since this is not compulsory step to achieve the requirement, I will not go into step by step details on this part. If interested, you may find workings inside the workbook attached.
+
+Hence, below chart is completed.
 
 ```{r fig.align = 'center', fig.cap = "Top 9 planning area by total population", fig.cap.align = "center", echo = FALSE}
 include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications/lzy66666666/Visual-Analytics-Applications/Take-home_Ex/Ex01/Img/Total_top_9.png")
 ```
+
+From here, the 9 areas that is being chosen to study on are Bedok, Tampines, Jurong West, Sengkang, Woodlands, Hougang, Yishun, Choa Chu Kang and Punggol. For the analysis purpose later, a population pyramind of these chosen 9 areas are also plotted by following above Overall Singaporean Poppulation Pyramid steps, with an additional step of dragging 'Planning Area' data item from Data panel into Filters section, the nine chosen areas are therefore selected.
+
+```{r fig.align = 'center', fig.cap = "Top 9 planning area population pyramid", fig.cap.align = "center", echo = FALSE}
+include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications/lzy66666666/Visual-Analytics-Applications/Take-home_Ex/Ex01/Img/SG_top9areas_Pyramid.png")
+```
+
+### Trellis Display of Population Pyramid of The Nine Planning Areas
+
+In this exercise, the nine planning areas are requested to be presented on a single view. To do that, a trellis display will be applied. Following below steps that will lead us to the desired output.
+
+-   Duplicate the worksheet 'Population Pyramid_Top_9\_Area_SG_2022'.
+
+-   Rename the worksheet to 'Trellis_Population Pyramid_Top_9\_Area_SG_2022'.
+
+-   Drag the 'Planning Area' text from Data panel into rows bar.
+
+The trellis display is therefore completed. 
+
+```{r fig.align = 'center', fig.cap = "Top 9 planning area population pyramid", fig.cap.align = "center", echo = FALSE}
+include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications/lzy66666666/Visual-Analytics-Applications/Take-home_Ex/Ex01/Img/SG_top9areas_Trellis.png")
+```
+
+### Final Dashboard
+
+The final dashboard is produced by putting together some significant worksheets. Here, three worksheets have been chosen to present together to complete the whole story.
+
+```{r fig.align = 'center', fig.cap = "Top 9 planning area population pyramid", fig.cap.align = "center", echo = FALSE}
+include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications/lzy66666666/Visual-Analytics-Applications/Take-home_Ex/Ex01/Img/Final_dashboard.png")
+```
+
+## 4. Observation and Insights (not more than 500 words)
+

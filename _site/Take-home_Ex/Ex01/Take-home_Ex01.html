@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Li Ziyi">
-<meta name="dcterms.date" content="2023-01-18">
+<meta name="dcterms.date" content="2023-01-19">
 
 <title>Visual-Analytics-Applications - Take-home Exercise 01</title>
 <style>
@@ -201,7 +201,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#overall-singaporean-population-pyramid" id="toc-overall-singaporean-population-pyramid" class="nav-link" data-scroll-target="#overall-singaporean-population-pyramid">Overall Singaporean Population Pyramid</a></li>
   <li><a href="#selection-of-nine-planning-areas" id="toc-selection-of-nine-planning-areas" class="nav-link" data-scroll-target="#selection-of-nine-planning-areas">Selection of Nine Planning Areas</a></li>
+  <li><a href="#trellis-display-of-population-pyramid-of-the-nine-planning-areas" id="toc-trellis-display-of-population-pyramid-of-the-nine-planning-areas" class="nav-link" data-scroll-target="#trellis-display-of-population-pyramid-of-the-nine-planning-areas">Trellis Display of Population Pyramid of The Nine Planning Areas</a></li>
+  <li><a href="#final-dashboard" id="toc-final-dashboard" class="nav-link" data-scroll-target="#final-dashboard">Final Dashboard</a></li>
   </ul></li>
+  <li><a href="#observation-and-insights-not-more-than-500-words" id="toc-observation-and-insights-not-more-than-500-words" class="nav-link" data-scroll-target="#observation-and-insights-not-more-than-500-words">4. Observation and Insights (not more than 500 words)</a></li>
   </ul>
 </nav>
     </div>
@@ -227,7 +230,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 18, 2023</p>
+      <p class="date">January 19, 2023</p>
     </div>
   </div>
   
@@ -325,7 +328,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="selection-of-nine-planning-areas" class="level3">
 <h3 class="anchored" data-anchor-id="selection-of-nine-planning-areas">Selection of Nine Planning Areas</h3>
-<p>Sort the total population grouped by subzone, we will select the top 9 area for our this study.</p>
+<p>The task requested nine planning areas to be presented on a single view.</p>
+<p>To find out areas to work on, it’s more of my interest to filter based on total population. Below are actions that I have taken to achieve that.</p>
+<ul>
+<li><p>Drag the ‘2022’ values from Data panel into columns bar.</p></li>
+<li><p>Drag the ‘Planning Area’ text from Data panel into rows bar.</p></li>
+<li><p>Drag the ‘Age Group’ item from Data panel into Filters section, select ‘Total’.</p></li>
+<li><p>Drag the ‘Subzone’ item from Data panel into Filters section, select ‘Total’.</p></li>
+<li><p>Drag the ‘Type of Dwelling’ item from Data panel into Filters section, select ‘Total’.</p></li>
+<li><p>Drag the ‘Gender’ item from Data panel into Filters section, select ‘TOTAL’.</p></li>
+<li><p>Sort the ‘Planning’ by clicking the white downwards pointing arrow, choose ‘Sort’ and sort by ‘Field’ in descending order. Choose the field to be sorted with to be ‘2022’ from the drop-down list. The aggregation we use here remains ‘Sum’.</p></li>
+</ul>
+<p>This would enable us to visualise the top few planning areas according to total area population. However, to make the list of top area more clearly, additional calculated fields ‘Labels’ and ‘Top N Planning Area’ were created, together with an additional parameter ‘Top Planning Areas’. Since this is not compulsory step to achieve the requirement, I will not go into step by step details on this part. If interested, you may find workings inside the workbook attached.</p>
+<p>Hence, below chart is completed.</p>
 <div class="cell" data-layout-align="center" data-fig.cap.align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -336,9 +351,57 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </div>
-
-
+<p>From here, the 9 areas that is being chosen to study on are Bedok, Tampines, Jurong West, Sengkang, Woodlands, Hougang, Yishun, Choa Chu Kang and Punggol. For the analysis purpose later, a population pyramind of these chosen 9 areas are also plotted by following above Overall Singaporean Poppulation Pyramid steps, with an additional step of dragging ‘Planning Area’ data item from Data panel into Filters section, the nine chosen areas are therefore selected.</p>
+<div class="cell" data-layout-align="center" data-fig.cap.align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Img/SG_top9areas_Pyramid.png" class="img-fluid figure-img" width="960"></p>
+<p></p><figcaption class="figure-caption">Top 9 planning area population pyramid</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
+<section id="trellis-display-of-population-pyramid-of-the-nine-planning-areas" class="level3">
+<h3 class="anchored" data-anchor-id="trellis-display-of-population-pyramid-of-the-nine-planning-areas">Trellis Display of Population Pyramid of The Nine Planning Areas</h3>
+<p>In this exercise, the nine planning areas are requested to be presented on a single view. To do that, a trellis display will be applied. Following below steps that will lead us to the desired output.</p>
+<ul>
+<li><p>Duplicate the worksheet ‘Population Pyramid_Top_9_Area_SG_2022’.</p></li>
+<li><p>Rename the worksheet to ‘Trellis_Population Pyramid_Top_9_Area_SG_2022’.</p></li>
+<li><p>Drag the ‘Planning Area’ text from Data panel into rows bar.</p></li>
+</ul>
+<p>The trellis display is therefore completed.</p>
+<div class="cell" data-layout-align="center" data-fig.cap.align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Img/SG_top9areas_Trellis.png" class="img-fluid figure-img" width="960"></p>
+<p></p><figcaption class="figure-caption">Top 9 planning area population pyramid</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="final-dashboard" class="level3">
+<h3 class="anchored" data-anchor-id="final-dashboard">Final Dashboard</h3>
+<p>The final dashboard is produced by putting together some significant worksheets. Here, three worksheets have been chosen to present together to complete the whole story.</p>
+<div class="cell" data-layout-align="center" data-fig.cap.align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Img/Final_dashboard.png" class="img-fluid figure-img" width="960"></p>
+<p></p><figcaption class="figure-caption">Top 9 planning area population pyramid</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="observation-and-insights-not-more-than-500-words" class="level2">
+<h2 class="anchored" data-anchor-id="observation-and-insights-not-more-than-500-words">4. Observation and Insights (not more than 500 words)</h2>
+
+
 </section>
 
 </main> <!-- /main -->

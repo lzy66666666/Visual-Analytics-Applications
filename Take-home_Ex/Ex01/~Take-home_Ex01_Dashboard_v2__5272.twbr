@@ -173,7 +173,7 @@
       </connection>
       <aliases enabled='yes' />
       <column datatype='integer' name='[2022]' role='measure' type='quantitative' />
-      <column caption='Subset Labels' datatype='string' name='[Calculation_1131247984952020992]' role='dimension' type='nominal'>
+      <column caption='Labels' datatype='string' name='[Calculation_1131247984952020992]' role='dimension' type='nominal'>
         <calculation class='tableau' formula='if [Top N Planning Area]&#13;&#10;then &quot;Top &quot; + str([Parameters].[Parameter 1]) + &quot; Planning Areas&quot;&#13;&#10;else &quot;Others&quot;&#13;&#10;END' />
       </column>
       <column caption='Female' datatype='integer' name='[Calculation_609674852744388608]' role='measure' type='quantitative'>
@@ -265,7 +265,29 @@
               </groupfilter>
             </groupfilter>
           </filter>
-          <alphabetic-sort column='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Age Group:nk]' direction='DESC' />
+          <manual-sort column='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Age Group:nk]' direction='ASC'>
+            <dictionary>
+              <bucket>&quot;90 &amp; Over&quot;</bucket>
+              <bucket>&quot;85 - 89&quot;</bucket>
+              <bucket>&quot;80 - 84&quot;</bucket>
+              <bucket>&quot;75 - 79&quot;</bucket>
+              <bucket>&quot;70 - 74&quot;</bucket>
+              <bucket>&quot;65 - 69&quot;</bucket>
+              <bucket>&quot;60 - 64&quot;</bucket>
+              <bucket>&quot;55 - 59&quot;</bucket>
+              <bucket>&quot;50 - 54&quot;</bucket>
+              <bucket>&quot;45 - 49&quot;</bucket>
+              <bucket>&quot;40 - 44&quot;</bucket>
+              <bucket>&quot;35 - 39&quot;</bucket>
+              <bucket>&quot;30 - 34&quot;</bucket>
+              <bucket>&quot;25 - 29&quot;</bucket>
+              <bucket>&quot;20 - 24&quot;</bucket>
+              <bucket>&quot;15 - 19&quot;</bucket>
+              <bucket>&quot;10 - 14&quot;</bucket>
+              <bucket>&quot;5 - 9&quot;</bucket>
+              <bucket>&quot;0 - 4&quot;</bucket>
+            </dictionary>
+          </manual-sort>
           <filter class='categorical' column='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Subzone:nk]'>
             <groupfilter function='except' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
               <groupfilter function='level-members' level='[none:Subzone:nk]' />
@@ -469,7 +491,7 @@
       </table>
       <simple-id uuid='{7DAF7851-00AD-4AD2-93DD-AC0BEFB8DFF0}' />
     </worksheet>
-    <worksheet name='Total_Population_2022'>
+    <worksheet name='Population_by_Areas_2022'>
       <table>
         <view>
           <datasources>
@@ -485,7 +507,7 @@
           <datasource-dependencies datasource='federated.0ewukna0yphxib12ymrcj107z9nr'>
             <column datatype='integer' name='[2022]' role='measure' type='quantitative' />
             <column datatype='string' name='[Age Group]' role='dimension' type='nominal' />
-            <column caption='Subset Labels' datatype='string' name='[Calculation_1131247984952020992]' role='dimension' type='nominal'>
+            <column caption='Labels' datatype='string' name='[Calculation_1131247984952020992]' role='dimension' type='nominal'>
               <calculation class='tableau' formula='if [Top N Planning Area]&#13;&#10;then &quot;Top &quot; + str([Parameters].[Parameter 1]) + &quot; Planning Areas&quot;&#13;&#10;else &quot;Others&quot;&#13;&#10;END' />
             </column>
             <column datatype='string' name='[Gender]' role='dimension' type='nominal' />
@@ -534,6 +556,9 @@
           <aggregation value='true' />
         </view>
         <style>
+          <style-rule element='axis'>
+            <format attr='title' class='0' field='[federated.0ewukna0yphxib12ymrcj107z9nr].[sum:2022:qk]' scope='cols' value='2022 Population' />
+          </style-rule>
           <style-rule element='label'>
             <format attr='display' field='[federated.0ewukna0yphxib12ymrcj107z9nr].[io:Top N Planning Area:nk]' value='false' />
           </style-rule>
@@ -705,21 +730,33 @@
       <size maxheight='800' maxwidth='1000' minheight='800' minwidth='1000' />
       <zones>
         <zone h='100000' id='4' type-v2='layout-basic' w='100000' x='0' y='0'>
-          <zone h='49000' id='3' name='Population Pyramid_SG_2022' w='98400' x='800' y='1000'>
-            <zone-style>
-              <format attr='border-color' value='#000000' />
-              <format attr='border-style' value='none' />
-              <format attr='border-width' value='0' />
-              <format attr='margin' value='4' />
-            </zone-style>
-          </zone>
-          <zone h='49000' id='5' name='Trellis_Population Pyramid_Top_9_Area_SG_2022' w='98400' x='800' y='50000'>
-            <zone-style>
-              <format attr='border-color' value='#000000' />
-              <format attr='border-style' value='none' />
-              <format attr='border-width' value='0' />
-              <format attr='margin' value='4' />
-            </zone-style>
+          <zone h='98000' id='31' param='horz' type-v2='layout-flow' w='98400' x='800' y='1000'>
+            <zone h='98000' id='29' type-v2='layout-basic' w='98400' x='800' y='1000'>
+              <zone h='49000' id='3' name='Population Pyramid_SG_2022' w='49200' x='800' y='1000'>
+                <zone-style>
+                  <format attr='border-color' value='#000000' />
+                  <format attr='border-style' value='none' />
+                  <format attr='border-width' value='0' />
+                  <format attr='margin' value='4' />
+                </zone-style>
+              </zone>
+              <zone h='49000' id='5' name='Trellis_Population Pyramid_Top_9_Area_SG_2022' w='98400' x='800' y='50000'>
+                <zone-style>
+                  <format attr='border-color' value='#000000' />
+                  <format attr='border-style' value='none' />
+                  <format attr='border-width' value='0' />
+                  <format attr='margin' value='4' />
+                </zone-style>
+              </zone>
+              <zone h='49000' id='28' name='Population_by_Areas_2022' w='49200' x='50000' y='1000'>
+                <zone-style>
+                  <format attr='border-color' value='#000000' />
+                  <format attr='border-style' value='none' />
+                  <format attr='border-width' value='0' />
+                  <format attr='margin' value='4' />
+                </zone-style>
+              </zone>
+            </zone>
           </zone>
           <zone-style>
             <format attr='border-color' value='#000000' />
@@ -731,11 +768,20 @@
       </zones>
       <devicelayouts>
         <devicelayout auto-generated='true' name='Phone'>
-          <size maxheight='700' minheight='700' sizing-mode='vscroll' />
+          <size maxheight='900' minheight='900' sizing-mode='vscroll' />
           <zones>
-            <zone h='100000' id='25' type-v2='layout-basic' w='100000' x='0' y='0'>
-              <zone h='84000' id='24' param='vert' type-v2='layout-flow' w='84000' x='8000' y='8000'>
-                <zone fixed-size='280' h='49000' id='3' is-fixed='true' name='Population Pyramid_SG_2022' w='98400' x='800' y='1000'>
+            <zone h='100000' id='33' type-v2='layout-basic' w='100000' x='0' y='0'>
+              <zone h='98000' id='32' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
+                <zone fixed-size='280' h='49000' id='3' is-fixed='true' name='Population Pyramid_SG_2022' w='49200' x='800' y='1000'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone fixed-size='280' h='49000' id='28' is-fixed='true' name='Population_by_Areas_2022' w='49200' x='50000' y='1000'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -767,8 +813,8 @@
       <simple-id uuid='{6C9422BB-DB1B-4F24-837E-BAFB253CF1F0}' />
     </dashboard>
   </dashboards>
-  <windows pres-mode='true' source-height='30'>
-    <window class='worksheet' maximized='true' name='Population Pyramid_SG_2022'>
+  <windows pres-mode='true' saved-dpi-scale-factor='1.25' source-height='37'>
+    <window class='worksheet' name='Population Pyramid_SG_2022'>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -784,14 +830,17 @@
           <strip size='2147483647'>
             <card type='rows' />
           </strip>
-          <strip size='31'>
+          <strip size='2147483647'>
             <card type='title' />
           </strip>
         </edge>
       </cards>
+      <viewpoint>
+        <zoom type='entire-view' />
+      </viewpoint>
       <simple-id uuid='{2BED518B-E640-43F9-A7BD-924E7E0A7F28}' />
     </window>
-    <window class='worksheet' name='Total_Population_2022'>
+    <window class='worksheet' name='Population_by_Areas_2022'>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -807,7 +856,7 @@
           <strip size='2147483647'>
             <card type='rows' />
           </strip>
-          <strip size='31'>
+          <strip size='2147483647'>
             <card type='title' />
           </strip>
         </edge>
@@ -836,12 +885,12 @@
           <strip size='2147483647'>
             <card type='rows' />
           </strip>
-          <strip size='31'>
+          <strip size='2147483647'>
             <card type='title' />
           </strip>
         </edge>
         <edge name='bottom'>
-          <strip size='248'>
+          <strip size='300'>
             <card param='[federated.0ewukna0yphxib12ymrcj107z9nr].[none:Planning Area:nk]' type='filter' values='relevant' />
           </strip>
         </edge>
@@ -864,23 +913,29 @@
           <strip size='2147483647'>
             <card type='rows' />
           </strip>
-          <strip size='31'>
+          <strip size='2147483647'>
             <card type='title' />
           </strip>
         </edge>
       </cards>
+      <viewpoint>
+        <zoom type='entire-view' />
+      </viewpoint>
       <simple-id uuid='{A27762D9-7BB0-406D-9F9F-05248CBE1070}' />
     </window>
-    <window class='dashboard' name='SG_Population Pyramid'>
+    <window class='dashboard' maximized='true' name='SG_Population Pyramid'>
       <viewpoints>
         <viewpoint name='Population Pyramid_SG_2022'>
           <zoom type='entire-view' />
+        </viewpoint>
+        <viewpoint name='Population_by_Areas_2022'>
+          <zoom type='fit-width' />
         </viewpoint>
         <viewpoint name='Trellis_Population Pyramid_Top_9_Area_SG_2022'>
           <zoom type='entire-view' />
         </viewpoint>
       </viewpoints>
-      <active id='-1' />
+      <active id='4' />
       <simple-id uuid='{D139CF1D-EA60-43DE-B019-7CD4AAAE9BC9}' />
     </window>
   </windows>
