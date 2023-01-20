@@ -53,5 +53,5 @@ ggplot(data=exam_data,
                   ylim=c(0,100)) +
   ggtitle("English scores versus Maths scores for Primary 3")
 ```
-Content is yet to be released fully here.
+Content is yet to be released fully here, to be continued.
 
