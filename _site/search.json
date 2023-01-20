@@ -42,6 +42,13 @@
     "text": "3.3 Using ggplot2 and group by genders\n\nggplot(data = exam_data,\n       aes(x = MATHS,\n           fill = GENDER)) +\n  geom_histogram(bins = 20,\n                 boundary = 100,\n                 color = 'grey30')"
   },
   {
+    "objectID": "Hands-on_Ex/Ex02/Ex02.html",
+    "href": "Hands-on_Ex/Ex02/Ex02.html",
+    "title": "Ex02",
+    "section": "",
+    "text": "The code chunk below uses p_load() of pacman package to check if tidyverse packages are installed in the computer. If they are, then they will be launched into R.\n\nlibrary(pacman)\n\npacman::p_load(tidyverse, \n               patchwork, \n               ggthemes, \n               hrbrthemes,\n               ggrepel)\n\n\n\n\n\nexam_data <- read_csv(\"data/Exam_data.csv\")\n\nRows: 322 Columns: 7\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr (4): ID, CLASS, GENDER, RACE\ndbl (3): ENGLISH, MATHS, SCIENCE\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n\n\n\n\n\n\nggplot(data=exam_data, \n       aes(x= MATHS, \n           y=ENGLISH)) +\n  geom_point() +\n  geom_smooth(method=lm, \n              linewidth=0.5) +  \n  geom_label(aes(label = ID), \n             hjust = .5, \n             vjust = -.5) +\n  coord_cartesian(xlim=c(0,100),\n                  ylim=c(0,100)) +\n  ggtitle(\"English scores versus Maths scores for Primary 3\")\n\n`geom_smooth()` using formula = 'y ~ x'\n\n\n\n\n\nTo avoid text labels from being overlapping with each other, ggrepel is preferred here instead.\n\nggplot(data=exam_data, \n       aes(x= MATHS, \n           y=ENGLISH)) +\n  geom_point() +\n  geom_smooth(method=lm, \n              linewidth=0.5) +  \n  geom_label_repel(aes(label = ID), \n                   fontface = \"bold\") +\n  coord_cartesian(xlim=c(0,100),\n                  ylim=c(0,100)) +\n  ggtitle(\"English scores versus Maths scores for Primary 3\")\n\n`geom_smooth()` using formula = 'y ~ x'\n\n\nWarning: ggrepel: 317 unlabeled data points (too many overlaps). Consider\nincreasing max.overlaps\n\n\n\n\n\nContent is yet to be released fully here."
+  },
+  {
     "objectID": "Take-home_Ex/Ex01/Take-home_Ex01.html",
     "href": "Take-home_Ex/Ex01/Take-home_Ex01.html",
     "title": "Take-home Exercise 01",
@@ -75,12 +82,5 @@
     "title": "Take-home Exercise 01",
     "section": "5 Reflection",
     "text": "5 Reflection\nThis is my first attempt on building and publishing . Along the journey, I have been learning from many of my mistakes. E.g. only after building the whole dashboard, I realised there was better data set for me to use and work on (csv preferred over xlsx, if both available). And the very first draft of dashboard looked decent but was only as good as a graph that can be viewed but cannot be analyzed with. Countless attempts of rework and revised versions were created, with much practice time invested.\nNevertheless, I am excited of this continuous learning journey ahead. I look forward to improving my analytics skills using Tableau and R to further improve this exercise with more depth."
-  },
-  {
-    "objectID": "Hands-on_Ex/Ex02/Ex02.html",
-    "href": "Hands-on_Ex/Ex02/Ex02.html",
-    "title": "Ex02",
-    "section": "",
-    "text": "The code chunk below uses p_load() of pacman package to check if tidyverse packages are installed in the computer. If they are, then they will be launched into R.\n\npacman::p_load(tidyverse, \n               patchwork, \n               ggthemes, \n               hrbrthemes,\n               ggrepel)"
   }
 ]

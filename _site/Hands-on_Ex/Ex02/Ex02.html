@@ -194,9 +194,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">Table of Contents</h2>
    
   <ul>
-  <li><a href="#getting-started" id="toc-getting-started" class="nav-link active" data-scroll-target="#getting-started"><span class="toc-section-number">1</span>  Getting Started</a>
+  <li><a href="#hands-on-exercise-02" id="toc-hands-on-exercise-02" class="nav-link active" data-scroll-target="#hands-on-exercise-02"><span class="toc-section-number">1</span>  Hands-on Exercise 02</a>
   <ul class="collapse">
-  <li><a href="#install-and-launch-r-packages" id="toc-install-and-launch-r-packages" class="nav-link" data-scroll-target="#install-and-launch-r-packages"><span class="toc-section-number">1.1</span>  Install and launch R packages</a></li>
+  <li><a href="#library-installation-and-launching" id="toc-library-installation-and-launching" class="nav-link" data-scroll-target="#library-installation-and-launching"><span class="toc-section-number">1.1</span>  Library installation and launching</a></li>
+  <li><a href="#data-loading" id="toc-data-loading" class="nav-link" data-scroll-target="#data-loading"><span class="toc-section-number">1.2</span>  Data Loading</a></li>
+  <li><a href="#ggplot2-annotation" id="toc-ggplot2-annotation" class="nav-link" data-scroll-target="#ggplot2-annotation"><span class="toc-section-number">1.3</span>  ggplot2 Annotation</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -227,18 +229,84 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<section id="getting-started" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Getting Started</h1>
-<section id="install-and-launch-r-packages" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="install-and-launch-r-packages"><span class="header-section-number">1.1</span> Install and launch R packages</h2>
+<section id="hands-on-exercise-02" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Hands-on Exercise 02</h1>
+<section id="library-installation-and-launching" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="library-installation-and-launching"><span class="header-section-number">1.1</span> Library installation and launching</h2>
 <p>The code chunk below uses p_load() of pacman package to check if tidyverse packages are installed in the computer. If they are, then they will be launched into R.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               patchwork, </span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>               ggthemes, </span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>               hrbrthemes,</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>               ggrepel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pacman)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>               patchwork, </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>               ggthemes, </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>               hrbrthemes,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>               ggrepel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="data-loading" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="data-loading"><span class="header-section-number">1.2</span> Data Loading</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>exam_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/Exam_data.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 322 Columns: 7
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (4): ID, CLASS, GENDER, RACE
+dbl (3): ENGLISH, MATHS, SCIENCE
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+</div>
+</section>
+<section id="ggplot2-annotation" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="ggplot2-annotation"><span class="header-section-number">1.3</span> ggplot2 Annotation</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>exam_data, </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x=</span> MATHS, </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y=</span>ENGLISH)) <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span>lm, </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">linewidth=</span><span class="fl">0.5</span>) <span class="sc">+</span>  </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label</span>(<span class="fu">aes</span>(<span class="at">label =</span> ID), </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">hjust =</span> .<span class="dv">5</span>, </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">vjust =</span> <span class="sc">-</span>.<span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">100</span>),</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>                  <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">100</span>)) <span class="sc">+</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"English scores versus Maths scores for Primary 3"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Ex02_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>To avoid text labels from being overlapping with each other, ggrepel is preferred here instead.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>exam_data, </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x=</span> MATHS, </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y=</span>ENGLISH)) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span>lm, </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">linewidth=</span><span class="fl">0.5</span>) <span class="sc">+</span>  </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> ID), </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">fontface =</span> <span class="st">"bold"</span>) <span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">100</span>),</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">100</span>)) <span class="sc">+</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"English scores versus Maths scores for Primary 3"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: ggrepel: 317 unlabeled data points (too many overlaps). Consider
+increasing max.overlaps</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Ex02_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Content is yet to be released fully here.</p>
 
 
 </section>

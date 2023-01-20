@@ -1,18 +1,57 @@
 ---
-title: "Ex02"
+title: "Hands-on Ex 02"
 author: "Li Ziyi"
 ---
 
-# Getting Started
-
-## Install and launch R packages
+## Library installation and launching
 
 The code chunk below uses p_load() of pacman package to check if tidyverse packages are installed in the computer. If they are, then they will be launched into R.
 
 ```{r}
+library(pacman)
+
 pacman::p_load(tidyverse, 
                patchwork, 
                ggthemes, 
                hrbrthemes,
                ggrepel)
 ```
+
+## Data Loading
+```{r}
+exam_data <- read_csv("data/Exam_data.csv")
+```
+
+## ggplot2 Annotation
+```{r}
+ggplot(data=exam_data, 
+       aes(x= MATHS, 
+           y=ENGLISH)) +
+  geom_point() +
+  geom_smooth(method=lm, 
+              linewidth=0.5) +  
+  geom_label(aes(label = ID), 
+             hjust = .5, 
+             vjust = -.5) +
+  coord_cartesian(xlim=c(0,100),
+                  ylim=c(0,100)) +
+  ggtitle("English scores versus Maths scores for Primary 3")
+
+```
+To avoid text labels from being overlapping with each other, ggrepel is preferred here instead.
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x= MATHS, 
+           y=ENGLISH)) +
+  geom_point() +
+  geom_smooth(method=lm, 
+              linewidth=0.5) +  
+  geom_label_repel(aes(label = ID), 
+                   fontface = "bold") +
+  coord_cartesian(xlim=c(0,100),
+                  ylim=c(0,100)) +
+  ggtitle("English scores versus Maths scores for Primary 3")
+```
+Content is yet to be released fully here.
+
