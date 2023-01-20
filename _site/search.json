@@ -75,5 +75,12 @@
     "title": "Take-home Exercise 01",
     "section": "5 Reflection",
     "text": "5 Reflection\nThis is my first attempt on building and publishing . Along the journey, I have been learning from many of my mistakes. E.g. only after building the whole dashboard, I realised there was better data set for me to use and work on (csv preferred over xlsx, if both available). And the very first draft of dashboard looked decent but was only as good as a graph that can be viewed but cannot be analyzed with. Countless attempts of rework and revised versions were created, with much practice time invested.\nNevertheless, I am excited of this continuous learning journey ahead. I look forward to improving my analytics skills using Tableau and R to further improve this exercise with more depth."
+  },
+  {
+    "objectID": "Hands-on_Ex/Ex02/Ex02.html",
+    "href": "Hands-on_Ex/Ex02/Ex02.html",
+    "title": "Ex02",
+    "section": "",
+    "text": "The code chunk below uses p_load() of pacman package to check if tidyverse packages are installed in the computer. If they are, then they will be launched into R.\n\npacman::p_load(tidyverse, \n               patchwork, \n               ggthemes, \n               hrbrthemes,\n               ggrepel)"
   }
 ]

@@ -1,0 +1,18 @@
+---
+title: "Ex02"
+author: "Li Ziyi"
+---
+
+# Getting Started
+
+## Install and launch R packages
+
+The code chunk below uses p_load() of pacman package to check if tidyverse packages are installed in the computer. If they are, then they will be launched into R.
+
+```{r}
+pacman::p_load(tidyverse, 
+               patchwork, 
+               ggthemes, 
+               hrbrthemes,
+               ggrepel)
+```

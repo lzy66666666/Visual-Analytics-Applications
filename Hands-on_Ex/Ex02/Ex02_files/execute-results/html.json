@@ -1,0 +1,14 @@
+{
+  "hash": "0839d5b317947f9750da2b96316a750e",
+  "result": {
+    "markdown": "---\ntitle: \"Ex02\"\nauthor: \"Li Ziyi\"\n---\n\n\n# Getting Started\n\n## Install and launch R packages\n\nThe code chunk below uses p_load() of pacman package to check if tidyverse packages are installed in the computer. If they are, then they will be launched into R.\n\n\n::: {.cell}\n\n```{.r .cell-code}\npacman::p_load(tidyverse, \n               patchwork, \n               ggthemes, \n               hrbrthemes,\n               ggrepel)\n```\n:::",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
