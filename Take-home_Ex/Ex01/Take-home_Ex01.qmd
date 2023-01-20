@@ -4,15 +4,13 @@ author: "Li Ziyi"
 date: "Report Last Run: `r Sys.time()`"
 ---
 
-## 1. Introduction
+## Introduction
 
 In this exercise, the basic demographic structure of Singapore top 9 biggest planning areas categorised by gender and age group is being studied.
 
-Data used is extracted from [Department of Statistics, Singapore](https://www.singstat.gov.sg/find-data/search-by-theme/population/geographic-distribution/latest-data). The population data snapshot from June 2022 is being studied mainly.
+Data used is a csv file extracted from [Department of Statistics, Singapore](https://www.singstat.gov.sg/find-data/search-by-theme/population/geographic-distribution/latest-data). The population data snapshot from June 2022 is being studied mainly.
 
-## 2. Data Preparation
-
-Inside the downloaded excel file, there are "Total" elements inside all columns. To load into Tableau for visualization and therefore, for better analysis purpose, we will need to do some basic data cleaning.
+## Data Preparation
 
 ```{r}
 #| echo: false
@@ -22,29 +20,23 @@ library(knitr)
 
 ### Data Cleaning
 
-With the raw excel file not to be touched, a new Excel document is created to consolidate all needed raw data with the same table headers pasted over.
+Preview the downloaded csv file, the data looks generally clean with no "Total" elements inside all columns. This is specifically checked to ensure there won't be double counting from aggregation blended inside. Inside Tableau, if needed, total could be easily computed by summing up all the rest data.
 
-Given that planning area level data are to be studied, "Total Planning Area" and "Total Male and Female" data are removed as they are now redundant. If needed, total could be easily computed inside Tableau by summing up all the rest data.
-
-Both male and female data are copied and consolidated into our new Excel files. A new column "Gender" is introduced. All data entries pasted are tagged accordingly based on the raw data.
-
-Save the Excel data file and rename it properly.
-
-```{r fig.align = 'center', fig.cap = "Excel data prepared", fig.cap.align = 'center', echo=FALSE}
+```{r fig.align = 'center', fig.cap = "Raw data used", fig.cap.align = 'center', echo=FALSE}
 include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications/lzy66666666/Visual-Analytics-Applications/Take-home_Ex/Ex01/Img/Excel_data.PNG")
 ```
 
 ### Data Loading
 
-Open a new Tableau workbook and import data using the Excel file.
+Open a new Tableau workbook and import data using the csv file prepared above.
 
-For easier data manipulation later on, switch the data type of '2022' to integer from text (highlighted in yellow).
+For easier data manipulation later on, some columns were renamed for easier understanding and convenient usage, e.g. 'AG' to 'Age Group', 'Pop' to 'Population' etc.
 
 ```{r fig.align = 'center', fig.cap = "Tableau data loading", fig.cap.align = 'center', echo = FALSE}
 include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications/lzy66666666/Visual-Analytics-Applications/Take-home_Ex/Ex01/Img/Tableau_data_loading.PNG")
 ```
 
-## 3. Data Visualisation
+## Data Visualisation
 
 Age-sex pyramid was taught be an analytical visualisation commonly used by demographers to reveal the structure of population by gender and age group.
 
@@ -52,38 +44,55 @@ Age-sex pyramid was taught be an analytical visualisation commonly used by demog
 
 Two calculated fields are created to facilitate the visualisation preparation:
 
-``` {{r}}
-# | output: asis
-Male:
-if [Gender]="MALE"
-then [2022]
-END
-
-Female:
-if [Gender]="MALE"
-then [2022]
-END
-```
+        Male:
+        if [Sex]="Males"
+        then [Population]
+        end
+        
+        Female:
+        if [Sex]="Females"
+        then [Population]
+        end
 
 To produce the desired visualisation, follow below steps:
 
--   Drag the 'Age Group' from Data panel into Filters section, select 'All' and de-select 'Total' option at the bottom of the list.
-
--   Drag the 'Subzone' from Data panel into Filters section, select 'All' and de-select 'Total' option inside the list.
-
--   Drag the 'Type of Dwelling' from Data panel into Filters section, select 'Total' option at the bottom of the list.
-
--   Drag the two created measures from Data panel into columns bar.
-
--   Drag the 'Age Group' from Data panel into rows bar.
+-   Drag the 'Age Group' from Data panel into Rows bar.
 
 -   Sort the 'Age Group' by clicking the white downwards pointing arrow, choose 'Sort' and sort by 'Alphabetic' in descending order.
 
--   Drag the line '5-9' inside the worksheet from 'Age Group' column to one line above '0-4'. With this, the age group should have been sorted in a descending manner entirely.
+-   Drag the line item '5_to_9' inside the worksheet from 'Age Group' column to one line above '0_to_4'. With this, the age group should have been sorted in a descending manner entirely.
 
--   Drag the 'Female' from Data panel into Marks section 'Color'. Choose a color that you would like to assign to Female population data. Here, color pink is used.
+-   Drag the 'Population' from Data panel into Columns bar twice. Two 'SUM(Population)' should be seen in Columns' bar. This step is to facilitate the pyramid making. Whereby the left side will be intended to use for female population visualisation and the right side will be intended to use to male population visualisation.
 
--   Drag the 'Male' from Data panel into Marks section 'Color', Choose a color that you would like to assign to Male population data. Here, color blue is used.
+-   Right click the axis of the 'Population' on the left and edit axis. Choose the option of 'Reversed' under 'Scale'. This will reverse the axis on the left. Rename the axis on the left to 'Female'.
+
+-   Right click the axis on the right. Edit the axis and rename it to 'Male'.
+
+There is a pyramid shape built now. Proceeding next to isolate each gender's population from the other.
+
+-   Create two newly calculated measures named 'Male Color' and 'Female Color'. This is to facilitate the visualisation of pyramid later.
+
+        Male Color: 
+        str(if [Sex]="Males" 
+        then 1 
+        else 0 
+        end)
+
+        Female Color: 
+        str(if [Sex]="Females" 
+        then 1 
+        else 0 
+        end)
+
+-   Drag the 'Female Color' from Data panel into Marks section under the 'Color' button from the first 'SUM(Population)'. Choose a color that you would like to assign to Female population data (1). Here, color pink is used. When the data is not 'Female' (0), color grey is used.
+
+-   Similarly, drag the 'Male Color' from Data panel and do the same but put it under under the second 'SUM(Population)'. Choose a color that you would like to assign to Male population data (1). Here, color blue is used. When the data is not 'Male' (0), color grey is used to align with the color used in 'Female Color'.
+
+-   For better analysis usage, under 'Marks' section for both 'SUM(Population)', 'Allow labels to overlap other marks' is chosen under 'Label'. This will enable us to see all population data on the chart.
+
+-   Choose 'Entire View' on the top menu to allow bigger chart being presented when in full screen mode.
+
+-   Rename the tab with an informative title.
 
 Therefore, a population pyramid of Singapore has been completed. See below.
 
@@ -93,47 +102,76 @@ include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications
 
 ### Selection of Nine Planning Areas
 
-The task requested nine planning areas to be presented on a single view.
+For this take-home exercise, nine planning areas are supposed to be chosen and presented on a single view.
 
-To find out areas to work on, it's more of my interest to filter based on total population. Below are actions that I have taken to achieve that.
+To find out which nine areas to work on, it's more of my interest to filter based on each of their total population. Below actions are taken in order to achieve that.
 
--   Drag the '2022' values from Data panel into columns bar.
+-   Create a new worksheet.
 
--   Drag the 'Planning Area' text from Data panel into rows bar.
+-   Drag the 'Population' values from Data panel into Columns bar.
 
--   Drag the 'Age Group' item from Data panel into Filters section, select 'Total'.
+-   Drag the 'Planning Area' text from Data panel into Rows bar.
 
--   Drag the 'Subzone' item from Data panel into Filters section, select 'Total'.
+-   Sort the 'Planning Area' by clicking the white downwards pointing arrow, choose 'Sort' and sort by 'Field' in descending order. Choose the field to be sorted by 'Population' from the drop-down list. The aggregation we use here remains 'Sum'.
 
--   Drag the 'Type of Dwelling' item from Data panel into Filters section, select 'Total'.
+This would enable us to visualise the top planning areas according to each of their total area population. To make the list of top area more clearly, parameters and additional calculated fields are created.
 
--   Drag the 'Gender' item from Data panel into Filters section, select 'TOTAL'.
+Creation of parameter 'Top Planning Areas'.
 
--   Sort the 'Planning' by clicking the white downwards pointing arrow, choose 'Sort' and sort by 'Field' in descending order. Choose the field to be sorted with to be '2022' from the drop-down list. The aggregation we use here remains 'Sum'.
+```{r fig.align = 'center', fig.cap = "Parameter: Top planning area", fig.cap.align = "center", echo = FALSE}
+include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications/lzy66666666/Visual-Analytics-Applications/Take-home_Ex/Ex01/Img/Parameter_Top Planning Area.png")
+```
 
-This would enable us to visualise the top few planning areas according to total area population. However, to make the list of top area more clearly, additional calculated fields 'Labels' and 'Top N Planning Area' were created, together with an additional parameter 'Top Planning Areas'. Since this is not compulsory step to achieve the requirement, I will not go into step by step details on this part. If interested, you may find workings inside the workbook attached.
+Creation of set 'Top N Planning Area' derived from item 'Planning Area' from the Data panel by right clicking it:
 
-Hence, below chart is completed.
+```{r fig.align = 'center', fig.cap = "Set: Top N Planning Area", fig.cap.align = "center", echo = FALSE}
+include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications/lzy66666666/Visual-Analytics-Applications/Take-home_Ex/Ex01/Img/Set_Top Planning Area.png")
+```
+
+Creation of calculated field 'Labels'. This label is to be displayed inside the table later for easier readability.
+
+        if [Top N Planning Area]
+        then "Top " + str([Top Planning Area]) + " Planning Areas"
+        else "Others"
+        end
+
+With these, below chart is completed.
 
 ```{r fig.align = 'center', fig.cap = "Top 9 planning area by total population", fig.cap.align = "center", echo = FALSE}
 include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications/lzy66666666/Visual-Analytics-Applications/Take-home_Ex/Ex01/Img/Total_top_9.png")
 ```
 
-From here, the 9 areas that is being chosen to study on are Bedok, Tampines, Jurong West, Sengkang, Woodlands, Hougang, Yishun, Choa Chu Kang and Punggol. For the analysis purpose later, a population pyramind of these chosen 9 areas are also plotted by following above Overall Singaporean Poppulation Pyramid steps, with an additional step of dragging 'Planning Area' data item from Data panel into Filters section, the nine chosen areas are therefore selected.
+From here, the nine areas that are chosen to study on are:
 
-```{r fig.align = 'center', fig.cap = "Top 9 planning area population pyramid", fig.cap.align = "center", echo = FALSE}
-include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications/lzy66666666/Visual-Analytics-Applications/Take-home_Ex/Ex01/Img/SG_top9areas_Pyramid.png")
-```
+-   Bedok,
+
+-   Tampines,
+
+-   Jurong West,
+
+-   Sengkang,
+
+-   Woodlands,
+
+-   Hougang,
+
+-   Yishun,
+
+-   Choa Chu Kang,
+
+-   Punggol.
 
 ### Trellis Display of Population Pyramid of The Nine Planning Areas
 
 In this exercise, the nine planning areas are requested to be presented on a single view. To do that, a trellis display will be applied. Following below steps that will lead us to the desired output.
 
--   Duplicate the worksheet 'Population Pyramid_Top_9\_Area_SG_2022'.
+-   Duplicate the worksheet 'PA comparison of Female and Male population in Singapore broken down by age group 2022'.
 
--   Rename the worksheet to 'Trellis_Population Pyramid_Top_9\_Area_SG_2022'.
+-   Rename the worksheet to 'Trellis comparison of Female and Male population in Top 9 Population Areas of Singapore broken down by age group 2022'.
 
--   Drag the 'Planning Area' text from Data panel into rows bar.
+-   Drag the 'Planning Area' text from Data panel into Columns bar.
+
+-   Drag the 'Planning Area' text from Data panel into Filters section and tick the chosen nine areas only.
 
 The trellis display is therefore completed.
 
@@ -143,20 +181,40 @@ include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications
 
 ### Final Dashboard
 
-The final dashboard is produced by putting together some significant worksheets. Here, three worksheets have been chosen to present together to complete the whole story.
+The final dashboard is produced by putting together the three important worksheets. Here, three worksheets have been chosen to present together in one view to complete the whole story.
 
 ```{r fig.align = 'center', fig.cap = "Top 9 planning area population pyramid", fig.cap.align = "center", echo = FALSE}
 include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications/lzy66666666/Visual-Analytics-Applications/Take-home_Ex/Ex01/Img/Final_dashboard.png")
 ```
 
-## 4. Observation and Insights (not more than 500 words)
+## Observation and Insights
 
-### i. "Constrictive" pyramid (or "negative growth pyramid")
+### "Constrictive" pyramid (or "negative growth" pyramid)
 
-The type of population pyramid of Singapore
+The population pyramid of Singapore observed from the figure above is narrowed at the bottom younger ages, typical for many developed countries in the world. Usually, country of this population pyramid type tends to have a lower birth rate and a lower death rate thanks to prevalent high level of education and accessible health care services.
 
-### ii. The population pyramid of Singapore from 2022 remains like the one from 2017.
+This observation is in line with many incentive measures from the government seen, for example, policies like birth bonuses, child benefits and even tax credits.
 
-### iii. Females outnumber males in Singapore Based on June 2022 data. 
+### The population pyramid of Singapore from 2022 remains like the one from 2017.
 
-This trend is observed in majority age groups. Zooming into each group, only for age 19 and below, number of males is observed to be higher. This is interesting.
+From this [link](https://www.populationpyramid.net/singapore/2017/) shared by prof, the population pyramid of Singapore in 2022 still look very alike in how it was in 2017, despite of much effort from government on improving fertility rate.
+
+This is indeed a concerning topic. Such constrictive pyramid indicates a [higher dependency ratio](https://www.un.org/esa/sustdev/natlinfo/indicators/methodology_sheets/demographics/dependency_ratio.pdf) (a ratio related to the number of children and older persons to the working-age population), which implies potential work force shortage in the future. Consequentely, that might result in seriously negative economic impact like reduction in taxation and heavier burden on health care industry.
+
+### Females outnumber males in Singapore Based on June 2022 data.
+
+This trend is observed in majority age groups. Zooming into each group, only for age 19 and below, number of males is observed to be higher. This trend is observed in majority age groups. Zooming into each group, only for age 19 and below, number of males is observed to be higher. The trend also applies to the nine areas that we have chosen to study on. Without more than sufficient research, there are some unproved personal assumptions that might lead to this result:
+
+-   Males tend to have a higher mortality rate especially at an older age group, mainly due to higher probability of possessing an unhealthy life habit like smoking or heavy drinking.
+
+-   A possible relatively higher rate of approval for immigration applications from foreign young females. This might account for some partial efforts from government on improving the fertility rate of Singapore.
+
+### Punggol and Sengkang each has slightly different population pyramid from the rest of chosen areas'.
+
+Thanks to the Trellis plot, a comparison between the nine areas looks much easier. From the dashboard, Punggol and Sengkang seem to have a relatively larger base (newly born babies) and middle part (working adults) than the rest. This observation tends to prove the point of view that these two areas tend to have higher percentages of young working couples and babies. Hence, [Punggol has recently been dubbed as Singapore's baby town, according to a news report from The Straits Times](https://www.straitstimes.com/singapore/housing/singapores-baby-town-punggol-some-interesting-things-to-know-about-other-ura?login=true).
+
+## Reflection
+
+This is my first attempt on building and publishing . Along the journey, I have been learning from many of my mistakes. E.g. only after building the whole dashboard, I realised there was better data set for me to use and work on (csv preferred over xlsx, if both available). And the very first draft of dashboard looked decent but was only as good as a graph that can be viewed but cannot be analyzed with. Countless attempts of rework and revised versions were created, with much practice time invested.
+
+Nevertheless, I am excited of this continuous learning journey ahead. I look forward to improving my analytics skills using Tableau and R to further improve this exercise with more depth.

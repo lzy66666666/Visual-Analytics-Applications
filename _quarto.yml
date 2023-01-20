@@ -19,9 +19,12 @@ website:
       - about.qmd
 format:
   html:
-    theme: morph
+    theme: litera
     css: styles.css
     toc: true
-
+    toc-depth: 3
+    toc-title: Table of Contents
+    number-sections: true
+    link-external-icon: true
 editor: visual
 
