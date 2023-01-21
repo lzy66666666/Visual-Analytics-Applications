@@ -189,6 +189,8 @@ include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications
 
 ## Observation and Insights
 
+This part is the write-up requested. Words count: 447 words.
+
 ### "Constrictive" pyramid (or "negative growth" pyramid)
 
 The population pyramid of Singapore observed from the figure above is narrowed at the bottom younger ages, typical for many developed countries in the world. Usually, country of this population pyramid type tends to have a lower birth rate and a lower death rate thanks to prevalent high level of education and accessible health care services.
