@@ -1,5 +1,5 @@
 ---
-title: "Hands-on Ex 02"
+title: "Hands-on Ex 02: Beyond ggplot2 Fundamentals"
 author: "Li Ziyi"
 ---
 
@@ -18,11 +18,13 @@ pacman::p_load(tidyverse,
 ```
 
 ## Data Loading
+
 ```{r}
 exam_data <- read_csv("data/Exam_data.csv")
 ```
 
 ## ggplot2 Annotation
+
 ```{r}
 ggplot(data=exam_data, 
        aes(x= MATHS, 
@@ -38,6 +40,7 @@ ggplot(data=exam_data,
   ggtitle("English scores versus Maths scores for Primary 3")
 
 ```
+
 To avoid text labels from being overlapping with each other, ggrepel is preferred here instead.
 
 ```{r}
@@ -53,5 +56,5 @@ ggplot(data=exam_data,
                   ylim=c(0,100)) +
   ggtitle("English scores versus Maths scores for Primary 3")
 ```
-Content is yet to be released fully here, to be continued.
 
+Content is yet to be released fully here, to be continued.
