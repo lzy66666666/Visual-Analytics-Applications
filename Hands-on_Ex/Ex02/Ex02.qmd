@@ -1,5 +1,5 @@
 ---
-title: "Hands-on Ex 02: Beyond ggplot2 Fundamentals"
+title: "Hands-on Ex02: Beyond ggplot2 Fundamentals"
 author: "Li Ziyi"
 ---
 
