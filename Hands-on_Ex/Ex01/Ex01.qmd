@@ -1,6 +1,7 @@
 ---
 title: "Hands-on Ex01: Creating Elegant Graphics with ggplot2"
 author: "Li Ziyi"
+date: "`r Sys.Date()`"
 ---
 
 # Getting Started
@@ -12,6 +13,13 @@ The code chunk below uses p_load() of pacman package to check if tidyverse packa
 ```{r}
 pacman::p_load(tidyverse)
 ```
+
+This p_load() function includes the function of running below commands. More effective nowadays vs the old way below. The pacman in front is to make sure even if the package pacman is not installed.
+````
+library(readr)
+library(dplyr)
+library(tidyr)
+````
 
 ## Importing the data
 
