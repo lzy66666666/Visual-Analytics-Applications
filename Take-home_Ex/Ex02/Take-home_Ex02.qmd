@@ -5,11 +5,13 @@ date: "`r Sys.Date()`"
 ---
 
 # Overview
+
 The requirement of this exercise is to critic the submission that revealed demographic structure of Singapore at nine planning areas from one of my classmate in terms of clarity and aesthetics, prepare a sketch for the alternative design by using the data visualisation design principles and best practices learned from Lesson 1 and 2. Eventually, the original design will be remade below by using ggplot2, ggplot2 extensions and tidyverse packages from R.
 
-Original dashboard prepared could be retrieved through this [link](https://public.tableau.com/app/profile/thomas.hoang8154/viz/takehome1_16740523080150/Dashboard3). 
+Original dashboard prepared could be retrieved through this [link](https://public.tableau.com/app/profile/thomas.hoang8154/viz/takehome1_16740523080150/Dashboard3).
 
 Below is a snapshot of the dashboard.
+
 ```{r}
 #| echo: false
 library(knitr)
@@ -20,13 +22,17 @@ include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications
 ```
 
 # Analytical data visualisation critique
+
 ## Clarity
+
 ### Missing a well worded title
+
 By looking at the dashboard itself in full screen mode, there are insufficient information on what message this chart is trying to relay.
 
-Additionally, nine planning areas' demographic structure has been shown indeed. The tableau public dashboard, however, is published using the name of 'Singapore Population distribution by age'. Misunderstanding might be raised if there are only nine areas in total in Singapore.
+Additionally, nine planning areas' demographic structure has been shown indeed. The tableau public dashboard, however, is published using the name of 'Singapore Population distribution by age'. Misunderstanding might be raised as people might wrongly conclude that there are only nine areas in total in Singapore.
 
 ### Misalignment in x-axis across nine plots
+
 For the chosen nine areas' plots, some different scales are observed in the x-axis (population count). Misleading visual representation originated from the graph might result in wrong conclusion being made.
 
 ### Weak analytics capabilities
@@ -34,26 +40,31 @@ For the chosen nine areas' plots, some different scales are observed in the x-ax
 From the dashboard, we are able to tell Maybe we can group certain age groups to make a better visualization?
 
 ## Aesthetics
+
 ### Usage of an unrecommended color
+
 Inside the dashboard, males population is being represented with a color similar to dark khaki. A color like this that is similar to 'puke yellow' is discouraged to be used, according to the class discussion during week 2 lecture.
 
-### Over-packed y-axis ticks 
+### Over-packed y-axis ticks
+
 Given the granularity of this study, there are many age groups to be presented on the y-axis. However, the y-axis on the current dashboard is too packed with little to no space in between.
 
-# ?Sketch of the proposed design
+# Sketch of the proposed design
 
 ```{r fig.align = 'center', fig.cap = "Original Dashboard", fig.cap.align = 'center', echo=FALSE}
-include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications/lzy66666666/Visual-Analytics-Applications/Take-home_Ex/Ex02/Img/Original_dashboard.PNG")
+include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications/lzy66666666/Visual-Analytics-Applications/Take-home_Ex/Ex02/Img/Sketch design.jpg")
 ```
 
 # Remake the original design in R
+
 ## Data source
 
-For this exercise, the data source remained the same as what was used in [exercise 01](Take-home_Ex/Ex01/Take-home_Ex01.html).
+For this exercise, the data source remained the same as what was used in [exercise 01](https://visual-analytics-applications-lzy.netlify.app/take-home_ex/ex01/take-home_ex01).
 
 ## Libraries to be used:
 
-In this exercise, main libraries to be used are listed below. pacman is used to check on installation and finish loading, if necessary.
+In this exercise, main libraries to be used are listed below. pacman is used to check on and ensure the installation of packages.
+
 ```{r}
 library(pacman)
 
@@ -66,40 +77,45 @@ pacman::p_load(tidyverse,
 ```
 
 ## Data loading:
+
 Load the csv file below for our usage later.
+
 ```{r}
 population <- read_csv('Data/SG_Population_Jun2022.csv')
 ```
 
 ## Data wrangling
+
 As a good practice, the structure of the raw data is inspected to identify if any data manipulation would be beneficial for our usage later on:
+
 ```{r}
 str(population)
 ```
 
 For easier data manipulation and better visualisation effect, the raw data is duplicated below.
+
 ```{r}
 pop_temp  <- population
-head(pop_temp)
 ```
 
-Transform the format of Age Group column ('AG') from text to factor. This would enable us to keep the age groups arranged in a sorted manner that is desired.
+Here the format of Age Group column ('AG') will be transformed from text to factor. This would enable us to keep the age groups arranged in a sorted manner that is desired.
+
 ```{r}
 pop_temp$AG <- as.factor(pop_temp$AG)
-str(pop_temp)
-```
-
-```{r}
 levels(pop_temp$AG)
 ```
 
 As can be seen above, the age group '5_to_9' is not falling in the right place. To correct this, a manual swap is done below.
+
 ```{r}
 pop_temp$AG <- factor(pop_temp$AG,levels(pop_temp$AG)[c(1,10,2:9,11:19)])
 levels(pop_temp$AG)
 ```
 
-For the ease of visualisation the population of the two genders side by side, an extra column is prepared such that the population of females would be recorded as values with negative signs, while the population of males would be with positive signs. Consequently, the female population would be on the left-hand-side and the male population would be on the right-hand-side.
+For the ease of visualisation the population of the two genders side by side, an extra column is prepared such that the population of females would be recorded as values with negative signs, while the population of males would be in positive signs. 
+
+Consequently, the female population would be on the left-hand-side and the male population would be on the right-hand-side.
+
 ```{r}
 pop_temp$Pop_abs <- ifelse(pop_temp$Sex == "Males",
                         pop_temp$Pop,
@@ -107,8 +123,10 @@ pop_temp$Pop_abs <- ifelse(pop_temp$Sex == "Males",
 ```
 
 ## Visualisation
+
 ### Population pyramid of Singapore
-```{r fig.width = 12, fig.height = 12}
+ggplot is the main package that is used to plot the desired chart.
+```{r fig.width = 12, fig.height = 10}
 p1 <- 
 ggplot(data=pop_temp,
        aes(x=AG,
@@ -128,11 +146,14 @@ ggplot(data=pop_temp,
   theme(legend.position = "bottom",
         plot.title = element_text(size = 15,
                                   hjust = 0.5,
-                                  margin = margin(0,0,10,0)))
+                                  margin = margin(0,0,10,0)),
+        axis.title.y = element_text(vjust = 2.5))
 
 p1
 ```
+With the overall Singapore population pyramid available, the next question to answer would be: which are the nine areas that are to be studied for this exercise?
 
+Aggregate the population by planning areas and duplicate the required data and save as an individual dataset.
 ```{r}
 pop_temp_pa <- pop_temp %>% 
   group_by(PA) %>% 
@@ -141,7 +162,8 @@ pop_temp_pa <- pop_temp %>%
 ```
 
 ### Population by planning areas
-```{r  fig.width = 12, fig.height = 12}
+Population of each area is then displayed using bar chart.
+```{r  fig.width = 12, fig.height = 10}
 p2 <- 
 ggplot(data=pop_temp_pa,
        aes(x=reorder(PA, +total_pop),
@@ -166,7 +188,8 @@ p2
 ```
 
 ### Population pyramid of nine selected planning areas
-Using the above chart, the top nine planning areas with largest population are:
+
+Using the above chart, it is obvious that the top nine planning areas with largest population are:
 
 -   Bedok,
 
@@ -185,6 +208,8 @@ Using the above chart, the top nine planning areas with largest population are:
 -   Choa Chu Kang,
 
 -   Punggol.
+
+Considering their rather significant population numbers, further study of each of their population pyramid would be conducted on them.
 ```{r}
 top_9 = c("Bedok",
           "Tampines",
@@ -201,6 +226,7 @@ pop_top_9 = pop_temp %>%
 ```
 
 By filtering the overall Singapore data set and following the same approach on plotting the overall Singapore population pyramid, the nine chosen areas' population pyramid are therefore presented below:
+
 ```{r fig.width = 12, fig.height = 12}
 p3 <- 
 ggplot(data=pop_top_9,
@@ -221,15 +247,24 @@ ggplot(data=pop_top_9,
   theme(legend.position = "bottom",
         plot.title = element_text(size = 15,
                                   hjust = 0.5,
-                                  margin = margin(0,0,10,0)))
+                                  margin = margin(0,0,10,0)),
+        # axis.title.y = element_text(margin = margin(t = 0, r = 0, b = 0, l = 10)),
+        axis.title.y = element_text(vjust = 2.5),
+        strip.text = element_text(vjust = 1))
 
 p3
 ```
+
 ### Final dashboard
+
 To complete the story within one dashboard, three graphs above are composed into one using Patchwork.
+
 ```{r fig.width = 18, fig.height = 18}
 (p1 + p2) / p3
 ```
+
 # Reflection
-This exercise is an extension from exercise 1. Through attempting this exercise, features from both Tableau and R (ggplot2 specifically) have been greatly appreciated. Besides, through repeatedly revising lesson 1 and 2, importance on using right visualisations and tips on creating meaningful visualisations using R for analytics usage have been fully comprehended.
-Last but not the least, through appreciating and referencing classmates' work that were shared by prof, peer learning is also becoming part of the innovation steps for this learning journey.
+
+This exercise is an extension from exercise 1. Through attempting this exercise, features from both Tableau and R (ggplot2 specifically) have been greatly appreciated. Besides, through repeatedly revising lesson 1 and 2, importance on using right visualisations and tips on creating meaningful visualisations using R for analytics usage have been fully comprehended. 
+
+Last but not the least, by appreciating and referencing classmates' work that were shared by prof, peer learning is also becoming part of the innovation steps for this learning journey.
