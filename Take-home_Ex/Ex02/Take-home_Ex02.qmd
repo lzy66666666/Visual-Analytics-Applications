@@ -5,11 +5,11 @@ date: "`r Sys.Date()`"
 ---
 
 # Overview
+The requirement of this exercise is to critic the submission that revealed demographic structure of Singapore at nine planning areas from one of my classmate in terms of clarity and aesthetics, prepare a sketch for the alternative design by using the data visualisation design principles and best practices learned from Lesson 1 and 2. Eventually, the original design will be remade below by using ggplot2, ggplot2 extensions and tidyverse packages from R.
 
-The requirement of this exercise is to critic the submission of Singapore population pyramid from one of my classmate in terms of clarity and aesthetics, prepare a sketch for the alternative design by using the data visualisation design principles and best practices learned from Lesson 1 and 2. Eventually,I will remake the original design below by using ggplot2, ggplot2 extensions and tidyverse packages from R.
+Original dashboard prepared could be retrieved through this [link](https://public.tableau.com/app/profile/thomas.hoang8154/viz/takehome1_16740523080150/Dashboard3). 
 
-Original dashboard prepared could be retrieved through this [link](https://public.tableau.com/app/profile/thomas.hoang8154/viz/takehome1_16740523080150/Dashboard3). Below is a snapshot of the dashboard.
-
+Below is a snapshot of the dashboard.
 ```{r}
 #| echo: false
 library(knitr)
@@ -19,23 +19,219 @@ library(knitr)
 include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications/lzy66666666/Visual-Analytics-Applications/Take-home_Ex/Ex02/Img/Original_dashboard.PNG")
 ```
 
-# Data Preparation
+# Analytical data visualisation critique
+## Clarity
+### Missing a well worded title
+By looking at the dashboard itself in full screen mode, there are insufficient information on what message this chart is trying to relay.
+
+Additionally, nine planning areas' demographic structure has been shown indeed. The tableau public dashboard, however, is published using the name of 'Singapore Population distribution by age'. Misunderstanding might be raised if there are only nine areas in total in Singapore.
+
+### Misalignment in x-axis across nine plots
+For the chosen nine areas' plots, some different scales are observed in the x-axis (population count). Misleading visual representation originated from the graph might result in wrong conclusion being made.
+
+### Weak analytics capabilities
+
+From the dashboard, we are able to tell Maybe we can group certain age groups to make a better visualization?
+
+## Aesthetics
+### Usage of an unrecommended color
+Inside the dashboard, males population is being represented with a color similar to dark khaki. A color like this that is similar to 'puke yellow' is discouraged to be used, according to the class discussion during week 2 lecture.
+
+### Over-packed y-axis ticks 
+Given the granularity of this study, there are many age groups to be presented on the y-axis. However, the y-axis on the current dashboard is too packed with little to no space in between.
+
+# ?Sketch of the proposed design
+
+```{r fig.align = 'center', fig.cap = "Original Dashboard", fig.cap.align = 'center', echo=FALSE}
+include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications/lzy66666666/Visual-Analytics-Applications/Take-home_Ex/Ex02/Img/Original_dashboard.PNG")
+```
+
+# Remake the original design in R
+## Data source
 
 For this exercise, the data source remained the same as what was used in [exercise 01](Take-home_Ex/Ex01/Take-home_Ex01.html).
 
 ## Libraries to be used:
-In this exercise, below are mainly libraries to be used:
 
-
+In this exercise, main libraries to be used are listed below. pacman is used to check on installation and finish loading, if necessary.
 ```{r}
 library(pacman)
 
 pacman::p_load(tidyverse,
                ggplot2,
-               ggrepel)
+               ggrepel,
+               ggthemes,
+               patchwork,
+               dplyr)
 ```
 
 ## Data loading:
+Load the csv file below for our usage later.
 ```{r}
 population <- read_csv('Data/SG_Population_Jun2022.csv')
 ```
+
+## Data wrangling
+As a good practice, the structure of the raw data is inspected to identify if any data manipulation would be beneficial for our usage later on:
+```{r}
+str(population)
+```
+
+For easier data manipulation and better visualisation effect, the raw data is duplicated below.
+```{r}
+pop_temp  <- population
+head(pop_temp)
+```
+
+Transform the format of Age Group column ('AG') from text to factor. This would enable us to keep the age groups arranged in a sorted manner that is desired.
+```{r}
+pop_temp$AG <- as.factor(pop_temp$AG)
+str(pop_temp)
+```
+
+```{r}
+levels(pop_temp$AG)
+```
+
+As can be seen above, the age group '5_to_9' is not falling in the right place. To correct this, a manual swap is done below.
+```{r}
+pop_temp$AG <- factor(pop_temp$AG,levels(pop_temp$AG)[c(1,10,2:9,11:19)])
+levels(pop_temp$AG)
+```
+
+For the ease of visualisation the population of the two genders side by side, an extra column is prepared such that the population of females would be recorded as values with negative signs, while the population of males would be with positive signs. Consequently, the female population would be on the left-hand-side and the male population would be on the right-hand-side.
+```{r}
+pop_temp$Pop_abs <- ifelse(pop_temp$Sex == "Males",
+                        pop_temp$Pop,
+                        -1*pop_temp$Pop)
+```
+
+## Visualisation
+### Population pyramid of Singapore
+```{r fig.width = 12, fig.height = 12}
+p1 <- 
+ggplot(data=pop_temp,
+       aes(x=AG,
+           y=Pop_abs,
+           fill = Sex)) +
+  geom_bar(data=subset(pop_temp, Sex == "Males"),stat = "identity") +
+    geom_bar(data=subset(pop_temp, Sex == "Females"),stat = "identity") +
+  xlab("Age Group") +
+  ylab(NULL) +
+  coord_flip() +
+  scale_y_continuous(breaks = seq(-200000, 200000, 50000), 
+                      labels = paste0(as.character(c(seq(200, 0, -50), seq(5, 200, 50))),"k")) + 
+  geom_label_repel(aes(label = Pop_abs), 
+                   fontface = "bold") +
+  ggtitle("Females vs Males population of Singapore by age group 2022") +
+  labs(caption = "Demographic information as of Jun 2022") +
+  scale_fill_discrete(name="") +
+  theme_economist() + 
+  theme(legend.position = "bottom",
+        plot.title = element_text(size = 15,
+                                  hjust = 0.5,
+                                  margin = margin(0,0,10,0)))
+
+p1
+```
+
+```{r}
+pop_temp_pa <- pop_temp %>% 
+  group_by(PA) %>% 
+  summarise(total_pop = sum(Pop)) %>% 
+  arrange(desc(total_pop))
+```
+
+### Population by planning areas
+```{r  fig.width = 12, fig.height = 12}
+p2 <- 
+ggplot(data=pop_temp_pa,
+       aes(x=reorder(PA, +total_pop),
+           y=total_pop)) + 
+  geom_col() +
+  xlab(NULL) +
+  ylab(NULL) +
+  ggtitle("Population of Singapore by planning areas 2022") +
+  labs(caption = "Demographic information as of Jun 2022") +
+  coord_flip() +
+  scale_y_continuous(breaks = seq(0, 300000, 50000), 
+                      labels = paste0(as.character(c(seq(0, 300, 50))),"k"),
+                     expand = c(0, 0)) +
+  scale_x_discrete(expand = c(0.01, 0)) +
+  theme_economist() +
+  theme(plot.title = element_text(size = 15,
+                                  hjust = 0.5,
+                                  margin = margin(0,0,10,0)),
+        axis.text.y = element_text(size = 10))
+
+p2
+```
+
+### Population pyramid of nine selected planning areas
+Using the above chart, the top nine planning areas with largest population are:
+
+-   Bedok,
+
+-   Tampines,
+
+-   Jurong West,
+
+-   Sengkang,
+
+-   Woodlands,
+
+-   Hougang,
+
+-   Yishun,
+
+-   Choa Chu Kang,
+
+-   Punggol.
+```{r}
+top_9 = c("Bedok",
+          "Tampines",
+          "Jurong West",
+          "Sengkang",
+          "Woodlands",
+          "Hougang",
+          "Yishun",
+          "Choa Chu Kang",
+          "Punggol")
+
+pop_top_9 = pop_temp %>% 
+              filter(pop_temp$PA %in% top_9)
+```
+
+By filtering the overall Singapore data set and following the same approach on plotting the overall Singapore population pyramid, the nine chosen areas' population pyramid are therefore presented below:
+```{r fig.width = 12, fig.height = 12}
+p3 <- 
+ggplot(data=pop_top_9,
+       aes(x=AG,
+           y=Pop_abs,
+           fill = Sex)) +
+  geom_bar(data=pop_top_9,stat = "identity") +
+  xlab("Age Group") +
+  ylab(NULL) +
+  coord_flip() +
+  facet_wrap( ~ PA) + 
+  scale_y_continuous(breaks = seq(-15000, 15000, 5000), 
+                     labels = paste0(as.character(c(seq(15, 0, -5), seq(5, 15, 5))),"k")) + 
+  ggtitle("Females vs Males population in Top 9 Population Areas of Singapore by age group 2022") +
+  labs(caption = "Demographic information as of Jun 2022") +
+  scale_fill_discrete(name="") +
+  theme_economist() + 
+  theme(legend.position = "bottom",
+        plot.title = element_text(size = 15,
+                                  hjust = 0.5,
+                                  margin = margin(0,0,10,0)))
+
+p3
+```
+### Final dashboard
+To complete the story within one dashboard, three graphs above are composed into one using Patchwork.
+```{r fig.width = 18, fig.height = 18}
+(p1 + p2) / p3
+```
+# Reflection
+This exercise is an extension from exercise 1. Through attempting this exercise, features from both Tableau and R (ggplot2 specifically) have been greatly appreciated. Besides, through repeatedly revising lesson 1 and 2, importance on using right visualisations and tips on creating meaningful visualisations using R for analytics usage have been fully comprehended.
+Last but not the least, through appreciating and referencing classmates' work that were shared by prof, peer learning is also becoming part of the innovation steps for this learning journey.
