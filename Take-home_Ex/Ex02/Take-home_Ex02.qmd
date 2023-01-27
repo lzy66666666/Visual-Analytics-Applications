@@ -121,8 +121,6 @@ ggplot(data=pop_temp,
   coord_flip() +
   scale_y_continuous(breaks = seq(-200000, 200000, 50000), 
                       labels = paste0(as.character(c(seq(200, 0, -50), seq(5, 200, 50))),"k")) + 
-  geom_label_repel(aes(label = Pop_abs), 
-                   fontface = "bold") +
   ggtitle("Females vs Males population of Singapore by age group 2022") +
   labs(caption = "Demographic information as of Jun 2022") +
   scale_fill_discrete(name="") +
