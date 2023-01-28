@@ -7,7 +7,7 @@ date-modified: "`r Sys.Date()`"
 
 # Overview
 
-The requirement of this exercise is to critic the submission that revealed demographic structure of Singapore at nine planning areas from one of my classmate in terms of clarity and aesthetics, prepare a sketch for the alternative design by using the data visualisation design principles and best practices learned from Lesson 1 and 2. Eventually, the original design will be remade below by using ggplot2, ggplot2 extensions and tidyverse packages from R.
+The requirement of this exercise is to critic the submission that revealed demographic structure of Singapore at nine planning areas from one of my classmates in terms of clarity and aesthetics, prepare a sketch for the alternative design by using the data visualisation design principles and best practices learned from Lesson 1 and 2. Eventually, the original design will be remade below by using ggplot2 and its extensions together with tidyverse packages from R.
 
 Original dashboard prepared could be retrieved through this [link](https://public.tableau.com/app/profile/thomas.hoang8154/viz/takehome1_16740523080150/Dashboard3).
 
@@ -18,11 +18,11 @@ Below is a snapshot of the dashboard.
 library(knitr)
 ```
 
-```{r fig.align = 'center', fig.cap = "Original Dashboard", fig.cap.align = 'center', echo=FALSE}
+```{r fig.width = 12, fig.align = 'center', fig.cap = "Original Dashboard", fig.cap.align = 'center', echo=FALSE}
 include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications/lzy66666666/Visual-Analytics-Applications/Take-home_Ex/Ex02/Img/Original_dashboard.PNG")
 ```
 
-# Analytical data visualisation critique
+# Tableau data visualisation critique
 
 ## Clarity
 
@@ -30,7 +30,7 @@ include_graphics("G:/My Drive/SMU MITB/ISSS608 Visual Analytics and Applications
 
 By looking at the dashboard itself in full screen mode, there are insufficient information on what message this chart is trying to relay.
 
-Additionally, nine planning areas' demographic structure has been shown indeed. The tableau public dashboard, however, is published using the name of 'Singapore Population distribution by age'. Misunderstanding might be raised as people might wrongly conclude that there are only nine areas in total in Singapore.
+Additionally, nine planning areas' demographic structure has been shown indeed. The tableau public dashboard, however, is published using the name of 'Singapore Population distribution by age'. Misunderstanding might be raised as people might wrongly conclude that there are only nine areas in total in Singapore, based on this dashboard.
 
 ### Misalignment in x-axis across nine plots
 
@@ -38,7 +38,7 @@ For the chosen nine areas' plots, some different scales are observed in the x-ax
 
 ### Weak analytics capabilities
 
-From the dashboard, we are able to tell Maybe we can group certain age groups to make a better visualization?
+Despite the pyramid shape of each of the nine areas has been plotted, the dashboard seems to be short of analytics capabilities overall. A meaningful benchmark seems to be missing here. It might be helpful to improve on this through providing reference on how the overall Singapore population pyramid looks like.
 
 ## Aesthetics
 
@@ -49,6 +49,10 @@ Inside the dashboard, males population is being represented with a color similar
 ### Over-packed y-axis ticks
 
 Given the granularity of this study, there are many age groups to be presented on the y-axis. However, the y-axis on the current dashboard is too packed with little to no space in between.
+
+### Repeated appearance of x & y-axis across all plots
+
+The same x & y-axis are used across all nine plannings. Due to the complexity from the data, the dense axes seem to be distracting especially for plots inside the second and third rows and columns.
 
 # Sketch of the proposed design
 
@@ -99,7 +103,7 @@ For easier data manipulation and better visualisation effect, the raw data is du
 pop_temp  <- population
 ```
 
-Here the format of Age Group column ('AG') will be transformed from text to factor. This would enable us to keep the age groups arranged in a sorted manner that is desired.
+To keep the age groups arranged in a sorted manner, the format of Age Group column ('AG') will be transformed from text to factor. This would enable us to perform necessary adjustment in sorting to get the desired output.
 
 ```{r}
 pop_temp$AG <- as.factor(pop_temp$AG)
@@ -113,7 +117,7 @@ pop_temp$AG <- factor(pop_temp$AG,levels(pop_temp$AG)[c(1,10,2:9,11:19)])
 levels(pop_temp$AG)
 ```
 
-For the ease of visualisation the population of the two genders side by side, an extra column is prepared such that the population of females would be recorded as values with negative signs, while the population of males would be in positive signs. 
+For the ease of visualisation the population of the two genders side by side, an extra column is prepared such that the population of females would be recorded as values with negative signs, while the population of males would be in positive signs.
 
 Consequently, the female population would be on the left-hand-side and the male population would be on the right-hand-side.
 
@@ -126,7 +130,9 @@ pop_temp$Pop_abs <- ifelse(pop_temp$Sex == "Males",
 ## Visualisation
 
 ### Population pyramid of Singapore
+
 ggplot is the main package that is used to plot the desired chart.
+
 ```{r fig.width = 12, fig.height = 10}
 p1 <- 
 ggplot(data=pop_temp,
@@ -152,9 +158,11 @@ ggplot(data=pop_temp,
 
 p1
 ```
-With the overall Singapore population pyramid available, the next question to answer would be: which are the nine areas that are to be studied for this exercise?
 
-Aggregate the population by planning areas and duplicate the required data and save as an individual dataset.
+With the overall Singapore population pyramid available, the next question to answer would be: which are the nine areas to be studied for this exercise?
+
+To answer this, the population is aggregated by planning areas. Duplicate the required data and save as an individual dataset.
+
 ```{r}
 pop_temp_pa <- pop_temp %>% 
   group_by(PA) %>% 
@@ -162,8 +170,10 @@ pop_temp_pa <- pop_temp %>%
   arrange(desc(total_pop))
 ```
 
-### Population by planning areas
-Population of each area is then displayed using bar chart.
+### Population distribution by planning areas
+
+Population of each area is displayed using bar chart. With this, the distribution of population by areas is easily visible.
+
 ```{r  fig.width = 12, fig.height = 10}
 p2 <- 
 ggplot(data=pop_temp_pa,
@@ -210,7 +220,8 @@ Using the above chart, it is obvious that the top nine planning areas with large
 
 -   Punggol.
 
-Considering their rather significant population numbers, further study of each of their population pyramid would be conducted on them.
+Considering their rather significant population numbers, further study of population pyramid would be conducted on them.
+
 ```{r}
 top_9 = c("Bedok",
           "Tampines",
@@ -266,6 +277,6 @@ To complete the story within one dashboard, three graphs above are composed into
 
 # Reflection
 
-This exercise is an extension from exercise 1. Through attempting this exercise, features from both Tableau and R (ggplot2 specifically) have been greatly appreciated. Besides, through repeatedly revising lesson 1 and 2, importance on using right visualisations and tips on creating meaningful visualisations using R for analytics usage have been fully comprehended. 
+This exercise is an extension from exercise 1. Through attempting this exercise, features from both Tableau and R (ggplot2 specifically) have been greatly appreciated. Besides, through repeatedly revising lesson 1 and 2, importance on using right visualisation and tips on creating meaningful visualisation using R for analytics usage have been fully comprehended.
 
-Last but not the least, by appreciating and referencing classmates' work that were shared by prof, peer learning is also becoming part of the innovation steps for this learning journey.
+Last but not the least, by appreciating and referencing classmates' work that were shared by prof, peer learning is also becoming part of this learning journey and making it more inspiring and innovating.

@@ -211,7 +211,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="toc-section-number">1</span>  Overview</a></li>
-  <li><a href="#analytical-data-visualisation-critique" id="toc-analytical-data-visualisation-critique" class="nav-link" data-scroll-target="#analytical-data-visualisation-critique"><span class="toc-section-number">2</span>  Analytical data visualisation critique</a>
+  <li><a href="#tableau-data-visualisation-critique" id="toc-tableau-data-visualisation-critique" class="nav-link" data-scroll-target="#tableau-data-visualisation-critique"><span class="toc-section-number">2</span>  Tableau data visualisation critique</a>
   <ul class="collapse">
   <li><a href="#clarity" id="toc-clarity" class="nav-link" data-scroll-target="#clarity"><span class="toc-section-number">2.1</span>  Clarity</a>
   <ul class="collapse">
@@ -223,6 +223,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#usage-of-an-unrecommended-color" id="toc-usage-of-an-unrecommended-color" class="nav-link" data-scroll-target="#usage-of-an-unrecommended-color"><span class="toc-section-number">2.2.1</span>  Usage of an unrecommended color</a></li>
   <li><a href="#over-packed-y-axis-ticks" id="toc-over-packed-y-axis-ticks" class="nav-link" data-scroll-target="#over-packed-y-axis-ticks"><span class="toc-section-number">2.2.2</span>  Over-packed y-axis ticks</a></li>
+  <li><a href="#repeated-appearance-of-x-y-axis-across-all-plots" id="toc-repeated-appearance-of-x-y-axis-across-all-plots" class="nav-link" data-scroll-target="#repeated-appearance-of-x-y-axis-across-all-plots"><span class="toc-section-number">2.2.3</span>  Repeated appearance of x &amp; y-axis across all plots</a></li>
   </ul></li>
   </ul></li>
   <li><a href="#sketch-of-the-proposed-design" id="toc-sketch-of-the-proposed-design" class="nav-link" data-scroll-target="#sketch-of-the-proposed-design"><span class="toc-section-number">3</span>  Sketch of the proposed design</a></li>
@@ -235,7 +236,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#visualisation" id="toc-visualisation" class="nav-link" data-scroll-target="#visualisation"><span class="toc-section-number">4.5</span>  Visualisation</a>
   <ul class="collapse">
   <li><a href="#population-pyramid-of-singapore" id="toc-population-pyramid-of-singapore" class="nav-link" data-scroll-target="#population-pyramid-of-singapore"><span class="toc-section-number">4.5.1</span>  Population pyramid of Singapore</a></li>
-  <li><a href="#population-by-planning-areas" id="toc-population-by-planning-areas" class="nav-link" data-scroll-target="#population-by-planning-areas"><span class="toc-section-number">4.5.2</span>  Population by planning areas</a></li>
+  <li><a href="#population-distribution-by-planning-areas" id="toc-population-distribution-by-planning-areas" class="nav-link" data-scroll-target="#population-distribution-by-planning-areas"><span class="toc-section-number">4.5.2</span>  Population distribution by planning areas</a></li>
   <li><a href="#population-pyramid-of-nine-selected-planning-areas" id="toc-population-pyramid-of-nine-selected-planning-areas" class="nav-link" data-scroll-target="#population-pyramid-of-nine-selected-planning-areas"><span class="toc-section-number">4.5.3</span>  Population pyramid of nine selected planning areas</a></li>
   <li><a href="#final-dashboard" id="toc-final-dashboard" class="nav-link" data-scroll-target="#final-dashboard"><span class="toc-section-number">4.5.4</span>  Final dashboard</a></li>
   </ul></li>
@@ -284,7 +285,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <section id="overview" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Overview</h1>
-<p>The requirement of this exercise is to critic the submission that revealed demographic structure of Singapore at nine planning areas from one of my classmate in terms of clarity and aesthetics, prepare a sketch for the alternative design by using the data visualisation design principles and best practices learned from Lesson 1 and 2. Eventually, the original design will be remade below by using ggplot2, ggplot2 extensions and tidyverse packages from R.</p>
+<p>The requirement of this exercise is to critic the submission that revealed demographic structure of Singapore at nine planning areas from one of my classmates in terms of clarity and aesthetics, prepare a sketch for the alternative design by using the data visualisation design principles and best practices learned from Lesson 1 and 2. Eventually, the original design will be remade below by using ggplot2 and its extensions together with tidyverse packages from R.</p>
 <p>Original dashboard prepared could be retrieved through this <a href="https://public.tableau.com/app/profile/thomas.hoang8154/viz/takehome1_16740523080150/Dashboard3">link</a>.</p>
 <p>Below is a snapshot of the dashboard.</p>
 <div class="cell">
@@ -301,14 +302,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </section>
-<section id="analytical-data-visualisation-critique" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Analytical data visualisation critique</h1>
+<section id="tableau-data-visualisation-critique" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Tableau data visualisation critique</h1>
 <section id="clarity" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="clarity"><span class="header-section-number">2.1</span> Clarity</h2>
 <section id="missing-a-well-worded-title" class="level3" data-number="2.1.1">
 <h3 data-number="2.1.1" class="anchored" data-anchor-id="missing-a-well-worded-title"><span class="header-section-number">2.1.1</span> Missing a well worded title</h3>
 <p>By looking at the dashboard itself in full screen mode, there are insufficient information on what message this chart is trying to relay.</p>
-<p>Additionally, nine planning areas’ demographic structure has been shown indeed. The tableau public dashboard, however, is published using the name of ‘Singapore Population distribution by age’. Misunderstanding might be raised as people might wrongly conclude that there are only nine areas in total in Singapore.</p>
+<p>Additionally, nine planning areas’ demographic structure has been shown indeed. The tableau public dashboard, however, is published using the name of ‘Singapore Population distribution by age’. Misunderstanding might be raised as people might wrongly conclude that there are only nine areas in total in Singapore, based on this dashboard.</p>
 </section>
 <section id="misalignment-in-x-axis-across-nine-plots" class="level3" data-number="2.1.2">
 <h3 data-number="2.1.2" class="anchored" data-anchor-id="misalignment-in-x-axis-across-nine-plots"><span class="header-section-number">2.1.2</span> Misalignment in x-axis across nine plots</h3>
@@ -316,7 +317,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="weak-analytics-capabilities" class="level3" data-number="2.1.3">
 <h3 data-number="2.1.3" class="anchored" data-anchor-id="weak-analytics-capabilities"><span class="header-section-number">2.1.3</span> Weak analytics capabilities</h3>
-<p>From the dashboard, we are able to tell Maybe we can group certain age groups to make a better visualization?</p>
+<p>Despite the pyramid shape of each of the nine areas has been plotted, the dashboard seems to be short of analytics capabilities overall. A meaningful benchmark seems to be missing here. It might be helpful to improve on this through providing reference on how the overall Singapore population pyramid looks like.</p>
 </section>
 </section>
 <section id="aesthetics" class="level2" data-number="2.2">
@@ -328,6 +329,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="over-packed-y-axis-ticks" class="level3" data-number="2.2.2">
 <h3 data-number="2.2.2" class="anchored" data-anchor-id="over-packed-y-axis-ticks"><span class="header-section-number">2.2.2</span> Over-packed y-axis ticks</h3>
 <p>Given the granularity of this study, there are many age groups to be presented on the y-axis. However, the y-axis on the current dashboard is too packed with little to no space in between.</p>
+</section>
+<section id="repeated-appearance-of-x-y-axis-across-all-plots" class="level3" data-number="2.2.3">
+<h3 data-number="2.2.3" class="anchored" data-anchor-id="repeated-appearance-of-x-y-axis-across-all-plots"><span class="header-section-number">2.2.3</span> Repeated appearance of x &amp; y-axis across all plots</h3>
+<p>The same x &amp; y-axis are used across all nine plannings. Due to the complexity from the data, the dense axes seem to be distracting especially for plots inside the second and third rows and columns.</p>
 </section>
 </section>
 </section>
@@ -412,7 +417,7 @@ dbl (2): Pop, Time
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>pop_temp  <span class="ot">&lt;-</span> population</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Here the format of Age Group column (‘AG’) will be transformed from text to factor. This would enable us to keep the age groups arranged in a sorted manner that is desired.</p>
+<p>To keep the age groups arranged in a sorted manner, the format of Age Group column (‘AG’) will be transformed from text to factor. This would enable us to perform necessary adjustment in sorting to get the desired output.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>pop_temp<span class="sc">$</span>AG <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(pop_temp<span class="sc">$</span>AG)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(pop_temp<span class="sc">$</span>AG)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -475,8 +480,8 @@ dbl (2): Pop, Time
 <p><img src="Take-home_Ex02_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="1152"></p>
 </div>
 </div>
-<p>With the overall Singapore population pyramid available, the next question to answer would be: which are the nine areas that are to be studied for this exercise?</p>
-<p>Aggregate the population by planning areas and duplicate the required data and save as an individual dataset.</p>
+<p>With the overall Singapore population pyramid available, the next question to answer would be: which are the nine areas to be studied for this exercise?</p>
+<p>To answer this, the population is aggregated by planning areas. Duplicate the required data and save as an individual dataset.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>pop_temp_pa <span class="ot">&lt;-</span> pop_temp <span class="sc">%&gt;%</span> </span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(PA) <span class="sc">%&gt;%</span> </span>
@@ -484,9 +489,9 @@ dbl (2): Pop, Time
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(total_pop))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="population-by-planning-areas" class="level3" data-number="4.5.2">
-<h3 data-number="4.5.2" class="anchored" data-anchor-id="population-by-planning-areas"><span class="header-section-number">4.5.2</span> Population by planning areas</h3>
-<p>Population of each area is then displayed using bar chart.</p>
+<section id="population-distribution-by-planning-areas" class="level3" data-number="4.5.2">
+<h3 data-number="4.5.2" class="anchored" data-anchor-id="population-distribution-by-planning-areas"><span class="header-section-number">4.5.2</span> Population distribution by planning areas</h3>
+<p>Population of each area is displayed using bar chart. With this, the distribution of population by areas is easily visible.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> </span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>pop_temp_pa,</span>
@@ -528,7 +533,7 @@ dbl (2): Pop, Time
 <li><p>Choa Chu Kang,</p></li>
 <li><p>Punggol.</p></li>
 </ul>
-<p>Considering their rather significant population numbers, further study of each of their population pyramid would be conducted on them.</p>
+<p>Considering their rather significant population numbers, further study of population pyramid would be conducted on them.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>top_9 <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Bedok"</span>,</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Tampines"</span>,</span>
@@ -589,8 +594,8 @@ dbl (2): Pop, Time
 </section>
 <section id="reflection" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> Reflection</h1>
-<p>This exercise is an extension from exercise 1. Through attempting this exercise, features from both Tableau and R (ggplot2 specifically) have been greatly appreciated. Besides, through repeatedly revising lesson 1 and 2, importance on using right visualisations and tips on creating meaningful visualisations using R for analytics usage have been fully comprehended.</p>
-<p>Last but not the least, by appreciating and referencing classmates’ work that were shared by prof, peer learning is also becoming part of the innovation steps for this learning journey.</p>
+<p>This exercise is an extension from exercise 1. Through attempting this exercise, features from both Tableau and R (ggplot2 specifically) have been greatly appreciated. Besides, through repeatedly revising lesson 1 and 2, importance on using right visualisation and tips on creating meaningful visualisation using R for analytics usage have been fully comprehended.</p>
+<p>Last but not the least, by appreciating and referencing classmates’ work that were shared by prof, peer learning is also becoming part of this learning journey and making it more inspiring and innovating.</p>
 
 
 </section>
