@@ -1,0 +1,17 @@
+---
+title: "Hands-on Ex03"
+author: "Li Ziyi"
+---
+
+```{r}
+pacman::p_load(ggiraph,
+               plotly,
+               gganimate,
+               DT,
+               tidyverse,
+               patchwork)
+```
+
+```{r}
+exam_data <- read_csv("Data/Exam_data.csv")
+```

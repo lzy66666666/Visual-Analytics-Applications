@@ -1,7 +1,8 @@
 ---
 title: "Take-home Exercise 02"
 author: "Li Ziyi"
-date: "`r Sys.Date()`"
+date: 23 Janueary 2023
+date-modified: "`r Sys.Date()`"
 ---
 
 # Overview
