@@ -1,7 +1,7 @@
 ---
 title: "In-class Ex03"
 author: "Li Ziyi"
-date: 28 Janueary 2023
+date: 28 January 2023
 date-modified: "`r Sys.Date()`"
 execute:
   echo: true
@@ -12,8 +12,9 @@ editor: visual
 ---
 
 # Installing and loading R packages
-Packages that will be installed and loaded:
-ggiraph, plotly, gganimate, DT, tidyverse, patchwork. Noted that it is recommended to load tidyverse last so as to avoid some potential conflicting packages being used.
+
+Packages that will be installed and loaded: ggiraph, plotly, gganimate, DT, tidyverse, patchwork. Noted that it is recommended to load tidyverse last so as to avoid some potential conflicting packages being used.
+
 ```{r}
 pacman::p_load(ggiraph,
                plotly,
@@ -24,14 +25,17 @@ pacman::p_load(ggiraph,
 ```
 
 # Importing data
+
 ```{r}
 exam_data <- read_csv("Data/Exam_data.csv")
 ```
 
 # Tooltip effect with tooltip aesthetic (ggirafe)
-Interactivity: By hovering the mouse pointer on an data point of interest, the student’s ID will be displayed.
+
+Interactivity: By hovering the mouse pointer on an data point of interest, the student's ID will be displayed.
 
 Based on hands-on exercise 1, usually this is how a dot plot looks like. And this is a static plot.
+
 ```{r}
 p_old <- ggplot(data=exam_data,
                 aes(x = MATHS)) +
@@ -44,6 +48,7 @@ p_old
 ```
 
 By using ggirafe, an interactive version of ggplot2 geom (i.e. geom_dotplot_interactive()) will be used to create the basic graph. Then, girafe() will be used to generate an svg object to be displayed on an html page.
+
 ```{r}
 p <- ggplot(data=exam_data, 
        aes(x = MATHS)) +
@@ -64,7 +69,9 @@ girafe(
 Remark: svg: Scalable vector graphics, the graph would scale accordingly on different devices to preserve the image quality.
 
 # Multiple information on tooltip
-To present more information inside tooltip, a new data column could be created in order to store the information needed. 
+
+To present more information inside tooltip, a new data column could be created in order to store the information needed.
+
 ```{r}
 exam_data$tooltip <- c(paste0(
   "Name = ", exam_data$ID,         
