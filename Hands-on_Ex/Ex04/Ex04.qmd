@@ -1,0 +1,21 @@
+---
+title: "Hands-on Ex04"
+author: "Li Ziyi"
+date: 4 February 2023
+date-modified: "`r Sys.Date()`"
+execute:
+  echo: true
+  eval: true
+  warning: false
+format: html
+editor: visual
+---
+
+```{r}
+pacman::p_load(ggstatsplot, tidyverse)
+```
+
+```{r}
+exam <- read_csv("Data/Exam_data.csv")
+```
+Yet to be published
