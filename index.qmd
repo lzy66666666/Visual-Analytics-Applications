@@ -3,4 +3,3 @@ title: "Visual-Analytics-Applications"
 ---
 
 This is a documentation of my full Visual Analytics and Application learning journey.
-

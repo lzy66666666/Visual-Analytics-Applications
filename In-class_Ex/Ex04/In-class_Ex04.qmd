@@ -11,22 +11,144 @@ format: html
 editor: visual
 ---
 
-
 ```{r}
 pacman::p_load(plotly,
                DT, 
                patchwork,
-               tidyverse)
+               tidyverse,
+               ggstatsplot,
+               readxl,
+               performance,
+               parameters,
+               see,
+               gtsummary)
 ```
-
 
 ```{r}
 exam_data <- read_csv("Data/Exam_data.csv")
 ```
 
+# Creating an interactive scatter plot using ggplotly() method
 ```{r}
 plot_ly(data = exam_data,
         x = ~MATHS,
         y = ~ENGLISH,
         color = ~RACE)
+```
+
+```{r}
+p <- ggplot(data=exam_data, 
+            aes(x = MATHS,
+                y = ENGLISH)) +
+  geom_point(dotsize = 1) +
+  coord_cartesian(xlim=c(0,100),
+                  ylim=c(0,100))
+ggplotly(p)
+```
+
+By using ggplotly, the plot has been enabled with interactivity. Take note that those aesthetic elements are not supported to be customised inside ggplot here.
+
+# Visual Statistical Analysis with ggstatsplot
+## Two-sample mean test using ggbetweenstats()
+```{r}
+ggbetweenstats(
+  data = exam_data,
+  x = GENDER, 
+  y = MATHS,
+  type = "p",
+  messages = FALSE
+)
+```
+
+## Build a visual for Significant Test of Correlation using ggscatterstats()
+```{r}
+ggscatterstats(
+  data = exam_data,
+  x = MATHS,
+  y = ENGLISH,
+  marginal = TRUE,
+  )
+```
+
+
+```{r}
+car_resale <- read_xls("Data/ToyotaCorolla.xls",
+                       "data")
+
+car_resale
+```
+
+```{r}
+model <- lm(Price ~ Age_08_04 + Mfg_Year + KM + 
+              Weight + Guarantee_Period, data = car_resale)
+model
+
+```
+lm is an original R function building a linear regression model.
+
+```{r}
+tbl_regression(model,
+               intercept = TRUE)
+```
+
+```{r}
+check_c <- check_collinearity(model)
+plot(check_c)
+```
+
+```{r}
+model_n <- lm(Price ~ Age_08_04 + KM + 
+              Weight + Guarantee_Period, data = car_resale)
+```
+
+```{r}
+check_n <- check_normality(model_n)
+plot(check_n)
+```
+
+```{r}
+check_h <- check_heteroscedasticity(model_n)
+plot(check_h)
+```
+
+```{r}
+ggcoefstats(model_n, 
+            output = "plot")
+```
+
+# Visualizing the uncertainty of point estimates: ggplot2 methods
+```{r}
+my_sum <- exam_data %>%
+  group_by(RACE) %>%
+  summarise(
+    n=n(),
+    mean=mean(MATHS),
+    sd=sd(MATHS)
+    ) %>%
+  mutate(se=sd/sqrt(n-1))
+```
+
+```{r}
+knitr::kable(head(my_sum), format = 'html')
+```
+
+```{r}
+ggplot(my_sum) +
+  geom_errorbar(
+    aes(x=RACE, 
+        ymin=mean-se, 
+        ymax=mean+se), 
+    width=0.2, 
+    colour="black", 
+    alpha=0.9, 
+    linewidth=0.5) +
+  geom_point(aes
+           (x=RACE, 
+            y=mean), 
+           stat="identity", 
+           color="red",
+           size = 1.5,
+           alpha=1) +
+  ggtitle("Standard error of mean 
+          maths score by rac")
 ```
