@@ -23,6 +23,7 @@ pacman::p_load(ggiraph,
 ```{r}
 exam_data <- read_csv("Data/Exam_data.csv")
 ```
+
 # Tooltip effect with tooltip aesthetic (ggirafe)
 
 Interactivity: By hovering the mouse pointer on an data point of interest, the student's ID will be displayed.

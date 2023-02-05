@@ -29,6 +29,7 @@ exam_data <- read_csv("Data/Exam_data.csv")
 ```
 
 # Creating an interactive scatter plot using ggplotly() method
+
 ```{r}
 plot_ly(data = exam_data,
         x = ~MATHS,
@@ -49,7 +50,9 @@ ggplotly(p)
 By using ggplotly, the plot has been enabled with interactivity. Take note that those aesthetic elements are not supported to be customised inside ggplot here.
 
 # Visual Statistical Analysis with ggstatsplot
+
 ## Two-sample mean test using ggbetweenstats()
+
 ```{r}
 ggbetweenstats(
   data = exam_data,
@@ -61,6 +64,7 @@ ggbetweenstats(
 ```
 
 ## Build a visual for Significant Test of Correlation using ggscatterstats()
+
 ```{r}
 ggscatterstats(
   data = exam_data,
@@ -69,7 +73,6 @@ ggscatterstats(
   marginal = TRUE,
   )
 ```
-
 
 ```{r}
 car_resale <- read_xls("Data/ToyotaCorolla.xls",
@@ -84,6 +87,7 @@ model <- lm(Price ~ Age_08_04 + Mfg_Year + KM +
 model
 
 ```
+
 lm is an original R function building a linear regression model.
 
 ```{r}
@@ -117,6 +121,7 @@ ggcoefstats(model_n,
 ```
 
 # Visualizing the uncertainty of point estimates: ggplot2 methods
+
 ```{r}
 my_sum <- exam_data %>%
   group_by(RACE) %>%
