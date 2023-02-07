@@ -1,0 +1,22 @@
+---
+title: "Take-home Ex03"
+author: "Li Ziyi"
+date: 7 February 2023
+date-modified: "`r Sys.Date()`"
+execute:
+  echo: true
+  eval: true
+  warning: false
+format: html
+editor: visual
+---
+
+
+```{r}
+pacman::p_load(ggstatsplot, 
+               tidyverse)
+```
+
+```{r}
+flat <- read_csv("Data/resale-flat-prices-based-on-registration-date-from-jan-2017-onwards.csv")
+```
