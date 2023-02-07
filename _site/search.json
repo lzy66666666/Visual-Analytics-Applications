@@ -137,7 +137,7 @@
     "href": "Hands-on_Ex/Ex04/Ex04.html",
     "title": "Hands-on Ex04",
     "section": "",
-    "text": "pacman::p_load(ggstatsplot, tidyverse)\n\n\nexam <- read_csv(\"Data/Exam_data.csv\")\n\nYet to be published"
+    "text": "pacman::p_load(ggstatsplot, \n               tidyverse)\n\n\nexam <- read_csv(\"Data/Exam_data.csv\")\n\n\ngghistostats(\n  data = exam,\n  x = ENGLISH,\n  type = \"bayes\",\n  test.value = 60,\n  xlab = \"English scores\"\n)\n\n\n\n\nYet to be published"
   },
   {
     "objectID": "Take-home_Ex/Ex01/Take-home_Ex01.html",

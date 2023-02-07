@@ -12,10 +12,21 @@ editor: visual
 ---
 
 ```{r}
-pacman::p_load(ggstatsplot, tidyverse)
+pacman::p_load(ggstatsplot, 
+               tidyverse)
 ```
 
 ```{r}
 exam <- read_csv("Data/Exam_data.csv")
+```
+
+```{r}
+gghistostats(
+  data = exam,
+  x = ENGLISH,
+  type = "bayes",
+  test.value = 60,
+  xlab = "English scores"
+)
 ```
 Yet to be published
