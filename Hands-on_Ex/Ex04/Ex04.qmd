@@ -150,9 +150,9 @@ plot(check_h)
 
 ### Complete check
 
-```{r}
-check_model(model1)
-```
+# ```{r}
+# # check_model(model1)
+# ```
 
 ### Visualise parameters of a regression model
 
@@ -225,11 +225,6 @@ ggplot(my_sum) +
 ```
 
 To plot out the 95% confidence interval:
-
-```{r}
-
-
-```
 
 The error bars is sorted by the average maths score.
 
@@ -385,7 +380,6 @@ dfCI <- data.frame(number.ll95, number.ul95, number.ll999, number.ul999, number.
 
 ```
 
-
 ```{r}
 p <- ggplot(df, aes(x = Positive, y = rate)) +
   geom_point(aes(label=`Sub-district`), 
@@ -433,7 +427,9 @@ p
 
 
 ```
+
 ## Using plotly & ggplot2 to make it interactive
+
 ```{r}
 fp_ggplotly <- ggplotly(p,
                       tooltip = c("label",
@@ -442,4 +438,3 @@ fp_ggplotly <- ggplotly(p,
 
 fp_ggplotly
 ```
-

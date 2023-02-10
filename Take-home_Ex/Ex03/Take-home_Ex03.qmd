@@ -11,12 +11,276 @@ format: html
 editor: visual
 ---
 
+# Overview
+
+For this assignment, the salient patterns of the resale prices of public housing properties by residential towns and estates in Singapore will be explored using dataset taken from [Data.gov.sg](https://data.gov.sg/dataset/resale-flat-prices)
+
+## Loading libraries
+
+For this exercise,
+
+-   tidyverse is the main package to be used for data processing
+
+-   DT is the package to be used for interactive data preview
+
+-   ggstatsplot is the packge to be used for statistical analysis and visualisation
+
+-   ggiraph, gganimate and gifski to enable interactive data visualisation
+
+-   Some other packages for make-up mainly
 
 ```{r}
-pacman::p_load(ggstatsplot, 
-               tidyverse)
+pacman::p_load(tidyverse,
+               DT,
+               ggstatsplot,
+               ggiraph,
+               gganimate,
+               gifski,
+               ggthemes)
+```
+
+## Data reading
+
+```{r}
+flat_full <- read_csv("Data/resale-flat-prices-based-on-registration-date-from-jan-2017-onwards.csv")
+
 ```
 
 ```{r}
-flat <- read_csv("Data/resale-flat-prices-based-on-registration-date-from-jan-2017-onwards.csv")
+DT::datatable(flat_full,
+              class ="cell-border stripe")
 ```
+Through the preview of the dataset, certain data processing would be beneficial for easier analysis later on.
+
+## Data processing
+```{r}
+flat_temp <- flat_full %>%
+  separate(month,
+           into = c("year_", "month_"),
+           sep = "-",
+           convert = TRUE) %>% 
+  mutate(price_psqm = resale_price / floor_area_sqm)
+
+flat_temp["rem_lease_yrs"] = (99 - (2022 - flat_temp$lease_commence_date))
+```
+
+```{r}
+DT::datatable(flat_temp,
+                class ="cell-border stripe")
+
+```
+
+
+# Selection and design consideration
+
+```{r}
+#| fig-width: 12
+p1 <- ggplot(flat_temp,
+           aes(x = factor(year_),
+               fill = flat_type)) +
+  geom_bar_interactive(aes(tooltip = flat_type)) +
+  labs(title = "Number of resale flat transactions from 2017 to 2023",
+       x = "Year",
+       y = "Number of transactions",
+       fill = "Flat type") + 
+  theme_economist() +
+  theme(axis.title.y = element_text(vjust = 2.5,
+                                    size = 12),
+        axis.title.x = element_text(vjust = -2.5,
+                                    size = 12))
+
+girafe(
+  ggobj = p1,
+  width_svg = 12,
+  height_svg = 6
+)
+```
+From the visualisation above, the top three resale transactions came from 3, 4 and 5-room flats each year. Since 2023 has just started, the main focus of this study would zoom into resales transactions from 3, 4 and 5-room flats in the year of 2022. 
+```{r}
+flat_2022_3types <- flat_temp %>% 
+  filter(year_ == "2022",
+         flat_type %in% c("3 ROOM", "4 ROOM", "5 ROOM"))
+
+DT::datatable(flat_2022_3types,
+                class ="cell-border stripe")
+
+```
+The resale transaction price ranges as well as the trend in 2022 would be studied. To have a more meaningful comparison, median values would be used for most of studies below, instead of average values. This is to avoid the sensitivity impact driven by the extreme values on average values. 
+Furthermore, price per square meters would be calculated to normalise for some comparison across different flat types. From there, some of factors like town location, storey and their impact on the unit price would be investigated. 
+
+# Sketches of design
+PICS TO BE INSERTED HERE
+
+# Final visualisation
+## Three-sample mean test
+```{r}
+#| fig-width: 12
+ggbetweenstats(
+  data = flat_2022_3types,
+  x = flat_type,
+  y = resale_price,
+  type = "np",
+  plot.type = "boxviolin",
+  title = "Non-parametric mean test for 3, 4 & 5-room HDB",
+  xlab = "Flat type",
+  ylab ="Resale price") +
+  theme_economist()
+```
+Using a non-parametric test, from the result p = 0 < 0.05, it can be concluded that the resale price distribution does not follow a normal distribution. 
+
+## Median resale price trend in 2022
+
+```{r}
+flat_by_mth <- flat_2022_3types %>% 
+  group_by(flat_type, month_) %>% 
+  summarise(total_sales = n(),
+            median_sales_price = median(resale_price),
+            median_house_size_sqm = median(floor_area_sqm),
+            median_remaining_lease_yrs = median(rem_lease_yrs),
+            max_sales_price = max(resale_price),
+            min_sales_price = min(resale_price)) %>% 
+  arrange(desc(total_sales))
+
+DT::datatable(flat_by_mth,
+                class ="cell-border stripe")
+
+```
+
+```{r}
+#| fig-width: 12
+flat_by_mth$tooltip <- c(paste0(
+  "Flat type: ", flat_by_mth$flat_type,
+  "\n Median resales price: ", flat_by_mth$median_sales_price
+))
+
+p2 <- ggplot(data = flat_by_mth,
+             aes(x = month_, 
+                 y = median_sales_price, 
+                 colour = flat_type)) +
+        geom_point_interactive(aes(tooltip = flat_by_mth$tooltip)) +
+        geom_smooth() +
+        scale_y_continuous(labels = function(x) format(x, scientific = FALSE)) +
+        scale_x_continuous(breaks = seq_along(month.abb),
+                           labels = month.abb) +
+        theme_economist() +
+        theme(axis.title.y = element_text(vjust = 2.5),
+              legend.position = "right") +
+  labs(x = NULL,
+       y = "Median resale price") +
+  ggtitle("Median resale price trend in 2022 for 3, 4 and 5 ROOM HDB")
+
+
+girafe(
+  ggobj = p2,
+  width_svg = 12
+)
+```
+Based on the point plot, it is observed that the median resale transaction price for all three flat types has been on an increasing trend throughout the whole year of 2022. Besides, the price difference by adding one more room is roughly $100,000.
+#######
+
+## Resale price per square meter by town for each flat type 
+```{r}
+#| fig-width: 12
+ggplot(flat_2022_3types,
+       aes(x = town, 
+           y = price_psqm,
+           color = town)) +
+  geom_boxplot() +
+  # geom_label_repel(aes(label = block),
+  #                  max.overlaps = 5000) +
+  facet_wrap(~ flat_type, nrow = 3) +
+  labs(title = "Flat Resale Price (psm) by Town for 3, 4, 5-room HDB flats",
+       x = NULL,
+       y = "Resale Price ($ psm)") +
+  guides(color = FALSE) +
+  theme_economist() +
+  theme(plot.title = element_text(size=16, hjust=0.5),
+        axis.text.x = element_text(vjust = 0.5,
+                                   angle = 60,
+                                   size = 8),
+        axis.title.y = element_text(size=15,
+                                    vjust = 2.5),
+        panel.spacing = unit(3, "line"))
+
+```
+
+## Median resales price per square meter by town for each storey range
+```{r}
+flat_heatmap <- flat_2022_3types %>% 
+  group_by(town, storey_range) %>% 
+  summarise(total_sales = n(),
+            median_sales_price = median(resale_price),
+            median_house_size_sqm = median(floor_area_sqm),
+            median_remaining_lease_yrs = median(rem_lease_yrs)) %>% 
+  arrange(desc(total_sales))
+
+DT::datatable(flat_heatmap,
+                class ="cell-border stripe")
+
+```
+
+```{r}
+#| fig-width: 12
+heatmap <- ggplot(data = flat_heatmap, 
+                  mapping = aes(x = town, 
+                                y = storey_range,
+                                fill = median_sales_price)) +
+            geom_tile() +
+  labs(title = "Median resales price per square meter by town and storey for 3, 4 & 5-Room HDB flat", 
+       x = NULL, 
+       y = "Storey") +
+  scale_fill_gradient(name = "Price per square meter",
+                      low = "#F2F2F2",
+                      high = "#00532F")+
+  theme_economist() +
+  theme(axis.text.x = element_text(angle = 60,
+                                   vjust = 0.5,
+                                   size = 8),
+        axis.title.y = element_text(vjust = 2.5),
+        legend.position = "right",
+        legend.text = element_text(size = 6),
+        legend.title = element_text(size = 8))
+
+heatmap
+```
+## Resales price per square meter against remaining lease years throughout 2022
+```{r}
+#| fig-width: 12
+p3 <- 
+ggplot(flat_2022_3types, 
+       aes(x = rem_lease_yrs,
+           y = price_psqm,
+           colour = flat_type)) + 
+  geom_point() +
+  labs(title = "2022 {frame_time}th month - Resale price per square meter against remaining lease years",
+       x = "Remaining Lease (Years)",
+       y = "Resale price ($ psm)",
+       fill ="Flat type") +
+  theme_economist() +
+  geom_smooth(method="lm", 
+              se = FALSE, 
+              color = "red",  
+              formula = y ~ x) +
+  theme(plot.title = element_text(hjust = 0),
+        axis.title.x = element_text(size = 12,
+                                    vjust = 0.5),
+        axis.title.y = element_text(size = 12,
+                                    vjust = 2.5), 
+        legend.position = "none",
+        panel.spacing = unit(2, "line")) +
+  facet_grid(flat_type ~ .) +
+  transition_time(flat_2022_3types$month_) +
+  ease_aes('linear')
+
+animate(p3, 
+        nframes = 12,
+        fps = 0.5)
+```
+# Observation and Insight
+## Most selling units in 2022
+Price increase observed from 3, 4 and 5 ROOM HDB median prices within 2022
+
+
+### 
+
+# Conclusion
