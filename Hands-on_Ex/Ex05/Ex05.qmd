@@ -1,0 +1,48 @@
+---
+title: "Hands-on Ex05"
+author: "Li Ziyi"
+date: 11 February 2023
+date-modified: "`r Sys.Date()`"
+execute:
+  echo: true
+  eval: true
+  warning: false
+format: html
+editor: visual
+---
+
+
+```{r}
+pacman::p_load(corrplot,
+               tidyverse,
+               ggstatplot)
+
+```
+
+```{r}
+wine <- read.csv("Data/wine_quality.csv")
+
+```
+
+
+```{r}
+pairs(wine[, 1:11],
+      upper.panel = NULL)
+
+
+```
+
+
+```{r}
+ggstatsplot::ggcorrmat(
+  data = wine, 
+  cor.vars = 1:11,
+  ggcorrplot.args = list(outline.color = "black", 
+                         hc.order = TRUE,
+                         tl.cex = 10),
+  title    = "Correlogram for wine dataset",
+  subtitle = "Four pairs are no significant at p < 0.05"
+)
+
+
+```
