@@ -150,9 +150,7 @@ plot(check_h)
 
 ### Complete check
 
-# ```{r}
-# # check_model(model1)
-# ```
+# `{r} # # check_model(model1) #`
 
 ### Visualise parameters of a regression model
 
@@ -258,16 +256,16 @@ exam %>%
 To make use of stat_gradientinterval() from ggdist.
 
 ```{r}
-exam %>%
-  ggplot(aes(x = RACE, 
-             y = MATHS)) +
-  stat_gradientinterval(   
-    fill = "skyblue",      
-    show.legend = TRUE     
-  ) +                        
-  labs(
-    title = "Visualising confidence intervals of mean math score",
-    subtitle = "Gradient + interval plot")
+# exam %>%
+#   ggplot(aes(x = RACE, 
+#              y = MATHS)) +
+#   stat_gradientinterval(   
+#     fill = "skyblue",      
+#     show.legend = TRUE     
+#   ) +                        
+#   labs(
+#     title = "Visualising confidence intervals of mean math score",
+#     subtitle = "Gradient + interval plot")
 
 ```
 
@@ -288,7 +286,7 @@ ggplot(data = exam,
   geom_point(position = position_jitter(
     height = 0.3, 
     width = 0.05), 
-    size = 0.4, 
+    # size = 0.4, 
     color = "#0072B2", 
     alpha = 1/2) +
   geom_hpline(data = sampler(25, group = RACE), 

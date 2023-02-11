@@ -1,5 +1,5 @@
 ---
-title: "Hands-on Ex05"
+title: "Hands-on Ex05: Visual Multivariate Analysis"
 author: "Li Ziyi"
 date: 11 February 2023
 date-modified: "`r Sys.Date()`"
@@ -11,11 +11,17 @@ format: html
 editor: visual
 ---
 
-
 ```{r}
 pacman::p_load(corrplot,
                tidyverse,
-               ggstatplot)
+               ggstatsplot,
+               ggtern,
+               plotly,
+               seriation,
+               dendextend,
+               heatmaply,
+               GGally,
+               parallelPlot)
 
 ```
 
@@ -24,6 +30,7 @@ wine <- read.csv("Data/wine_quality.csv")
 
 ```
 
+# Basic correlation matrix with the upper corner hidden
 
 ```{r}
 pairs(wine[, 1:11],
@@ -32,17 +39,139 @@ pairs(wine[, 1:11],
 
 ```
 
+# Visualizing correlation matrix using ggcormat()
 
 ```{r}
-ggstatsplot::ggcorrmat(
-  data = wine, 
-  cor.vars = 1:11,
-  ggcorrplot.args = list(outline.color = "black", 
-                         hc.order = TRUE,
-                         tl.cex = 10),
-  title    = "Correlogram for wine dataset",
-  subtitle = "Four pairs are no significant at p < 0.05"
-)
+# ggstatsplot::ggcorrmat(
+#   data = wine, 
+#   cor.vars = 1:11,
+#   ggcorrplot.args = list(outline.color = "black", 
+#                          hc.order = TRUE,
+#                          tl.cex = 10),
+#   title    = "Correlogram for wine dataset",
+#   subtitle = "Four pairs are no significant at p < 0.05"
+# )
+# 
+
+```
+
+```{r}
+pop_data <- read_csv("data/respopagsex2000to2018_tidy.csv") 
+
+```
+
+Use the mutate() function of dplyr package to derive three new measures, namely: young, active, and old.
+
+```{r}
+agpop_mutated <- pop_data %>%
+  mutate(`Year` = as.character(Year))%>%
+  spread(AG, Population) %>%
+  mutate(YOUNG = rowSums(.[4:8]))%>%
+  mutate(ACTIVE = rowSums(.[9:16]))  %>%
+  mutate(OLD = rowSums(.[17:21])) %>%
+  mutate(TOTAL = rowSums(.[22:24])) %>%
+  filter(Year == 2018)%>%
+  filter(TOTAL > 0)
+
+```
+
+```{r}
+ggtern(data = agpop_mutated,
+       aes(x = YOUNG,
+           y = ACTIVE, 
+           z = OLD)) +
+  geom_point()
+
+```
+
+```{r}
+ggtern(data = agpop_mutated, 
+       aes(x = YOUNG,
+           y = ACTIVE, 
+           z = OLD)) +
+  geom_point() +
+  labs(title = "Population structure, 2015") +
+  theme_rgbw()
+
+```
+
+```{r}
+wh <- read.csv("Data/WHData-2018.csv")
+
+```
+
+```{r}
+row.names(wh) <- wh$Country
+
+```
+
+```{r}
+wh1 <- dplyr::select(wh, c(3, 7:12))
+wh_matrix <- data.matrix(wh)
+
+```
+
+```{r}
+wh_heatmap <- heatmap(wh_matrix,
+                      Rowv=NA, Colv=NA)
 
 
+```
+
+```{r}
+wh_heatmap <- heatmap(wh_matrix,
+                      scale="column",
+                      cexRow = 0.6, 
+                      cexCol = 0.8,
+                      margins = c(10, 4))
+
+```
+
+```{r}
+heatmaply(mtcars)
+
+```
+
+```{r}
+heatmaply(wh_matrix[, -c(1, 2, 4, 5)])
+
+
+```
+
+```{r}
+heatmaply(wh_matrix[, -c(1, 2, 4, 5)],
+          scale = "column")
+
+```
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]))
+```
+
+```{r}
+heatmaply(percentize(wh_matrix[, -c(1, 2, 4, 5)]))
+```
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          dist_method = "euclidean",
+          hclust_method = "ward.D")
+
+```
+
+```{r}
+
+ggparcoord(data = wh, 
+           columns = c(7:12))
+```
+
+```{r}
+
+ggparcoord(data = wh, 
+           columns = c(7:12), 
+           groupColumn = 2,
+           scale = "uniminmax",
+           alphaLines = 0.2,
+           boxplot = TRUE, 
+           title = "Parallel Coordinates Plot of World Happines Variables")
 ```

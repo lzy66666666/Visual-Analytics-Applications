@@ -253,9 +253,11 @@ heatmap <- ggplot(data = flat_heatmap,
 heatmap
 ```
 
+
 ## Resales price per square meter against remaining lease years throughout 2022
 
 ```{r}
+#| eval: false
 #| fig-width: 12
 p3 <-
 ggplot(flat_2022_3types,
@@ -294,4 +296,8 @@ animate(p3,
 
 Price increase observed from 3, 4 and 5 ROOM HDB median prices within 2022
 
+To be continued...
+
 # Conclusion
+
+
