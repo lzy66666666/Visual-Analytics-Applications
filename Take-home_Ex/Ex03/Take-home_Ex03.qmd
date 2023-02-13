@@ -13,7 +13,9 @@ editor: visual
 
 # Overview
 
-For this assignment, the salient patterns of the resale prices of public housing properties by residential towns and estates in Singapore will be explored using dataset taken from [Data.gov.sg](https://data.gov.sg/dataset/resale-flat-prices)
+For this assignment, the salient patterns of the resale prices of public housing properties by residential towns and estates in Singapore will be explored using dataset taken from [Data.gov.sg](https://data.gov.sg/dataset/resale-flat-prices).
+
+If you would like to read the conclusion straight, please click @sec-conclusion to reach the bottom of this study.
 
 ## Loading libraries
 
@@ -39,7 +41,7 @@ pacman::p_load(tidyverse,
                ggthemes)
 ```
 
-## Data reading
+## Data loading
 
 ```{r}
 flat_full <- read_csv("Data/resale-flat-prices-based-on-registration-date-from-jan-2017-onwards.csv")
@@ -76,6 +78,9 @@ DT::datatable(flat_temp,
 
 ```{r}
 #| fig-width: 12
+#| label: fig-barchart
+#| fig-cap: Resale flat transactions
+
 p1 <- ggplot(flat_temp,
            aes(x = factor(year_),
                fill = flat_type)) +
@@ -110,16 +115,15 @@ flat_2022_3types <- flat_temp %>%
 
 The resale transaction price and its trend back in 2022 would be studied. To have a more meaningful comparison, median values would be used for most of studies below, instead of average values. This is to avoid the sensitivity impact driven by the extreme values on average values. Furthermore, price per square meters (psm) would be calculated to normalise for some comparison across different flat types. From there, some of factors like town location, storey and their impact on the unit price would be investigated.
 
-# Sketches of design
-
-PICS TO BE INSERTED HERE
-
-# Final visualisation
+# Visualisation and observation
 
 ## Three-sample mean test
 
 ```{r}
 #| fig-width: 12
+#| label: fig-meantest
+#| fig-cap: three-sample mean test
+
 ggbetweenstats(
   data = flat_2022_3types,
   x = flat_type,
@@ -188,7 +192,7 @@ Based on the point plot, it is observed that the median resale transaction price
 
 Besides, the price increment from adding one more room is roughly \$100,000.
 
-## Resale price per square meter by town for each flat type
+## Resale price psm by town for each flat type
 
 To visualise the price distribution by towns, a boxplot is chosen here to present summary statistics all in one panel.
 
@@ -227,7 +231,7 @@ For 5-room type, the median resale price psm in Central area were extremely high
 
 What's more, the price psm for each flat type varies widely even within the same area, as can be seen from the difference between max and min values.
 
-## Median resales price per square meter by town for each storey range
+## Median resales price psm by town for each storey range
 
 To visualise the potential impact from the location (town) and the storey range, a heatmap is chosen here to cross examine multivariate data. This is because heatmaps are generally good for showing variance across multiple variables to reveal patterns.
 
@@ -275,7 +279,7 @@ However, for some unpopular towns like Choa Chu Kang, Woodlands, Jurong West, Pa
 
 Additionally, it can be observed that resale flats in Bukit Timah and Yishun are much lower rised compared to the rest of towns. Especially, the highest unit observed in Bukit Timah was only 15-storey. On the other hand, resales flats in Central Area are the highest with storey higher than 50 available. Besides, the price psm for 30-stroey in Central Area were mostly highest comparing to other towns.
 
-## Resales price per square meter against remaining lease years throughout 2022
+## Resales price per psm against remaining lease years throughout 2022
 
 The last factor that is being looked into is the the number of years remained on the lease. To isolate the potential impact from different month of the year (e.g. bonus payout, school holidays or holiday seasons), a scatter plot enabled by animation of transition of months is presented below.
 
@@ -299,7 +303,8 @@ ggplot(flat_2022_3types,
               se = FALSE,
               color = "mediumorchid1",
               formula = y ~ x) +
-  theme(plot.title = element_text(hjust = 0),
+  theme(plot.title = element_text(size = 12,
+                                  hjust = 0),
         axis.title.x = element_text(size = 12,
                                     vjust = 0.5),
         axis.title.y = element_text(size = 12,
@@ -321,9 +326,9 @@ What is also observed was that most of resale transactions for those with less t
 
 Furthermore, relatively more transactions are seen particularly for those with the remaining lease above than 90 years.
 
-# Insights and thoughts
+# Insights and thoughts {#sec-conclusion}
 
-i\. An increasing trend has been observed from 3, 4 and 5 ROOM HDB resale price in 2022 (see @fig-linechart). No sign of a change in the trend observed in the data as well as the macro environment, based on the daily news.
+i\. An increasing trend has been observed from 3, 4 and 5-room HDB resale price in 2022 (see @fig-linechart). No sign of a change in the trend observed from the data as well as the macro environment, based on the daily news.
 
 ii\. Some factors to consider for purchasing a resale 3, 4 or 5-room HDB flat:
 
@@ -331,8 +336,8 @@ ii\. Some factors to consider for purchasing a resale 3, 4 or 5-room HDB flat:
 
 -   High storey units may not be available in all areas.
 
--   Relative lower price differentiation due to storey range could be found in certain areas, but most of them are unpopular ones (see @fig-heatmap). This might be due to the fact that these areas are closer to the edge of Singapore. The inaccessibility and inconvenience for commuting to work and leisure activities could've led to a lower demand.
+-   Relative lower price differentiation due to storey range difference could be found in certain areas, but most of them are unpopular ones (see @fig-heatmap). This might be due to the fact that these areas are closer to the edge of Singapore. The inaccessibility and inconvenience for commuting to work and leisure activities could've led to a lower demand.
 
-iii\. Resale 3, 4 & 5-room HDB flats price psm is positively correlated with number of years remaining on the lease 
+iii\. Resale 3, 4 & 5-room HDB flats price psm is positively correlated with number of years remaining on the lease.
 
-is one objective in buying the flats. 
+-   Resale activities are quite active for lease remaining more than 90 years.  This is rather interesting. One of my immature guess is that this is the result from young couples whose BTO have reached the minimum occupation period (MOP) and therefore, traded. To secure a satisfying profit from the "discount" they were able to enjoy from the government BTO policy, those new units were therefore traded. 
