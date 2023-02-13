@@ -102,14 +102,13 @@ From the visualisation above, the top three resale transactions came from 3, 4 a
 ```{r}
 flat_2022_3types <- flat_temp %>% 
   filter(year_ == "2022",
-         flat_type %in% c("3 ROOM", "4 ROOM", "5 ROOM"))
+         flat_type %in% c("3 ROOM", "4 ROOM", "5 ROOM")) %>% 
+  mutate(mth_abb = month.abb[month_])
 
-DT::datatable(flat_2022_3types,
-                class ="cell-border stripe")
 
 ```
 
-The resale transaction price ranges as well as the trend in 2022 would be studied. To have a more meaningful comparison, median values would be used for most of studies below, instead of average values. This is to avoid the sensitivity impact driven by the extreme values on average values. Furthermore, price per square meters would be calculated to normalise for some comparison across different flat types. From there, some of factors like town location, storey and their impact on the unit price would be investigated.
+The resale transaction price and its trend back in 2022 would be studied. To have a more meaningful comparison, median values would be used for most of studies below, instead of average values. This is to avoid the sensitivity impact driven by the extreme values on average values. Furthermore, price per square meters (psm) would be calculated to normalise for some comparison across different flat types. From there, some of factors like town location, storey and their impact on the unit price would be investigated.
 
 # Sketches of design
 
@@ -148,8 +147,6 @@ flat_by_mth <- flat_2022_3types %>%
             min_sales_price = min(resale_price)) %>% 
   arrange(desc(total_sales))
 
-DT::datatable(flat_by_mth,
-                class ="cell-border stripe")
 
 ```
 
@@ -183,7 +180,9 @@ girafe(
 )
 ```
 
-Based on the point plot, it is observed that the median resale transaction price for all three flat types has been on an increasing trend throughout the whole year of 2022. Besides, the price difference by adding one more room is roughly \$100,000. \#######
+Based on the point plot, it is observed that the median resale transaction price for all three flat types has been on an increasing trend throughout the whole year of 2022. This indeed aligns with our experience for the year. during which most of room rental or purchase contracts have seen significant surges.
+
+Besides, the price increment from adding one more room is roughly \$100,000. 
 
 ## Resale price per square meter by town for each flat type
 
@@ -211,6 +210,16 @@ ggplot(flat_2022_3types,
         panel.spacing = unit(3, "line"))
 
 ```
+Using the chart, the resale price psm for one town remain largely the same across three flat types. 
+
+For 3-room type, the median resale price psm are rather close for all towns. The maximum resale price psm for 3-room type was seen in Bukit Merah area and the minimum resale unit price was most likely seen in Toa Payoh. 
+
+For 4-room type, the median resale price psm in Central area and in Queenstown were rather higher than most of the rest areas. 
+
+For 5-room type, the median resale price psm in Central area were extremely high, while the rest of areas' were relatively close. 
+
+
+What's more, the price psm for each flat type varies widely even within the same area, as can be seen from the difference between max and min values.
 
 ## Median resales price per square meter by town for each storey range
 
@@ -223,10 +232,8 @@ flat_heatmap <- flat_2022_3types %>%
             median_remaining_lease_yrs = median(rem_lease_yrs)) %>% 
   arrange(desc(total_sales))
 
-DT::datatable(flat_heatmap,
-                class ="cell-border stripe")
-
 ```
+
 
 ```{r}
 #| fig-width: 12
@@ -252,12 +259,17 @@ heatmap <- ggplot(data = flat_heatmap,
 
 heatmap
 ```
+Using the heatmap, it is generally true that higher storey units tends to have a better price psm, as illustrated from the darker green on higher storeys.
+
+However, for some unpopular towns like Choa Chu Kang, Woodlands, Jurong West, Pasir Ris, Punggol, Sembawang and Yishun, the price psm difference do not seem significant between higher and lower storey units. 
+
+Additionally, it can be observed that resale flats in Bukit Timah and Yishun are much lower rised compared to the rest of towns. Especially, the highest unit observed in Bukit Timah was only 15-storey. On the other hand, resales flats in Central Area are the highest with storey higher than 50 available. Besides, the price psm for 30-stroey in Central Area were mostly highest comparing to other towns. 
 
 
 ## Resales price per square meter against remaining lease years throughout 2022
 
 ```{r}
-#| eval: false
+#| eval: true
 #| fig-width: 12
 p3 <-
 ggplot(flat_2022_3types,
@@ -265,14 +277,15 @@ ggplot(flat_2022_3types,
            y = price_psqm,
            colour = flat_type)) +
   geom_point() +
-  labs(title = "2022 {frame_time}th month - Resale price per square meter against remaining lease years",
+  labs(title = "Resale price per square meter against remaining lease years",
        x = "Remaining Lease (Years)",
        y = "Resale price ($ psm)",
-       fill ="Flat type") +
+       fill ="Flat type",
+       caption = "Month of 2022: {frame_time}") +
   theme_economist() +
   geom_smooth(method="lm",
               se = FALSE,
-              color = "red",
+              color = "mediumorchid1",
               formula = y ~ x) +
   theme(plot.title = element_text(hjust = 0),
         axis.title.x = element_text(size = 12,
@@ -289,8 +302,13 @@ animate(p3,
         nframes = 12,
         fps = 0.5)
 ```
+According to the chart, throughout 2022 from Janurary to December, it's certain that the resale price psm increases along the number of years remaining on the lease.
 
-# Observation and Insight
+What is also observed was that most of resale transactions for those with less than 50 years on the lease were 3-room flat mainly. 
+
+Furthermore, relatively more transactions are seen particularly for those with the remaining lease above than 90 years.  
+
+# Insights and thoughts
 
 ## Most selling units in 2022
 
@@ -299,5 +317,3 @@ Price increase observed from 3, 4 and 5 ROOM HDB median prices within 2022
 To be continued...
 
 # Conclusion
-
-
