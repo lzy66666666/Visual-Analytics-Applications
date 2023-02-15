@@ -27,9 +27,9 @@ For this exercise,
 
 -   ggstatsplot is the packge to be used for statistical analysis and visualisation
 
--   ggiraph, gganimate and gifski to enable interactive data visualisation
+-   ggiraph, gganimate and gifski are packages to enable interactive data visualisation
 
--   Some other packages for make-up mainly
+-   Other packages are for make-up mainly
 
 ```{r}
 pacman::p_load(tidyverse,
@@ -53,7 +53,7 @@ DT::datatable(flat_full,
               class ="cell-border stripe")
 ```
 
-Through the preview of the dataset, certain data processing would be beneficial for easier analysis later on.
+Through the preview of the dataset, certain data processing would be beneficial for easier analysis later on. E.g. the 'month' column will be split into two columns 'year\_' and 'month\_'. Information like price per square meter and remaining number of years on the lease will also be calculated.
 
 ## Data processing
 
@@ -70,7 +70,7 @@ flat_temp["rem_lease_yrs"] = (99 - (2022 - flat_temp$lease_commence_date))
 
 ```{r}
 DT::datatable(flat_temp,
-                class ="cell-border stripe")
+              class ="cell-border stripe")
 
 ```
 
@@ -133,7 +133,8 @@ ggbetweenstats(
   title = "Non-parametric mean test for 3, 4 & 5-room HDB",
   xlab = "Flat type",
   ylab ="Resale price") +
-  theme_economist()
+  theme_economist() +
+  theme(axis.title.y = element_text(vjust = 2.5))
 ```
 
 Using a non-parametric test, from the result p = 0 \< 0.05, it can be concluded that the resale price distribution does not follow a normal distribution.
@@ -229,7 +230,7 @@ For 4-room type, the median resale price psm in Central area and in Queenstown w
 
 For 5-room type, the median resale price psm in Central area were extremely high, while the rest of areas' were relatively close.
 
-What's more, the price psm for each flat type varies widely even within the same area, as can be seen from the difference between max and min values.
+What's more, the price psm for each flat type could vary widely even within the same area, as can be seen from the difference between max and min values.
 
 ## Median resales price psm by town for each storey range
 
@@ -340,4 +341,4 @@ ii\. Some factors to consider for purchasing a resale 3, 4 or 5-room HDB flat:
 
 iii\. Resale 3, 4 & 5-room HDB flats price psm is positively correlated with number of years remaining on the lease.
 
--   Resale activities are quite active for lease remaining more than 90 years.  This is rather interesting. One of my immature guess is that this is the result from young couples whose BTO have reached the minimum occupation period (MOP) and therefore, traded. To secure a satisfying profit from the "discount" they were able to enjoy from the government BTO policy, those new units were therefore traded. 
+-   Resale activities are quite active for lease remaining more than 90 years. This is rather interesting. One of my immature guess is that this is the result from young couples whose BTOs have reached the minimum occupation period (MOP) and therefore, have traded their BTO. To secure a satisfying profit from the 'discount' they were able to enjoy from the government BTO policy, those new units were therefore active in the resale market. 
