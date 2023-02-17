@@ -150,7 +150,9 @@ plot(check_h)
 
 ### Complete check
 
-# `{r} # # check_model(model1) #`
+```{r}
+check_model(model1)
+```
 
 ### Visualise parameters of a regression model
 
