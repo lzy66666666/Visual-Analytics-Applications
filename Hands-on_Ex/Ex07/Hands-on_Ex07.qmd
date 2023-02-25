@@ -1,7 +1,7 @@
 ---
 title: "Hands-on_Ex07"
 author: "Li Ziyi"
-date: 17 February 2023
+date: 25 February 2023
 date-modified: "`r Sys.Date()`"
 execute:
   echo: true
@@ -11,23 +11,36 @@ format: html
 editor: visual
 ---
 
-
+## Libraries
 ```{r}
 pacman::p_load(sf, tmap, tidyverse)
 
 ```
+## Data Loading
+The first data set to be used for below is called SGPools_svy21. The data is in csv file format.
 
+For the second part of this exercise, two data sets will be used below to create the choropleth map:
+
+Master Plan 2014 Subzone Boundary (Web) (i.e. MP14_SUBZONE_WEB_PL) in ESRI shapefile format. It can be downloaded at data.gov.sg. This is a geospatial data. It consists of the geographical boundary of Singapore at the planning subzone level. The data is based on URA Master Plan 2014.
+
+Singapore Residents by Planning Area / Subzone, Age Group, Sex and Type of Dwelling, June 2011-2020 in csv format (i.e. respopagesextod2011to2020.csv). This is an aspatial data fie. It can be downloaded at Department of Statistics, Singapore Although it does not contain any coordinates values, but it’s PA and SZ fields can be used as unique identifiers to geocode to MP14_SUBZONE_WEB_PL shapefile.
 ```{r}
 sgpools <- read_csv("Data/aspatial/SGPools_svy21.csv")
 
+
+mpsz <- st_read(dsn = "Data/geospatial", 
+                layer = "MP14_SUBZONE_WEB_PL")
+
+popdata <- read_csv("Data/aspatial/respopagesextod2011to2020.csv")
+
 ```
+## To create an interactive point symbol map
 
 ```{r}
 sgpools_sf <- st_as_sf(sgpools,
                        coords = c("XCOORD", "YCOORD"),
                        crs = 3414)
 ```
-
 
 ```{r}
 tmap_mode("view")
@@ -40,7 +53,7 @@ tm_bubbles(col = "red",
 
 tmap_mode("plot")
 ```
-Proportional
+## To draw a proportional symbol map
 ```{r}
 tm_shape(sgpools_sf)+
 tm_bubbles(col = "red",
@@ -50,13 +63,7 @@ tm_bubbles(col = "red",
 ```
 
 
-```{r}
-mpsz <- st_read(dsn = "Data/geospatial", 
-                layer = "MP14_SUBZONE_WEB_PL")
-
-popdata <- read_csv("data/aspatial/respopagesextod2011to2020.csv")
-
-```
+## Data Wrangling for Choropleth Mapping later
 ```{r}
 popdata2020 <- popdata %>%
   filter(Time == 2020) %>%
@@ -96,6 +103,7 @@ mpsz_pop2020 <- left_join(mpsz, popdata2020,
 
 ```
 
+## To Create a choropleth map by using tmap’s elements
 ```{r}
 tm_shape(mpsz_pop2020)+
   tm_fill("DEPENDENCY", 
