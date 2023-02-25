@@ -246,6 +246,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#to-update-loading-libraries" id="toc-to-update-loading-libraries" class="nav-link" data-scroll-target="#to-update-loading-libraries"><span class="toc-section-number">1.1</span>  (TO UPDATE) Loading libraries</a></li>
   <li><a href="#data-loading" id="toc-data-loading" class="nav-link" data-scroll-target="#data-loading"><span class="toc-section-number">1.2</span>  Data loading</a></li>
+  <li><a href="#data-processing" id="toc-data-processing" class="nav-link" data-scroll-target="#data-processing"><span class="toc-section-number">1.3</span>  Data processing</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -279,7 +280,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">February 20, 2023</p>
+      <p class="date-modified">February 25, 2023</p>
     </div>
   </div>
     
@@ -290,14 +291,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <section id="overview" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Overview</h1>
-<p>For this assignment, the impact of COVID-19 as well as the global economic and political dynamic in 2022 on Singapore bi-lateral trade will be uncovered with visual analytics. Dataset is taken from <a href="https://www.singstat.gov.sg/find-data/search-by-theme/trade-and-investment/merchandise-trade/latest-data">Department of Statistics Singapore</a>.</p>
+<p>For this assignment, the impact of COVID-19 as well as the global economic and political dynamic from 2020 to 2022 on Singapore bi-lateral trade will be uncovered with visual analytics. Dataset is taken from <a href="https://www.singstat.gov.sg/find-data/search-by-theme/trade-and-investment/merchandise-trade/latest-data">Department of Statistics Singapore</a>.</p>
 <section id="to-update-loading-libraries" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="to-update-loading-libraries"><span class="header-section-number">1.1</span> (TO UPDATE) Loading libraries</h2>
 <p>For this exercise,</p>
 <ul>
 <li><p>tidyverse is the main package to be used for data processing</p></li>
 <li><p>DT is the package to be used for interactive data preview</p></li>
-<li><p>ggstatsplot is the packge to be used for statistical analysis and visualisation</p></li>
+<li><p>readxl is the package to be used for data importing from excel files</p></li>
 <li><p>ggiraph, gganimate and gifski are packages to enable interactive data visualisation</p></li>
 <li><p>Other packages are for make-up mainly</p></li>
 </ul>
@@ -314,6 +315,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="data-loading" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="data-loading"><span class="header-section-number">1.2</span> Data loading</h2>
+<p>Trade data downloaded from the website is in Excel format. Functions from readxl package is used here to import data.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>trade_export_temp <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"Data/Merchandise trade by region_market.xlsx"</span>,</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">sheet =</span> <span class="st">"T1"</span>) </span>
@@ -341,22 +343,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #   ...42 &lt;chr&gt;, ...43 &lt;chr&gt;, ...44 &lt;chr&gt;, ...45 &lt;chr&gt;, ...46 &lt;chr&gt;, …</code></pre>
 </div>
 </div>
+</section>
+<section id="data-processing" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="data-processing"><span class="header-section-number">1.3</span> Data processing</h2>
+<p>Column titles, remove unrelevant rows, categorise data by “Import” or “Export”.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(trade_import_temp) <span class="ot">&lt;-</span> <span class="fu">as.character</span>(<span class="fu">unlist</span>(trade_import_temp[<span class="dv">9</span>,]))</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(trade_export_temp) <span class="ot">&lt;-</span> <span class="fu">as.character</span>(<span class="fu">unlist</span>(trade_export_temp[<span class="dv">9</span>,]))</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trade_export_temp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>trade_export_temp <span class="ot">&lt;-</span> trade_export_temp[<span class="fu">c</span>(<span class="dv">11</span><span class="sc">:</span>(<span class="fu">nrow</span>(trade_export_temp)<span class="sc">-</span><span class="dv">23</span>)),]</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>export_vector <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">"Export"</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">nrow</span>(trade_export_temp))</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>trade_export_temp<span class="sc">$</span>trade <span class="ot">&lt;-</span> export_vector</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trade_export_temp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 566
+<pre><code># A tibble: 6 × 567
   `Data Series`  2023 …¹ 2022 …² 2022 …³ 2022 …⁴ 2022 …⁵ 2022 …⁶ 2022 …⁷ 2022 …⁸
   &lt;chr&gt;          &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  
-1 Theme: Trade … &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;   
-2 Subject: Merc… &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;   
-3 Topic: Export… &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;   
-4 Table Title: … &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;   
-5 &lt;NA&gt;           &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;   
-6 Data last upd… Check … &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;   
-# … with 557 more variables: `2022 May` &lt;chr&gt;, `2022 Apr` &lt;chr&gt;,
+1 America (Mill… 5823.5  6217.5  6394.2  6653.9  7091.9  7931    6731.2  7508.6 
+2 Asia (Million… 34646.8 39734.8 37973.2 40500.8 45605.1 44106.2 46129.5 46328.8
+3 Europe (Milli… 5384    4924.4  5025.2  5121.5  5155.1  6109.6  6250.6  5455.3 
+4 Oceania (Mill… 2844.5  3034.8  3243.1  3114.5  3453.3  3608.4  3916.1  3669.6 
+5 Africa (Milli… 876.3   1088.6  1527    1185.6  1201.8  1608.5  1097.6  1214.7 
+6 European Unio… 4535    4137.1  4243.4  4298.1  4065.4  5020.5  5497    4609.4 
+# … with 558 more variables: `2022 May` &lt;chr&gt;, `2022 Apr` &lt;chr&gt;,
 #   `2022 Mar` &lt;chr&gt;, `2022 Feb` &lt;chr&gt;, `2022 Jan` &lt;chr&gt;, `2021 Dec` &lt;chr&gt;,
 #   `2021 Nov` &lt;chr&gt;, `2021 Oct` &lt;chr&gt;, `2021 Sep` &lt;chr&gt;, `2021 Aug` &lt;chr&gt;,
 #   `2021 Jul` &lt;chr&gt;, `2021 Jun` &lt;chr&gt;, `2021 May` &lt;chr&gt;, `2021 Apr` &lt;chr&gt;,
@@ -366,181 +378,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>trade_export_temp <span class="ot">&lt;-</span> trade_export_temp[<span class="fu">c</span>(<span class="dv">11</span><span class="sc">:</span>(<span class="fu">nrow</span>(trade_export_temp)<span class="sc">-</span><span class="dv">23</span>)),]</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>export_vector <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">"Export"</span>,</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">nrow</span>(trade_export_temp))</span>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>trade_import_temp <span class="ot">&lt;-</span> trade_import_temp[<span class="fu">c</span>(<span class="dv">11</span><span class="sc">:</span>(<span class="fu">nrow</span>(trade_import_temp)<span class="sc">-</span><span class="dv">23</span>)),]</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>import_vector <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">"Import"</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">nrow</span>(trade_import_temp))</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>trade_export_temp<span class="sc">$</span>trade <span class="ot">&lt;-</span> export_vector</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trade_export_temp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 567
-  `Data Series`  2023 …¹ 2022 …² 2022 …³ 2022 …⁴ 2022 …⁵ 2022 …⁶ 2022 …⁷ 2022 …⁸
-  &lt;chr&gt;          &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  
-1 America (Mill… 5823.5  6217.5  6394.2  6653.9  7091.9  7931    6731.2  7508.6 
-2 Asia (Million… 34646.8 39734.8 37973.2 40500.8 45605.1 44106.2 46129.5 46328.8
-3 Europe (Milli… 5384    4924.4  5025.2  5121.5  5155.1  6109.6  6250.6  5455.3 
-4 Oceania (Mill… 2844.5  3034.8  3243.1  3114.5  3453.3  3608.4  3916.1  3669.6 
-5 Africa (Milli… 876.3   1088.6  1527    1185.6  1201.8  1608.5  1097.6  1214.7 
-6 European Unio… 4535    4137.1  4243.4  4298.1  4065.4  5020.5  5497    4609.4 
-# … with 558 more variables: `2022 May` &lt;chr&gt;, `2022 Apr` &lt;chr&gt;,
-#   `2022 Mar` &lt;chr&gt;, `2022 Feb` &lt;chr&gt;, `2022 Jan` &lt;chr&gt;, `2021 Dec` &lt;chr&gt;,
-#   `2021 Nov` &lt;chr&gt;, `2021 Oct` &lt;chr&gt;, `2021 Sep` &lt;chr&gt;, `2021 Aug` &lt;chr&gt;,
-#   `2021 Jul` &lt;chr&gt;, `2021 Jun` &lt;chr&gt;, `2021 May` &lt;chr&gt;, `2021 Apr` &lt;chr&gt;,
-#   `2021 Mar` &lt;chr&gt;, `2021 Feb` &lt;chr&gt;, `2021 Jan` &lt;chr&gt;, `2020 Dec` &lt;chr&gt;,
-#   `2020 Nov` &lt;chr&gt;, `2020 Oct` &lt;chr&gt;, `2020 Sep` &lt;chr&gt;, `2020 Aug` &lt;chr&gt;,
-#   `2020 Jul` &lt;chr&gt;, `2020 Jun` &lt;chr&gt;, `2020 May` &lt;chr&gt;, `2020 Apr` &lt;chr&gt;, …</code></pre>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>trade_import_temp<span class="sc">$</span>trade <span class="ot">&lt;-</span> import_vector</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(trade_export_temp)[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">"Market_"</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(trade_import_temp)[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">"Market_"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>For this exercise, the period of January 2020 to December 2022 is to be studied. Therefore, only columns of 2020, 2021 and 2022 are filtered.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>trade_export_unpiv <span class="ot">&lt;-</span> trade_export_temp[,<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span><span class="sc">:</span><span class="dv">38</span>, <span class="fu">ncol</span>(trade_export_temp))]</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>trade_import_unpiv <span class="ot">&lt;-</span> trade_import_temp[,<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span><span class="sc">:</span><span class="dv">38</span>, <span class="fu">ncol</span>(trade_import_temp))]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>trade_import_temp <span class="ot">&lt;-</span> trade_import_temp[<span class="fu">c</span>(<span class="dv">11</span><span class="sc">:</span>(<span class="fu">nrow</span>(trade_import_temp)<span class="sc">-</span><span class="dv">23</span>)),]</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>import_vector <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">"Import"</span>,</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">nrow</span>(trade_import_temp))</span>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>trade_full <span class="ot">&lt;-</span> <span class="fu">rbind</span>(trade_export_unpiv,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                    trade_import_unpiv) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(<span class="at">key =</span> <span class="st">"Month_"</span>, <span class="at">value =</span> <span class="st">"Trade_Amount"</span>, <span class="sc">-</span>Market_, <span class="sc">-</span>trade)</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>trade_import_temp<span class="sc">$</span>trade <span class="ot">&lt;-</span> import_vector</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trade_import_temp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 567
-  `Data Series`  2023 …¹ 2022 …² 2022 …³ 2022 …⁴ 2022 …⁵ 2022 …⁶ 2022 …⁷ 2022 …⁸
-  &lt;chr&gt;          &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  
-1 America (Mill… 6267.4  6901.5  7529.4  7666.4  7995.9  8633.8  7879.7  8024   
-2 Asia (Million… 30174   33611.7 34733.7 36120.9 37696.3 40911.9 43214.2 42507.2
-3 Europe (Milli… 6427.8  7541.8  7242.8  7475.9  8167.6  7433.2  8300.5  7300.2 
-4 Oceania (Mill… 983.3   1399.9  664.4   1329.8  1544.6  935.9   1060.6  1141.8 
-5 Africa (Milli… 541.1   414.9   483.6   589.9   395     551.2   574.4   675.9  
-6 European Unio… 4580.9  5058.8  4961.4  4685.2  5145.8  5131    5233.5  5135.8 
-# … with 558 more variables: `2022 May` &lt;chr&gt;, `2022 Apr` &lt;chr&gt;,
-#   `2022 Mar` &lt;chr&gt;, `2022 Feb` &lt;chr&gt;, `2022 Jan` &lt;chr&gt;, `2021 Dec` &lt;chr&gt;,
-#   `2021 Nov` &lt;chr&gt;, `2021 Oct` &lt;chr&gt;, `2021 Sep` &lt;chr&gt;, `2021 Aug` &lt;chr&gt;,
-#   `2021 Jul` &lt;chr&gt;, `2021 Jun` &lt;chr&gt;, `2021 May` &lt;chr&gt;, `2021 Apr` &lt;chr&gt;,
-#   `2021 Mar` &lt;chr&gt;, `2021 Feb` &lt;chr&gt;, `2021 Jan` &lt;chr&gt;, `2020 Dec` &lt;chr&gt;,
-#   `2020 Nov` &lt;chr&gt;, `2020 Oct` &lt;chr&gt;, `2020 Sep` &lt;chr&gt;, `2020 Aug` &lt;chr&gt;,
-#   `2020 Jul` &lt;chr&gt;, `2020 Jun` &lt;chr&gt;, `2020 May` &lt;chr&gt;, `2020 Apr` &lt;chr&gt;, …</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(trade_export_temp)[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">"Market_"</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(trade_import_temp)[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">"Market_"</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trade_export_temp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 567
-  Market_        2023 …¹ 2022 …² 2022 …³ 2022 …⁴ 2022 …⁵ 2022 …⁶ 2022 …⁷ 2022 …⁸
-  &lt;chr&gt;          &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  
-1 America (Mill… 5823.5  6217.5  6394.2  6653.9  7091.9  7931    6731.2  7508.6 
-2 Asia (Million… 34646.8 39734.8 37973.2 40500.8 45605.1 44106.2 46129.5 46328.8
-3 Europe (Milli… 5384    4924.4  5025.2  5121.5  5155.1  6109.6  6250.6  5455.3 
-4 Oceania (Mill… 2844.5  3034.8  3243.1  3114.5  3453.3  3608.4  3916.1  3669.6 
-5 Africa (Milli… 876.3   1088.6  1527    1185.6  1201.8  1608.5  1097.6  1214.7 
-6 European Unio… 4535    4137.1  4243.4  4298.1  4065.4  5020.5  5497    4609.4 
-# … with 558 more variables: `2022 May` &lt;chr&gt;, `2022 Apr` &lt;chr&gt;,
-#   `2022 Mar` &lt;chr&gt;, `2022 Feb` &lt;chr&gt;, `2022 Jan` &lt;chr&gt;, `2021 Dec` &lt;chr&gt;,
-#   `2021 Nov` &lt;chr&gt;, `2021 Oct` &lt;chr&gt;, `2021 Sep` &lt;chr&gt;, `2021 Aug` &lt;chr&gt;,
-#   `2021 Jul` &lt;chr&gt;, `2021 Jun` &lt;chr&gt;, `2021 May` &lt;chr&gt;, `2021 Apr` &lt;chr&gt;,
-#   `2021 Mar` &lt;chr&gt;, `2021 Feb` &lt;chr&gt;, `2021 Jan` &lt;chr&gt;, `2020 Dec` &lt;chr&gt;,
-#   `2020 Nov` &lt;chr&gt;, `2020 Oct` &lt;chr&gt;, `2020 Sep` &lt;chr&gt;, `2020 Aug` &lt;chr&gt;,
-#   `2020 Jul` &lt;chr&gt;, `2020 Jun` &lt;chr&gt;, `2020 May` &lt;chr&gt;, `2020 Apr` &lt;chr&gt;, …</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>trade_export_unpiv <span class="ot">&lt;-</span> trade_export_temp[,<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span><span class="sc">:</span><span class="dv">14</span>, <span class="fu">ncol</span>(trade_export_temp))]</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trade_export_unpiv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 14
-  Market_        2022 …¹ 2022 …² 2022 …³ 2022 …⁴ 2022 …⁵ 2022 …⁶ 2022 …⁷ 2022 …⁸
-  &lt;chr&gt;          &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  
-1 America (Mill… 6217.5  6394.2  6653.9  7091.9  7931    6731.2  7508.6  6341.1 
-2 Asia (Million… 39734.8 37973.2 40500.8 45605.1 44106.2 46129.5 46328.8 43779.3
-3 Europe (Milli… 4924.4  5025.2  5121.5  5155.1  6109.6  6250.6  5455.3  5141.7 
-4 Oceania (Mill… 3034.8  3243.1  3114.5  3453.3  3608.4  3916.1  3669.6  3671.1 
-5 Africa (Milli… 1088.6  1527    1185.6  1201.8  1608.5  1097.6  1214.7  914.2  
-6 European Unio… 4137.1  4243.4  4298.1  4065.4  5020.5  5497    4609.4  4354.5 
-# … with 5 more variables: `2022 Apr` &lt;chr&gt;, `2022 Mar` &lt;chr&gt;,
-#   `2022 Feb` &lt;chr&gt;, `2022 Jan` &lt;chr&gt;, trade &lt;chr&gt;, and abbreviated variable
-#   names ¹​`2022 Dec`, ²​`2022 Nov`, ³​`2022 Oct`, ⁴​`2022 Sep`, ⁵​`2022 Aug`,
-#   ⁶​`2022 Jul`, ⁷​`2022 Jun`, ⁸​`2022 May`</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>trade_import_unpiv <span class="ot">&lt;-</span> trade_import_temp[,<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span><span class="sc">:</span><span class="dv">14</span>, <span class="fu">ncol</span>(trade_import_temp))]</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trade_import_unpiv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 14
-  Market_        2022 …¹ 2022 …² 2022 …³ 2022 …⁴ 2022 …⁵ 2022 …⁶ 2022 …⁷ 2022 …⁸
-  &lt;chr&gt;          &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  
-1 America (Mill… 6901.5  7529.4  7666.4  7995.9  8633.8  7879.7  8024    8521.1 
-2 Asia (Million… 33611.7 34733.7 36120.9 37696.3 40911.9 43214.2 42507.2 40534.7
-3 Europe (Milli… 7541.8  7242.8  7475.9  8167.6  7433.2  8300.5  7300.2  7030.8 
-4 Oceania (Mill… 1399.9  664.4   1329.8  1544.6  935.9   1060.6  1141.8  1164.7 
-5 Africa (Milli… 414.9   483.6   589.9   395     551.2   574.4   675.9   352.9  
-6 European Unio… 5058.8  4961.4  4685.2  5145.8  5131    5233.5  5135.8  4551.3 
-# … with 5 more variables: `2022 Apr` &lt;chr&gt;, `2022 Mar` &lt;chr&gt;,
-#   `2022 Feb` &lt;chr&gt;, `2022 Jan` &lt;chr&gt;, trade &lt;chr&gt;, and abbreviated variable
-#   names ¹​`2022 Dec`, ²​`2022 Nov`, ³​`2022 Oct`, ⁴​`2022 Sep`, ⁵​`2022 Aug`,
-#   ⁶​`2022 Jul`, ⁷​`2022 Jun`, ⁸​`2022 May`</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>trade_full <span class="ot">&lt;-</span> <span class="fu">rbind</span>(trade_export_unpiv,</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                    trade_import_unpiv)</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trade_full)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 14
-  Market_        2022 …¹ 2022 …² 2022 …³ 2022 …⁴ 2022 …⁵ 2022 …⁶ 2022 …⁷ 2022 …⁸
-  &lt;chr&gt;          &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  
-1 America (Mill… 6217.5  6394.2  6653.9  7091.9  7931    6731.2  7508.6  6341.1 
-2 Asia (Million… 39734.8 37973.2 40500.8 45605.1 44106.2 46129.5 46328.8 43779.3
-3 Europe (Milli… 4924.4  5025.2  5121.5  5155.1  6109.6  6250.6  5455.3  5141.7 
-4 Oceania (Mill… 3034.8  3243.1  3114.5  3453.3  3608.4  3916.1  3669.6  3671.1 
-5 Africa (Milli… 1088.6  1527    1185.6  1201.8  1608.5  1097.6  1214.7  914.2  
-6 European Unio… 4137.1  4243.4  4298.1  4065.4  5020.5  5497    4609.4  4354.5 
-# … with 5 more variables: `2022 Apr` &lt;chr&gt;, `2022 Mar` &lt;chr&gt;,
-#   `2022 Feb` &lt;chr&gt;, `2022 Jan` &lt;chr&gt;, trade &lt;chr&gt;, and abbreviated variable
-#   names ¹​`2022 Dec`, ²​`2022 Nov`, ³​`2022 Oct`, ⁴​`2022 Sep`, ⁵​`2022 Aug`,
-#   ⁶​`2022 Jul`, ⁷​`2022 Jun`, ⁸​`2022 May`</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>trade_full_unpivot <span class="ot">&lt;-</span> <span class="fu">gather</span>(trade_full, <span class="at">key =</span> <span class="st">"Month_"</span>, <span class="at">value =</span> <span class="st">"Trade_Amount"</span>, <span class="sc">-</span>Market_, <span class="sc">-</span>trade)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trade_full_unpivot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 4
-  Market_                          trade  Month_   Trade_Amount
-  &lt;chr&gt;                            &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;       
-1 America (Million Dollars)        Export 2022 Dec 6217.5      
-2 Asia (Million Dollars)           Export 2022 Dec 39734.8     
-3 Europe (Million Dollars)         Export 2022 Dec 4924.4      
-4 Oceania (Million Dollars)        Export 2022 Dec 3034.8      
-5 Africa (Million Dollars)         Export 2022 Dec 1088.6      
-6 European Union (Million Dollars) Export 2022 Dec 4137.1      </code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>trade_full_unpivot<span class="sc">$</span><span class="st">`</span><span class="at">Trade_Amount</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(trade_full_unpivot<span class="sc">$</span><span class="st">`</span><span class="at">Trade_Amount</span><span class="st">`</span>)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>trade_full_unpivot<span class="sc">$</span><span class="st">`</span><span class="at">Trade_Amount</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"Thousand Dollars"</span>, trade_full_unpivot<span class="sc">$</span>Market_), trade_full_unpivot<span class="sc">$</span><span class="st">'Trade_Amount'</span> <span class="sc">*</span> <span class="dv">1000</span>, trade_full_unpivot<span class="sc">$</span><span class="st">'Trade_Amount'</span> <span class="sc">*</span> <span class="dv">1000000</span>)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trade_full_unpivot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 4
-  Market_                          trade  Month_   Trade_Amount
-  &lt;chr&gt;                            &lt;chr&gt;  &lt;chr&gt;           &lt;dbl&gt;
-1 America (Million Dollars)        Export 2022 Dec   6217500000
-2 Asia (Million Dollars)           Export 2022 Dec  39734800000
-3 Europe (Million Dollars)         Export 2022 Dec   4924400000
-4 Oceania (Million Dollars)        Export 2022 Dec   3034800000
-5 Africa (Million Dollars)         Export 2022 Dec   1088600000
-6 European Union (Million Dollars) Export 2022 Dec   4137100000</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>trade_full_unpivot<span class="sc">$</span>Market_ <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">" </span><span class="sc">\\</span><span class="st">(Thousand Dollars</span><span class="sc">\\</span><span class="st">)|</span><span class="sc">\\</span><span class="st">(Million Dollars</span><span class="sc">\\</span><span class="st">)"</span>, <span class="st">""</span>, trade_full_unpivot<span class="sc">$</span>Market_)</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trade_full_unpivot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>trade_full<span class="sc">$</span><span class="st">`</span><span class="at">Trade_Amount</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(trade_full<span class="sc">$</span><span class="st">`</span><span class="at">Trade_Amount</span><span class="st">`</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>trade_full<span class="sc">$</span><span class="st">`</span><span class="at">Trade_Amount</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">grepl</span>(<span class="st">"Thousand Dollars"</span>, trade_full<span class="sc">$</span>Market_), trade_full<span class="sc">$</span><span class="st">'Trade_Amount'</span> <span class="sc">*</span> <span class="dv">1000</span>, trade_full<span class="sc">$</span><span class="st">'Trade_Amount'</span> <span class="sc">*</span> <span class="dv">1000000</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>trade_full<span class="sc">$</span>Market_ <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">" </span><span class="sc">\\</span><span class="st">(Thousand Dollars</span><span class="sc">\\</span><span class="st">)|</span><span class="sc">\\</span><span class="st">(Million Dollars</span><span class="sc">\\</span><span class="st">)"</span>, <span class="st">""</span>, trade_full<span class="sc">$</span>Market_)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trade_full)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 4
   Market_           trade  Month_   Trade_Amount
@@ -554,26 +420,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(trade_full_unpivot<span class="sc">$</span>Month_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] "2022 Dec" "2022 Nov" "2022 Oct" "2022 Sep" "2022 Aug" "2022 Jul"
- [7] "2022 Jun" "2022 May" "2022 Apr" "2022 Mar" "2022 Feb" "2022 Jan"</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>trade_clean <span class="ot">&lt;-</span> </span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">separate</span>(trade_full_unpivot,</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>         Month_,</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Year"</span>, <span class="st">"Month"</span>),</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">sep =</span> <span class="st">" "</span>,</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">convert =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">remove =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trade_clean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>trade_clean <span class="ot">&lt;-</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">separate</span>(trade_full,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>         Month_,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"Year"</span>, <span class="st">"Month"</span>),</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">sep =</span> <span class="st">" "</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">convert =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">remove =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>trade_clean<span class="sc">$</span>Trade_Amount <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(trade_clean<span class="sc">$</span>Trade_Amount), <span class="dv">0</span>, trade_clean<span class="sc">$</span>Trade_Amount)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>month_order <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Jan"</span>, <span class="st">"Feb"</span>, <span class="st">"Mar"</span>, <span class="st">"Apr"</span>, <span class="st">"May"</span>, <span class="st">"Jun"</span>,</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Jul"</span>, <span class="st">"Aug"</span>, <span class="st">"Sep"</span>, <span class="st">"Oct"</span>, <span class="st">"Nov"</span>, <span class="st">"Dec"</span>)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>trade_clean<span class="sc">$</span>Month <span class="ot">&lt;-</span> <span class="fu">factor</span>(trade_clean<span class="sc">$</span>Month, <span class="at">levels =</span> month_order)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trade_clean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 5
   Market_           trade   Year Month Trade_Amount
-  &lt;chr&gt;             &lt;chr&gt;  &lt;int&gt; &lt;chr&gt;        &lt;dbl&gt;
+  &lt;chr&gt;             &lt;chr&gt;  &lt;int&gt; &lt;fct&gt;        &lt;dbl&gt;
 1 "America "        Export  2022 Dec     6217500000
 2 "Asia "           Export  2022 Dec    39734800000
 3 "Europe "         Export  2022 Dec     4924400000
@@ -583,17 +451,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>trade_clean<span class="sc">$</span>Trade_Amount <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(trade_clean<span class="sc">$</span>Trade_Amount), <span class="dv">0</span>, trade_clean<span class="sc">$</span>Trade_Amount)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>trade_region <span class="ot">&lt;-</span> trade_clean <span class="sc">%&gt;%</span> </span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">trimws</span>(Market_) <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"America"</span>, <span class="st">"Asia"</span>, <span class="st">"Europe"</span>, <span class="st">"Oceania"</span>, <span class="st">"Africa"</span>, <span class="st">"European Union"</span>))</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trade_region)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>trade_region <span class="ot">&lt;-</span> trade_clean <span class="sc">%&gt;%</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">trimws</span>(Market_) <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"America"</span>, <span class="st">"Asia"</span>, <span class="st">"Europe"</span>, <span class="st">"Oceania"</span>, <span class="st">"Africa"</span>, <span class="st">"European Union"</span>))</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(trade_region)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 5
   Market_           trade   Year Month Trade_Amount
-  &lt;chr&gt;             &lt;chr&gt;  &lt;int&gt; &lt;chr&gt;        &lt;dbl&gt;
+  &lt;chr&gt;             &lt;chr&gt;  &lt;int&gt; &lt;fct&gt;        &lt;dbl&gt;
 1 "America "        Export  2022 Dec     6217500000
 2 "Asia "           Export  2022 Dec    39734800000
 3 "Europe "         Export  2022 Dec     4924400000
@@ -603,28 +468,43 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>trade_region<span class="sc">$</span>Market_ <span class="ot">&lt;-</span> </span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reorder</span>(trade_region<span class="sc">$</span>Market_,</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>          <span class="sc">-</span>trade_region<span class="sc">$</span>Trade_Amount)</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(trade_region,</span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>           <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(Market_),</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">y =</span> Trade_Amount,</span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">fill =</span> trade)) <span class="sc">+</span></span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"dodge"</span>,</span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"$ Amount of bi-lateral trade in Singapore by Markets in 2022"</span>,</span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Market"</span>,</span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"$ Amount"</span>,</span>
-<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Trade type"</span>) <span class="sc">+</span> </span>
-<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_economist</span>() <span class="sc">+</span></span>
-<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">vjust =</span> <span class="fl">2.5</span>,</span>
-<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">size =</span> <span class="dv">12</span>),</span>
-<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">vjust =</span> <span class="sc">-</span><span class="fl">2.5</span>,</span>
-<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">size =</span> <span class="dv">12</span>))</span>
-<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>p1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>trade_region<span class="sc">$</span>Market_ <span class="ot">&lt;-</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reorder</span>(trade_region<span class="sc">$</span>Market_,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>          <span class="sc">-</span>trade_region<span class="sc">$</span>Trade_Amount)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(trade_region,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>           <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(Market_),</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">y =</span> Trade_Amount,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">fill =</span> trade)) <span class="sc">+</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">"dodge"</span>,</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"$ Amount of bi-lateral trade in Singapore by Markets in 2022"</span>,</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Market"</span>,</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"$ Amount"</span>,</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Trade type"</span>) <span class="sc">+</span> </span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_economist</span>() <span class="sc">+</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">vjust =</span> <span class="fl">2.5</span>,</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">vjust =</span> <span class="sc">-</span><span class="fl">2.5</span>,</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">size =</span> <span class="dv">12</span>))</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>p1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="fig-barchart" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
@@ -635,81 +515,84 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate trade surplus/deficit</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>trade_balance <span class="ot">&lt;-</span> trade_clean <span class="sc">%&gt;%</span></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Market_, Month, trade) <span class="sc">%&gt;%</span></span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Trade_Balance =</span> <span class="fu">sum</span>(Trade_Amount)) <span class="sc">%&gt;%</span></span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread</span>(<span class="at">key =</span> trade, <span class="at">value =</span> Trade_Balance, <span class="at">fill =</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Surplus_Deficit =</span> Export <span class="sc">-</span> Import)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate trade surplus/deficit</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>trade_balance <span class="ot">&lt;-</span> trade_clean <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Market_, Month, trade) <span class="sc">%&gt;%</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Trade_Balance =</span> <span class="fu">sum</span>(Trade_Amount)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread</span>(<span class="at">key =</span> trade, <span class="at">value =</span> Trade_Balance, <span class="at">fill =</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Surplus_Deficit =</span> Export <span class="sc">-</span> Import)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install_github</span>(<span class="st">"nsgrantham/ggbraid"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install_github</span>(<span class="st">"nsgrantham/ggbraid"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>month_order <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Jan"</span>, <span class="st">"Feb"</span>, <span class="st">"Mar"</span>, <span class="st">"Apr"</span>, <span class="st">"May"</span>, <span class="st">"Jun"</span>,</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Jul"</span>, <span class="st">"Aug"</span>, <span class="st">"Sep"</span>, <span class="st">"Oct"</span>, <span class="st">"Nov"</span>, <span class="st">"Dec"</span>)</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>trade_balance<span class="sc">$</span>Month <span class="ot">&lt;-</span> <span class="fu">factor</span>(trade_balance<span class="sc">$</span>Month, <span class="at">levels =</span> month_order)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create braid plot</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trade_balance,</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Month,</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Surplus_Deficit, </span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> Market_)) <span class="sc">+</span></span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_braid</span>(<span class="fu">aes</span>(<span class="at">size =</span> <span class="fu">abs</span>(Surplus_Deficit),</span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">color =</span> Surplus_Deficit <span class="sc">&gt;</span> <span class="dv">0</span>)) <span class="sc">+</span></span>
-<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> <span class="dv">0</span>, </span>
-<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">ymax =</span> Surplus_Deficit, </span>
-<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">fill =</span> Surplus_Deficit <span class="sc">&gt;</span> <span class="dv">0</span>), <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
-<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Market_, <span class="at">ncol =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>)) <span class="sc">+</span></span>
-<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"red"</span>)) <span class="sc">+</span></span>
-<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"red"</span>)) <span class="sc">+</span></span>
-<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Trade Surplus/Deficit by Market"</span>,</span>
-<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">""</span>, </span>
-<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">""</span>) <span class="sc">+</span></span>
-<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_economist</span>() <span class="sc">+</span></span>
-<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create braid plot</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trade_balance, </span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Month, </span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Surplus_Deficit, </span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> Surplus_Deficit <span class="sc">&gt;</span> <span class="dv">0</span>)) <span class="sc">+</span></span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">linetype =</span> Surplus_Deficit <span class="sc">&gt;</span> <span class="dv">0</span>)) <span class="sc">+</span></span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>)) <span class="sc">+</span></span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"dashed"</span>, <span class="st">"solid"</span>)) <span class="sc">+</span></span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Market_, <span class="at">ncol =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># labs(title = "Trade Surplus/Deficit by Market",</span></span>
-<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#      x = "",</span></span>
-<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">#      y = "") +</span></span>
-<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_economist</span>() <span class="sc">+</span></span>
-<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trade_balance, </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Month, </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Surplus_Deficit, </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> Surplus_Deficit <span class="sc">&gt;</span> <span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">linetype =</span> Surplus_Deficit <span class="sc">&gt;</span> <span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>)) <span class="sc">+</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"dashed"</span>, <span class="st">"solid"</span>)) <span class="sc">+</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Market_, <span class="at">ncol =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># labs(title = "Trade Surplus/Deficit by Market",</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#      x = "",</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">#      y = "") +</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_economist</span>() <span class="sc">+</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Take-home_Ex04_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+<p><img src="Take-home_Ex04_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>trade_balance3 <span class="ot">&lt;-</span> trade_balance <span class="sc">%&gt;%</span> </span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Market_ <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"America "</span>, <span class="st">"Asia "</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Month,</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Surplus_Deficit, </span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>           )) <span class="sc">+</span></span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># geom_braid(aes(size = abs(Surplus_Deficit),</span></span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                color = Surplus_Deficit &gt; 0)) +</span></span>
-<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_ribbon(aes(ymin = 0, </span></span>
-<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                 ymax = Surplus_Deficit, </span></span>
-<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                 fill = Surplus_Deficit &gt; 0), alpha = 0.2) +</span></span>
-<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Market_)</span>
-<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>trade_balance3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Take-home_Ex04_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>temp_scope <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"America "</span>, <span class="st">"Asia "</span>, <span class="st">"Europe "</span>, <span class="st">"Oceania "</span>, <span class="st">"Africa "</span>, <span class="st">"European Union "</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>trade_balance3 <span class="ot">&lt;-</span> trade_balance <span class="sc">%&gt;%</span> </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Market_ <span class="sc">%in%</span> temp_scope)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>trade_clean3 <span class="ot">&lt;-</span> trade_clean <span class="sc">%&gt;%</span> </span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Market_ <span class="sc">%in%</span> temp_scope)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co">#        aes(x = Month,</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co">#            y = Surplus_Deficit, </span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co">#            )) +</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_col() +</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># geom_braid(aes(size = abs(Surplus_Deficit),</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                color = Surplus_Deficit &gt; 0)) +</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_ribbon(aes(ymin = 0, </span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                 ymax = Surplus_Deficit, </span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                 fill = Surplus_Deficit &gt; 0), alpha = 0.2) +</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># facet_wrap(~Market_)</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="co"># trade_balance3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">x =</span> trade_clean3<span class="sc">$</span>Month,</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> trade_clean3<span class="sc">$</span>Trade_Amount,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">linetype =</span> trade_clean3<span class="sc">$</span>trade</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>                )) <span class="sc">+</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">x =</span> trade_balance3<span class="sc">$</span>Month,</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">ymin =</span> trade_balance3<span class="sc">$</span>Import,</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">ymax =</span> trade_balance3<span class="sc">$</span>Export)) <span class="sc">+</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> trade_balance3<span class="sc">$</span>Market_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Take-home_Ex04_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>df_long <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">21</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">21</span>),</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">c</span>(<span class="fu">rnorm</span>(<span class="dv">21</span>), <span class="fu">rnorm</span>(<span class="dv">21</span>, <span class="at">mean =</span> <span class="fl">0.5</span>)),</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">z =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"a"</span>, <span class="dv">21</span>), <span class="fu">rep</span>(<span class="st">"b"</span>, <span class="dv">21</span>))</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 

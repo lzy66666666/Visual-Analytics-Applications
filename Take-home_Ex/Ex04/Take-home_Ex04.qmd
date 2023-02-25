@@ -13,8 +13,7 @@ editor: visual
 
 # Overview
 
-For this assignment, the impact of COVID-19 as well as the global economic and political dynamic in 2022 on Singapore bi-lateral trade will be uncovered with visual analytics. Dataset is taken from [Department of Statistics Singapore](https://www.singstat.gov.sg/find-data/search-by-theme/trade-and-investment/merchandise-trade/latest-data).
-
+For this assignment, the impact of COVID-19 as well as the global economic and political dynamic from 2020 to 2022 on Singapore bi-lateral trade will be uncovered with visual analytics. Dataset is taken from [Department of Statistics Singapore](https://www.singstat.gov.sg/find-data/search-by-theme/trade-and-investment/merchandise-trade/latest-data).
 
 ## (TO UPDATE) Loading libraries
 
@@ -24,7 +23,7 @@ For this exercise,
 
 -   DT is the package to be used for interactive data preview
 
--   ggstatsplot is the packge to be used for statistical analysis and visualisation
+-   readxl is the package to be used for data importing from excel files
 
 -   ggiraph, gganimate and gifski are packages to enable interactive data visualisation
 
@@ -42,7 +41,7 @@ pacman::p_load(tidyverse,
 ```
 
 ## Data loading
-
+Trade data downloaded from the website is in Excel format. Functions from readxl package is used here to import data.
 ```{r}
 trade_export_temp <- read_excel("Data/Merchandise trade by region_market.xlsx",
                        sheet = "T1") 
@@ -52,17 +51,13 @@ trade_import_temp <- read_excel("Data/Merchandise trade by region_market.xlsx",
 
 head(trade_import_temp)
 ```
-
-
+## Data processing
+Column titles, remove unrelevant rows, categorise data by "Import" or "Export".
 ```{r}
 colnames(trade_import_temp) <- as.character(unlist(trade_import_temp[9,]))
 colnames(trade_export_temp) <- as.character(unlist(trade_export_temp[9,]))
 
-head(trade_export_temp)
-```
 
-
-```{r}
 trade_export_temp <- trade_export_temp[c(11:(nrow(trade_export_temp)-23)),]
 export_vector <- rep("Export",
                      nrow(trade_export_temp))
@@ -71,80 +66,61 @@ trade_export_temp$trade <- export_vector
 head(trade_export_temp)
 ```
 
-
 ```{r}
 trade_import_temp <- trade_import_temp[c(11:(nrow(trade_import_temp)-23)),]
 import_vector <- rep("Import",
                      nrow(trade_import_temp))
 
 trade_import_temp$trade <- import_vector
-head(trade_import_temp)
-```
 
-
-```{r}
 
 names(trade_export_temp)[1] <- "Market_"
 names(trade_import_temp)[1] <- "Market_"
 
-head(trade_export_temp)
+
 ```
-
+For this exercise, the period of January 2020 to December 2022 is to be studied. Therefore, only columns of 2020, 2021 and 2022 are filtered.
 ```{r}
-trade_export_unpiv <- trade_export_temp[,c(1, 3:14, ncol(trade_export_temp))]
-
-head(trade_export_unpiv)
-```
-```{r}
-trade_import_unpiv <- trade_import_temp[,c(1, 3:14, ncol(trade_import_temp))]
-
-head(trade_import_unpiv)
+trade_export_unpiv <- trade_export_temp[,c(1, 3:38, ncol(trade_export_temp))]
+trade_import_unpiv <- trade_import_temp[,c(1, 3:38, ncol(trade_import_temp))]
 ```
 
 ```{r}
 trade_full <- rbind(trade_export_unpiv,
-                    trade_import_unpiv)
+                    trade_import_unpiv) %>% 
+  gather(key = "Month_", value = "Trade_Amount", -Market_, -trade)
+
+
+trade_full$`Trade_Amount` <- as.numeric(trade_full$`Trade_Amount`)
+
+trade_full$`Trade_Amount` <- ifelse(grepl("Thousand Dollars", trade_full$Market_), trade_full$'Trade_Amount' * 1000, trade_full$'Trade_Amount' * 1000000)
+
+trade_full$Market_ <- gsub(" \\(Thousand Dollars\\)|\\(Million Dollars\\)", "", trade_full$Market_)
+
 
 head(trade_full)
-```
-```{r}
-trade_full_unpivot <- gather(trade_full, key = "Month_", value = "Trade_Amount", -Market_, -trade)
-
-head(trade_full_unpivot)
-```
-```{r}
-trade_full_unpivot$`Trade_Amount` <- as.numeric(trade_full_unpivot$`Trade_Amount`)
-
-trade_full_unpivot$`Trade_Amount` <- ifelse(grepl("Thousand Dollars", trade_full_unpivot$Market_), trade_full_unpivot$'Trade_Amount' * 1000, trade_full_unpivot$'Trade_Amount' * 1000000)
-
-
-head(trade_full_unpivot)
-```
-```{r}
-trade_full_unpivot$Market_ <- gsub(" \\(Thousand Dollars\\)|\\(Million Dollars\\)", "", trade_full_unpivot$Market_)
-
-head(trade_full_unpivot)
-```
-```{r}
-unique(trade_full_unpivot$Month_)
 ```
 
 ```{r}
 trade_clean <- 
-separate(trade_full_unpivot,
+separate(trade_full,
          Month_,
          into = c("Year", "Month"),
          sep = " ",
          convert = TRUE,
          remove = TRUE)
 
+trade_clean$Trade_Amount <- ifelse(is.na(trade_clean$Trade_Amount), 0, trade_clean$Trade_Amount)
+
+
+month_order <- c("Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+
+trade_clean$Month <- factor(trade_clean$Month, levels = month_order)
+
+
 head(trade_clean)
 ```
-
-```{r}
-trade_clean$Trade_Amount <- ifelse(is.na(trade_clean$Trade_Amount), 0, trade_clean$Trade_Amount)
-```
-
 
 ```{r}
 trade_region <- trade_clean %>% 
@@ -153,6 +129,25 @@ trade_region <- trade_clean %>%
 head(trade_region)
 ```
 
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
 
 ```{r}
 #| fig-width: 12
@@ -194,44 +189,17 @@ trade_balance <- trade_clean %>%
 
 ```
 
-
-
 ```{r}
 install_github("nsgrantham/ggbraid")
 ```
-```{r}
-month_order <- c("Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
-trade_balance$Month <- factor(trade_balance$Month, levels = month_order)
 
+```{r}
 
 ```
 
 ```{r}
 #| eval = FALSE
 # create braid plot
-ggplot(trade_balance,
-       aes(x = Month,
-           y = Surplus_Deficit, 
-           fill = Market_)) +
-  geom_braid(aes(size = abs(Surplus_Deficit),
-                 color = Surplus_Deficit > 0)) +
-  geom_ribbon(aes(ymin = 0, 
-                  ymax = Surplus_Deficit, 
-                  fill = Surplus_Deficit > 0), alpha = 0.2) +
-  facet_wrap(~Market_, ncol = 4) +
-  scale_size(range = c(1, 5)) +
-  scale_fill_manual(values = c("blue", "red")) +
-  scale_color_manual(values = c("blue", "red")) +
-  coord_flip() +
-  labs(title = "Trade Surplus/Deficit by Market",
-       x = "", 
-       y = "") +
-  theme_economist() +
-  theme(legend.position = "bottom")
-
-
-
 
 
 ```
@@ -255,21 +223,48 @@ ggplot(trade_balance,
 
 ```
 
-
 ```{r}
+temp_scope = c("America ", "Asia ", "Europe ", "Oceania ", "Africa ", "European Union ")
+
 trade_balance3 <- trade_balance %>% 
-  filter(Market_ %in% c("America ", "Asia ")) %>% 
-ggplot(
-       aes(x = Month,
-           y = Surplus_Deficit, 
-           )) +
-  geom_col() +
+  filter(Market_ %in% temp_scope)
+
+trade_clean3 <- trade_clean %>% 
+  filter(Market_ %in% temp_scope)
+# ggplot(
+#        aes(x = Month,
+#            y = Surplus_Deficit, 
+#            )) +
+#   geom_col() +
     # geom_braid(aes(size = abs(Surplus_Deficit),
   #                color = Surplus_Deficit > 0)) +
   # geom_ribbon(aes(ymin = 0, 
   #                 ymax = Surplus_Deficit, 
   #                 fill = Surplus_Deficit > 0), alpha = 0.2) +
-  facet_wrap(~Market_)
+  # facet_wrap(~Market_)
 
-trade_balance3
+# trade_balance3
+```
+
+```{r}
+ggplot() +
+  geom_line(aes(
+                x = trade_clean3$Month,
+                y = trade_clean3$Trade_Amount,
+                linetype = trade_clean3$trade
+                )) +
+  geom_ribbon(aes(x = trade_balance3$Month,
+                  ymin = trade_balance3$Import,
+                  ymax = trade_balance3$Export)) +
+  facet_wrap(~ trade_balance3$Market_)
+
+```
+
+```{r}
+df_long <- tibble(
+  x = c(1:21, 1:21),
+  y = c(rnorm(21), rnorm(21, mean = 0.5)),
+  z = c(rep("a", 21), rep("b", 21))
+)
+
 ```

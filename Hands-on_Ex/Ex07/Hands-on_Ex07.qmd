@@ -1,0 +1,46 @@
+---
+title: "Hands-on_Ex07"
+author: "Li Ziyi"
+date: 17 February 2023
+date-modified: "`r Sys.Date()`"
+execute:
+  echo: true
+  eval: true
+  warning: false
+format: html
+editor: visual
+---
+
+
+```{r}
+pacman::p_load(sf, tmap, tidyverse)
+
+```
+
+```{r}
+sgpools <- read_csv("Data/aspatial/SGPools_svy21.csv")
+
+```
+
+```{r}
+sgpools_sf <- st_as_sf(sgpools,
+                       coords = c("XCOORD", "YCOORD"),
+                       crs = 3414)
+```
+
+
+```{r}
+tmap_mode("view")
+
+tm_shape(sgpools_sf) + 
+tm_bubbles(col = "red",
+           size = 1,
+           border.col = "black",
+           border.lwd = 1)
+
+tmap_mode("plot")
+```
+
+
+
+
