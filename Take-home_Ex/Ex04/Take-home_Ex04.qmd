@@ -173,9 +173,11 @@ p1 <- trade_region %>%
   summarise(Trade_Total = round(sum(Trade_Amount) / 1000000000, 2)) %>% 
   mutate(year = factor(Year)) %>% 
   newggslopegraph(year, Trade_Total, Market_,
-                  Title = "Trade Volume with Singapore from Different Continents (in $billions)",
+                  LineThickness = 0.75,
+                  YTextSize = 4,
+                  Title = "Trade Volume by continents (in $Billions)",
                   SubTitle = "From 2020 to 2022",
-                  Caption = "Total trade value is the sum of export and import") +
+                  Caption = "Total trade value is the sum of export from and import to Singapore") +
   labs(y = "Total trade value ($Billions)",
       x = "Year") +
   theme_economist() +
@@ -186,7 +188,7 @@ p1 <- trade_region %>%
 p1
 ```
 
-### Trade surplus/deficit from top 10 trade volume countries with Singapore
+### Singapore's trade surplus/deficit with the top 10 trade volume countries
 
 A positive balance of trade, known as a trade surplus, occurs when a country exports more goods than it imports. This usually means the country is earning more from its exports than it is spending on its imports, and it is generally seen as a sign of economic strength. On the other hand, trade deficits occurs when a country imports more goods than it exports.
 
@@ -242,13 +244,13 @@ p2 <- trade_clean_wide %>%
         axis.ticks.y = element_blank(),
         panel.border = element_blank()
         ) +
-  ggtitle('Net Export from 2022 Top 10 Total Trade Value Countries with Singapore') +
+  ggtitle('Net Export from Top 10 Total Trade Value Countries with Singapore') +
   labs(subtitle = "Net Export = Export - Import. Blue means Surplus, red means deficit.")
 
 p2
 ```
 
-### Trade volume monthly pattern from top 10 countries
+### Top 10 trading countries monthly trade volume (2020 to 2022)
 
 We are also interested in the trend of the trade volume by month from each of the top 10 countries, to see if there is any seasonality pattern. A cycle plot is captured to present how values vary over a period of time.
 
@@ -284,13 +286,13 @@ p3 <- ggplot(data = trade_cycle) +
   facet_wrap(~Month,
              ncol = 6) +
   theme_economist() +
-    labs(title = "Top 10 trading countries trade volume by month",
+    labs(title = "Top 10 trading countries trade volume by month (2020 to 2022)",
          y = "Total Trade Amount ($millions)",
          x = NULL) +
     theme(plot.title = element_text(vjust = 2.5),
           legend.position = "none",
           axis.title.y = element_text(vjust = 2.5),
-          panel.spacing.x = unit(0.85, "line"))
+          panel.spacing.x = unit(0.9, "line"))
 p3
 ```
 
@@ -298,7 +300,7 @@ p3
 
 i\. Singapore's bi-lateral trade with the rest of the world is in the process of recovering from the impact of COVID-19 and global economic and political dynamic. Across the five continents, an upward trend is observed from 2020 to 2022, as seen in @fig-slopegraph
 
-ii\. The biggest portion of Singapore's bi-lateral trade comes from Asia. According to @fig-cycleplot,
+ii\. The bulky portion of Singapore's bi-lateral trade comes from Asia. According to @fig-cycleplot,
 
 -   Mainland China is undoubtedly the biggest contributor.
 
