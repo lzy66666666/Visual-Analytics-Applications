@@ -27,7 +27,7 @@ For this exercise,
 
 -   tidyverse is the main package for data processing
 
--   Other packages are for make-up mainly
+-   Other packages are for make-up or minor usage mainly
 
 ```{r}
 pacman::p_load(DT,
@@ -51,7 +51,7 @@ trade_import_temp <- read_excel("Data/Merchandise trade by region_market.xlsx",
                        sheet = "T2") 
 ```
 
-Taking the first look at the data, the table is messy with rows that are not needed. The import and export data tables are separated at the moment.
+Taking the first look at the data, the table is messy with rows that are not needed. The import and export data tables are separated into two tables at the moment.
 
 ```{r}
 DT::datatable(trade_import_temp,
@@ -60,7 +60,9 @@ DT::datatable(trade_import_temp,
 
 ## Data Processing
 
-We will therefore remove those irrelevant rows and promote the "Data Series" row as our table title. To consolidate the export and import tables, a column with the column name "trade" will be tagged to each row, whereby whether the row belongs to "Export" or "Import" will be categorised.
+We will therefore remove those irrelevant rows and promote the "Data Series" row as our table title.
+
+To consolidate the export and import tables, a column with the column name "trade" will be tagged to each row, whereby whether the row belongs to "Export" or "Import" will be categorised.
 
 ```{r}
 colnames(trade_import_temp) <- as.character(unlist(trade_import_temp[9,]))
@@ -86,14 +88,17 @@ names(trade_import_temp)[1] <- "Market_"
 
 ```
 
-For this exercise, the period of January 2020 to December 2022 is to be studied. Therefore, only columns of 2020, 2021 and 2022 are identified and kept.
+For this exercise, the period of January 2020 to December 2022 is to be studied.
+
+Therefore, only columns of months from 2020, 2021 and 2022 are identified and kept.
 
 ```{r}
 trade_export_unpiv <- trade_export_temp[,c(1, 3:38, ncol(trade_export_temp))]
 trade_import_unpiv <- trade_import_temp[,c(1, 3:38, ncol(trade_import_temp))]
 ```
 
-With that, tables of export and import data are merged together. Columns of trade data by months are gathered (pivoted) into one column. Noticed that some of data are in the unit of millions while some are in thousands. To align all data, we will exchange all data into dollars unit. 
+With that, tables of export and import data are merged together. Columns of trade data by months are gathered (pivoted) into one column. Noticed that some of data are in the unit of millions while some are in thousands. To ensure data consistency, we will make adjustments by translating all data into the unit of dollar.
+
 ```{r}
 trade_full <- rbind(trade_export_unpiv,
                     trade_import_unpiv) %>% 
@@ -108,7 +113,9 @@ trade_full$`Trade_Amount` <- ifelse(grepl("Thousand Dollars", trade_full$Market_
 trade_full$Market_ <- gsub(" \\(Thousand Dollars\\)|\\(Million Dollars\\)", "", trade_full$Market_)
 
 ```
-The column of Month_ is split into "Year" and "Month" for convenience.
+
+The column of "Month\_" is split into "Year" and "Month" for convenience.
+
 ```{r}
 trade_clean <- 
 separate(trade_full,
@@ -130,7 +137,7 @@ DT::datatable(trade_clean,
               class = "cell-border stripe")
 ```
 
-A table of trade_clean but in wide format is also produced and reserved for net export trade calculation.
+A table of *trade_clean* but in wide format is also produced and saved inside the "diff" column for net export trade calculation.
 
 ```{r}
 trade_clean_wide <- trade_clean %>% 
@@ -143,8 +150,12 @@ trade_clean_wide$diff = trade_clean_wide$Export - trade_clean_wide$Import
 ```
 
 ## Visual Analysis
+
 ### Trade volume from different continents
-A slopegraph of total trade volume with Singapore from each of continents is produced below for the period of 2020 to 2022 during the pandemic. The slopegraph is chosen as it is capable of revealing the trade volumes change between two time points. 
+
+A slopegraph of total trade volume with Singapore from each of continents is produced below for the period of 2020 to 2022 during the pandemic.
+
+The slopegraph is chosen as it is capable of revealing the trade volumes change between two time points.
 
 ```{r}
 trade_region <- trade_clean %>% 
@@ -153,7 +164,9 @@ trade_region <- trade_clean %>%
 
 ```{r}
 #| fig-width: 12
+#| fig-height: 10
 #| label: fig-slopegraph
+#| fig-cap: Trade volume from five contients in a slopegraph
 
 p1 <- trade_region %>% 
   group_by(Market_, Year) %>% 
@@ -166,17 +179,19 @@ p1 <- trade_region %>%
   labs(y = "Total trade value ($Billions)",
       x = "Year") +
   theme_economist() +
-  theme(legend.position = "right",
+  theme(legend.position = "null",
         axis.title.y = element_text(vjust = 2.5),
         plot.title = element_text(vjust = 2.5))
 
 p1
 ```
-### Trade surplus/deficit from top 10 trading countries with Singapore
-A positive balance of trade, known as a trade surplus, occurs when a country exports more goods than it imports. This usually means the country is earning more from its exports than it is spending on its imports, and it is generally seen as a sign of economic strength.
-On the other hand, trade deficits occurs when a country imports more goods than it exports.  
 
-Here, we will look at the top 10 trading volumes with Singapore in 2022 and their trade balance during the 3 years span. A horizontal plot is chosen here to enable friendly readability with sufficient horizontal space.
+### Trade surplus/deficit from top 10 trade volume countries with Singapore
+
+A positive balance of trade, known as a trade surplus, occurs when a country exports more goods than it imports. This usually means the country is earning more from its exports than it is spending on its imports, and it is generally seen as a sign of economic strength. On the other hand, trade deficits occurs when a country imports more goods than it exports.
+
+Here, we will look at the top 10 countries of trade volumes with Singapore in 2022 and their trade balance during the 3-year span. A horizontal plot is chosen here to enable readability with sufficient horizontal space.
+
 ```{r}
 trade_top10country_2022 <- trade_clean %>% 
   filter(!trimws(Market_) %in% c("America", "Asia", "Europe", "Oceania", "Africa", "European Union")) %>% 
@@ -189,8 +204,9 @@ trade_top10country_2022 <- trade_clean %>%
 
 ```{r}
 #| fig-width: 12
+#| fig-height: 10
 #| label: fig-horizontalgraph
-
+#| fig-cap: Net export value from top 10 countries of total trade value with Singapore
 top10_2022 <- head(trade_top10country_2022$Market_, 10)
 
 
@@ -231,12 +247,16 @@ p2 <- trade_clean_wide %>%
 
 p2
 ```
-### Top 10 trading countries volume monthly pattern
-We are also interested in the trend of the trade volume by month from each of the top 10 countries, to see if there is any seasonality pattern. 
-A cycle plot is captured to present how values vary over a period of time.
+
+### Trade volume monthly pattern from top 10 countries
+
+We are also interested in the trend of the trade volume by month from each of the top 10 countries, to see if there is any seasonality pattern. A cycle plot is captured to present how values vary over a period of time.
+
 ```{r}
 #| fig-width: 12
+#| fig-height: 10
 #| label: fig-cycleplot
+#| fig-cap: Total trade amount by month from top 10 countries of trade value with Singapore
 trade_cycle <- trade_clean %>% 
   filter(Market_ %in% top10_2022) %>% 
   mutate(Trade_Amount = Trade_Amount / 1000000) %>% 
@@ -273,8 +293,10 @@ p3 <- ggplot(data = trade_cycle) +
           panel.spacing.x = unit(0.85, "line"))
 p3
 ```
+
 ## Insights and thoughts
-i\. Singapore's bi-lateral trade with the rest of the world is in the process of recovering from the impact of COVID-19. Across the five continents, an upward trend is observed from 2020 to 2022, as seen in @fig-slopegraph
+
+i\. Singapore's bi-lateral trade with the rest of the world is in the process of recovering from the impact of COVID-19 and global economic and political dynamic. Across the five continents, an upward trend is observed from 2020 to 2022, as seen in @fig-slopegraph
 
 ii\. The biggest portion of Singapore's bi-lateral trade comes from Asia. According to @fig-cycleplot,
 
@@ -285,6 +307,7 @@ ii\. The biggest portion of Singapore's bi-lateral trade comes from Asia. Accord
 iii\. Trade deficit is constantly observed from Singapore's partnership with Japan, Malaysia and Taiwan, while a consistent surplus is observed from the trade partnership with Australia, Hong Kong, Indonesia, using the color from @fig-horizontalgraph
 
 iv\. The trade volume is rather consistent throughout the year for different months, with the exception of February, in which a lower value is observed for most Asian selected countries in all three years. This could be largely due to two main reasons:
+
 -   There are usually less number of days in the calendar month of February.
 
--   Most of Chinese New Year holidays fall in the month of February, both sides' work and operations could be in a slower pace as comapred to the rest of months.
+-   Most of Chinese New Year holidays fall in the month of February, both sides' work and operations could be in a slower pace as compared to the rest of months.
