@@ -13,7 +13,7 @@ editor: visual
 
 ## Learning Outcome
 
-By the end of this hands-on exercise you will be able create the followings data visualisation by using R packages:
+By the end of this hands-on exercise I will create the followings data visualisation by using R packages:
 
 -   plotting a calender heatmap by using ggplot2 functions,
 
@@ -23,21 +23,17 @@ By the end of this hands-on exercise you will be able create the followings data
 
 ## Getting Started
 
-::: callout-info \## Do It Yourself Write a code chunk to check, install and launch the following R packages: scales, viridis, lubridate, ggthemes, gridExtra, readxl, knitr, data.table and tidyverse.
+To check, install and launch the following R packages:
 
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
-pacman::p_load(scales, viridis, lubridate, ggthemes, gridExtra, tidyverse, readxl, knitr, data.table)
+pacman::p_load(scales, viridis, lubridate, ggthemes, gridExtra, readxl, knitr, data.table, tidyverse)
 ```
 
 ## Plotting Calendar Heatmap
 
-In this section, you will learn how to plot a calender heatmap programmetically by using ggplot2 package.
-
-![](img/image01.png)
-
-By the end of this section, you will be able to:
+By the end of this section, I will:
 
 -   plot a calender heatmap by using ggplot2 functions and extension,
 -   to write function using R programming,
@@ -50,7 +46,7 @@ For the purpose of this hands-on exercise, *eventlog.csv* file will be used. Thi
 
 ### Importing the data
 
-First, you will use the code chunk below to import *eventlog.csv* file into R environment and called the data frame as *attacks*.
+To import *eventlog.csv* file into R environment. The file is called the data frame as *attacks*.
 
 ```{r}
 attacks <- read_csv("data/eventlog.csv")
@@ -72,15 +68,12 @@ There are three columns, namely *timestamp*, *source_country* and *tz*.
 -   *source_country* field stores the source of the attack. It is in *ISO 3166-1 alpha-2* country code.\
 -   *tz* field stores time zone of the source IP address.
 
-```{r echo=FALSE}
-kable(head(attacks))
-```
 
 ### Data Preparation
 
 Step 1: Deriving *weekday* and *hour of day* fields
 
-Before we can plot the calender heatmap, two new fields namely *wkday* and *hour* need to be derived. In this step, we will write a function to perform the task.
+Before we can plot the calender heatmap, two new fields namely *wkday* and *hour* need to be derived. In this step, I will write a function to perform the task.
 
 ```{r}
 make_hr_wkday <- function(ts, sc, tz) {
@@ -152,39 +145,14 @@ theme(axis.ticks = element_blank(),
       legend.text = element_text(size = 6) )
 ```
 
-Things to learn from the code chunk: - a tibble data table called *grouped* is derived by aggregating the attack by *wkday* and *hour* fields. - a new field called *n* is derived by using `group_by()` and `count()` functions. - `na.omit()` is used to exclude missing value. - `geom_tile()` is used to plot tiles (grids) at each x and y position. `color` and `size` arguments are used to specify the border color and line size of the tiles. - [`theme_tufte()`](https://jrnold.github.io/ggthemes/reference/theme_tufte.html) of [**ggthemes**](https://jrnold.github.io/ggthemes/reference/index.html) package is used to remove unnecessary chart junk. To learn which visual components of default ggplot2 have been excluded, you are encouraged to comment out this line to examine the default plot. - `coord_equal()` is used to ensure the plot will have an aspect ratio of 1:1. - `scale_fill_gradient()` function is used to creates a two colour gradient (low-high).
+Things learnt from the code chunk: - a tibble data table called *grouped* is derived by aggregating the attack by *wkday* and *hour* fields. - a new field called *n* is derived by using `group_by()` and `count()` functions. - `na.omit()` is used to exclude missing value. - `geom_tile()` is used to plot tiles (grids) at each x and y position. `color` and `size` arguments are used to specify the border color and line size of the tiles. - [`theme_tufte()`](https://jrnold.github.io/ggthemes/reference/theme_tufte.html) of [**ggthemes**](https://jrnold.github.io/ggthemes/reference/index.html) package is used to remove unnecessary chart junk. To learn which visual components of default ggplot2 have been excluded, you are encouraged to comment out this line to examine the default plot. - `coord_equal()` is used to ensure the plot will have an aspect ratio of 1:1. - `scale_fill_gradient()` function is used to creates a two colour gradient (low-high).
 
-```{r echo=FALSE}
-grouped <- attacks %>% 
-  count(wkday, hour) %>% 
-  ungroup() %>%
-  na.omit()
-
-ggplot(grouped, 
-       aes(hour, 
-           wkday, 
-           fill = n)) + 
-geom_tile(color = "white", 
-          size = 0.1) + 
-theme_tufte(base_family = "Helvetica") + 
-coord_equal() +
-scale_fill_gradient(name = "# of attacks",
-                    low = "sky blue", 
-                    high = "dark blue") +
-labs(x = NULL, 
-     y = NULL, 
-     title = "Attacks by weekday and time of day") +
-theme( axis.ticks = element_blank(),
-       plot.title = element_text(hjust = 0.5),
-       legend.title = element_text(size = 8),
-       legend.text = element_text(size = 6) )
-```
 
 Then we can simply group the count by hour and wkday and plot it, since we know that we have values for every combination there's no need to further preprocess the data.
 
 ### Building Multiple Calendar Heatmaps
 
-**Challenge:** Building multiple heatmaps for the top four countries with the highest number of attacks.
+The problem that I am trying to tackle is to build multiple heatmaps for the top four countries with the highest number of attacks.
 
 ![](img/image02.png)
 
@@ -192,10 +160,10 @@ Then we can simply group the count by hour and wkday and plot it, since we know 
 
 Step 1: Deriving attack by country object
 
-In order to identify the top 4 countries with the highest number of attacks, you are required to do the followings:
+In order to identify the top 4 countries with the highest number of attacks, the followings steps should be considered:
 
 -   count the number of attacks by country,
--   calculate the percent of attackes by country, and
+-   calculate the percent of attacks by country, and
 -   save the results in a tibble data frame.
 
 ```{r}
@@ -207,7 +175,7 @@ attacks_by_country <- count(
 
 Step 2: Preparing the tidy data frame
 
-In this step, you are required to extract the attack records of the top 4 countries from *attacks* data frame and save the data in a new tibble data frame (i.e. *top4_attacks*).
+In this step, I will extract the attack records of the top 4 countries from *attacks* data frame and save the data in a new tibble data frame (i.e. *top4_attacks*).
 
 ```{r}
 top4 <- attacks_by_country$source_country[1:4]
@@ -222,7 +190,7 @@ top4_attacks <- attacks %>%
 
 ### Plotting Multiple Calendar Heatmaps
 
-Step 3: Plotting the Multiple Calender Heatmap by using ggplot2 package.
+Step 3: I will plot the Multiple Calender Heatmap by using ggplot2 package.
 
 ```{r fig.width = 12}
 ggplot(top4_attacks, 
@@ -248,7 +216,7 @@ ggplot(top4_attacks,
 
 ## Cycle Plot
 
-In this section, you will learn how to plot a cycle plot showing the time-series patterns and trend of visitor arrivals from Vietnam programmatically by using ggplot2 functions.
+In this section, a cycle plot showing the time-series patterns and trend of visitor arrivals from Vietnam programmatically by using ggplot2 functions will be done.
 
 ![](img/image03.png)
 
@@ -256,7 +224,7 @@ In this section, you will learn how to plot a cycle plot showing the time-series
 
 #### Step 1: Data Import
 
-For the purpose of this hands-on exercise, *arrivals_by_air.xlsx* will be used.
+For the purpose of this exercise, *arrivals_by_air.xlsx* will be used.
 
 The code chunk below imports *arrivals_by_air.xlsx* by using `read_excel()` of **readxl** package and save it as a tibble data frame called *air*.
 
@@ -276,9 +244,9 @@ air$month <- factor(month(air$`Month-Year`),
 air$year <- year(ymd(air$`Month-Year`))
 ```
 
-#### Step 4: Extracting the target country
+#### Step 3: Extracting the target country
 
-Next, the code chunk below is use to extract data for the target country (i.e. Vietnam)
+Next, the code chunk below is to extract data for the target country (i.e. Vietnam)
 
 ```{r}
 Vietnam <- air %>% 
@@ -288,7 +256,7 @@ Vietnam <- air %>%
   filter(year >= 2010)
 ```
 
-#### Step 5: Computing year average arrivals by month
+#### Step 4: Computing year average arrivals by month
 
 The code chunk below uses `group_by()` and `summarise()` of **dplyr** to compute year average arrivals by month.
 
@@ -298,9 +266,8 @@ hline.data <- Vietnam %>%
   summarise(avgvalue = mean(`Vietnam`))
 ```
 
-### Plotting the cycle plot
+### Step 5: Plotting the cycle plot
 
-The code chunk below is used to plot the cycle plot as shown in Slide 12/23.
 
 ```{r eval=FALSE}
 ggplot() + 
@@ -313,10 +280,78 @@ ggplot() +
              data=hline.data, 
              linetype=6, 
              colour="red", 
-             size=0.5) + 
+             linewidth=0.5) + 
   facet_grid(~month) +
   labs(axis.text.x = element_blank(),
        title = "Visitor arrivals from Vietnam by air, Jan 2010-Dec 2019") +
   xlab("") +
   ylab("No. of Visitors")
+```
+
+## Plotting Slopegraph
+CGPfunctions needs to be installed and loaded onto R environment. The newggslopegraph function would be the main focus of this section.
+
+```{r}
+pacman::p_load(CGPfunctions)
+```
+
+#### Step 1: Data Import
+```{r}
+rice <- read_csv("data/rice.csv")
+```
+
+#### Step 2: Slopegraph plotting
+A basic slopegraph can be plotted like this below:
+```{r eval = FALSE}
+rice %>% 
+  mutate(Year = factor(Year)) %>%
+  filter(Year %in% c(1961, 1980)) %>%
+  newggslopegraph(Times = Year, 
+                  Measurement = Yield, 
+                  Grouping = Country,
+                Title = "Rice Yield of Top 11 Asian Counties",
+                SubTitle = "1961-1980",
+                Caption = "Prepared by: Li Ziyi")
+```
+
+## Plotting Horizon Plot
+ggHoriPlot is the package to be used for horizon plot mainly.
+
+```{r}
+pacman::p_load(ggHoriPlot)
+```
+
+#### Step 1: Data Import
+For the purpose of this exercise, Average Retail Prices Of Selected Consumer Items will be used.
+```{r}
+averp <- read_csv("data/AVERP.csv") %>%
+  mutate(`Date` = dmy(`Date`))
+
+```
+
+Take note that dmy() from lubridate package allows us to palse the Date field into appropriate Date data type in R.
+
+#### Step 2: Plotting the horizon graph
+```{r}
+averp %>% 
+  filter(Date >= "2018-01-01") %>%
+  ggplot() +
+  geom_horizon(aes(x = Date, y=Values), 
+               origin = "midpoint", 
+               horizonscale = 6)+
+  facet_grid(`Consumer Items`~.) +
+    theme_few() +
+  scale_fill_hcl(palette = 'RdBu') +
+  theme(panel.spacing.y=unit(0, "lines"), strip.text.y = element_text(
+    size = 5, angle = 0, hjust = 0),
+    legend.position = 'none',
+    axis.text.y = element_blank(),
+    axis.text.x = element_text(size=7),
+    axis.title.y = element_blank(),
+    axis.title.x = element_blank(),
+    axis.ticks.y = element_blank(),
+    panel.border = element_blank()
+    ) +
+    scale_x_date(expand=c(0,0), date_breaks = "3 month", date_labels = "%b%y") +
+  ggtitle('Average Retail Prices of Selected Consumer Items (Jan 2018 to Dec 2022)')
 ```
