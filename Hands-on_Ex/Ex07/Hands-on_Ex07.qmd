@@ -613,6 +613,7 @@ get.var <- function(vname,df) {
 ```
 
 #### A percentile mapping function
+
 ```{r}
 percentmap <- function(vnam, df, legtitle=NA, mtitle="Percentile Map"){
   percent <- c(0,.01,.1,.5,.9,.99,1)
@@ -638,6 +639,7 @@ percentmap("total_wp",
 ```
 
 ### Box map
+
 In essence, a box map is an augmented quartile map, with an additional lower and upper category. When there are lower outliers, then the starting point for the breaks is the minimum value, and the second break is the lower fence. In contrast, when there are no lower outliers, then the starting point for the breaks will be the lower fence, and the second break is the minimum value (there will be no observations that fall in the interval between the lower fence and the minimum value).
 
 ```{r}
@@ -668,8 +670,6 @@ boxbreaks <- function(v,mult=1.5) {
 }
 
 ```
-
-
 
 ```{r}
 
