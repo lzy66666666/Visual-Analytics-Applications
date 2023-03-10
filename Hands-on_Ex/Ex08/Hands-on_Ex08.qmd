@@ -1,5 +1,5 @@
 ---
-title: "Hands-on_Ex08"
+title: "Hands-on Ex08: Modelling, visualising and analysing network data with R"
 author: "Li Ziyi"
 date: 3 March 2023
 date-modified: "`r Sys.Date()`"
@@ -10,3 +10,117 @@ execute:
 format: html
 editor: visual
 ---
+
+This hands-on exercise aims to
+
+-   create graph object data frames, manipulate them using appropriate functions of dplyr, lubridate, and tidygraph,
+
+-   build network graph visualisation using appropriate functions of ggraph,
+
+-   compute network geometrics using tidygraph,
+
+-   build advanced graph visualisation by incorporating the network geometrics, and
+
+-   build interactive network visualisation using visNetwork package.
+
+## Packages installation
+
+```{r}
+packages = c('igraph', 'tidygraph', 
+             'ggraph', 'visNetwork', 
+             'lubridate', 'clock',
+             'tidyverse', 'graphlayouts')
+
+for(p in packages){
+  if(!require(p, character.only = T)){
+    install.packages(p)
+  }
+  library(p, character.only = T)
+}
+
+```
+
+## Dataset
+
+The data to be used in this exercise is from an oil exploration and extraction company. There are two data sets. One contains the nodes data and the other contains the edges (also know as link) data.
+
+```{r}
+GAStech_nodes <- read_csv("data/GAStech_email_node.csv")
+GAStech_edges <- read_csv("data/GAStech_email_edge-v2.csv")
+
+```
+
+```{r}
+glimpse(GAStech_edges)
+```
+
+Some data wrangling is needed. For example, notice that the *SentDate* is currently in character format. We will need to change it back to date data type.
+
+## Data Wrangling
+
+```{r}
+GAStech_edges <- GAStech_edges %>%
+  mutate(SendDate = dmy(SentDate)) %>%
+  mutate(Weekday = wday(SentDate,
+                        label = TRUE,
+                        abbr = FALSE))
+```
+
+Both dmy() and wday() are functions of lubridate package. lubridate is an R package that makes it easier to work with dates and times. - dmy() transforms the SentDate to Date data type. - wday() returns the day of the week as a decimal number or an ordered factor if label is TRUE. The argument abbr is FALSE keep the data spelling in full, i.e. Monday. The function will create a new column in the data.frame i.e. Weekday and the output of wday() will save in this newly created field. - the values in the Weekday field are in ordinal scale.
+
+```{r}
+glimpse(GAStech_edges)
+```
+
+A close examination of GAStech_edges data frame reveals that it consists of individual e-mail flow records. This is not very useful for visualisation.
+
+In view of this, we will aggregate the individual by date, senders, receivers, main subject and day of the week.
+
+```{r}
+GAStech_edges_aggregated <- GAStech_edges %>%
+  filter(MainSubject == "Work related") %>%
+  group_by(source, target, Weekday) %>%
+    summarise(Weight = n()) %>%
+  filter(source!=target) %>%
+  filter(Weight > 1) %>%
+  ungroup()
+```
+
+```{r}
+glimpse(GAStech_edges)
+```
+
+## Create network objects using tidygraph
+
+In this section, we learn how to create a graph data model by using tidygraph package. It provides a tidy API for graph/network manipulation. While network data itself is not tidy, it can be envisioned as two tidy tables, one for node data and one for edge data. tidygraph provides a way to switch between the two tables and provides dplyr verbs for manipulating them. Furthermore it provides access to a lot of graph algorithms with return values that facilitate their use in a tidy workflow.
+
+Two functions of tidygraph package can be used to create network objects, they are:
+
+-   tbl_graph() creates a tbl_graph network object from nodes and edges data.
+
+-   as_tbl_graph() converts network data and objects to a tbl_graph network.
+
+-   activate() verb from tidygraph serves as a switch between tibbles for nodes and edges. All dplyr verbs applied to tbl_graph object are applied to the active tibble.
+
+-   .N() function is used to gain access to the node data while manipulating the edge data. 
+
+-   .E() will give you the edge data.
+
+-   .G() will give you the tbl_graph object itself.
+
+```{r}
+GAStech_graph <- tbl_graph(nodes = GAStech_nodes,
+                           edges = GAStech_edges_aggregated, 
+                           directed = TRUE)
+
+GAStech_graph
+```
+From the output, notice that the node data is active. The notion of an active tibble within a tbl_graph object makes it possible to manipulate the data in one tibble at a time.
+
+We can change which tibble data frame is active with the activate() function. Thus, if we wanted to rearrange the rows in the edges tibble to list those with the highest “weight” first, we could use activate() and then arrange().
+
+```{r}
+GAStech_graph %>%
+  activate(edges) %>%
+  arrange(desc(Weight))
+```
