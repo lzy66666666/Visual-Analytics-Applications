@@ -9,7 +9,7 @@
 <meta name="author" content="Li Ziyi">
 <meta name="dcterms.date" content="2023-03-03">
 
-<title>Visual-Analytics-Applications - Hands-on_Ex09</title>
+<title>Visual-Analytics-Applications - Hands-on_Ex09: Information Dashboard Design using R</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,6 +22,69 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -187,14 +250,36 @@ ul.task-list li input[type="checkbox"] {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul>
+  <li><a href="#packages-installation" id="toc-packages-installation" class="nav-link active" data-scroll-target="#packages-installation"><span class="toc-section-number">1</span>  Packages installation</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data"><span class="toc-section-number">2</span>  Data</a>
+  <ul class="collapse">
+  <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset"><span class="toc-section-number">2.1</span>  Dataset</a></li>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation"><span class="toc-section-number">2.2</span>  Data preparation</a></li>
+  </ul></li>
+  <li><a href="#bullet-chart-in-ggplot2" id="toc-bullet-chart-in-ggplot2" class="nav-link" data-scroll-target="#bullet-chart-in-ggplot2"><span class="toc-section-number">3</span>  Bullet chart in ggplot2</a></li>
+  <li><a href="#sparklines-in-ggplot2" id="toc-sparklines-in-ggplot2" class="nav-link" data-scroll-target="#sparklines-in-ggplot2"><span class="toc-section-number">4</span>  Sparklines in ggplot2</a></li>
+  <li><a href="#static-information-dashboard-design-using-gt-and-gtextras" id="toc-static-information-dashboard-design-using-gt-and-gtextras" class="nav-link" data-scroll-target="#static-information-dashboard-design-using-gt-and-gtextras"><span class="toc-section-number">5</span>  Static information dashboard design using gt and gtExtras</a>
+  <ul class="collapse">
+  <li><a href="#simeple-bullet-chart" id="toc-simeple-bullet-chart" class="nav-link" data-scroll-target="#simeple-bullet-chart"><span class="toc-section-number">5.1</span>  Simeple bullet chart</a></li>
+  <li><a href="#sparklines-using-gtextras" id="toc-sparklines-using-gtextras" class="nav-link" data-scroll-target="#sparklines-using-gtextras"><span class="toc-section-number">5.2</span>  Sparklines using gtExtras</a></li>
+  <li><a href="#to-add-statistics-elements" id="toc-to-add-statistics-elements" class="nav-link" data-scroll-target="#to-add-statistics-elements"><span class="toc-section-number">5.3</span>  To add statistics elements</a></li>
+  <li><a href="#to-combine-the-data-frame" id="toc-to-combine-the-data-frame" class="nav-link" data-scroll-target="#to-combine-the-data-frame"><span class="toc-section-number">5.4</span>  To combine the data frame</a></li>
+  <li><a href="#plot-the-updated-data-table" id="toc-plot-the-updated-data-table" class="nav-link" data-scroll-target="#plot-the-updated-data-table"><span class="toc-section-number">5.5</span>  Plot the updated data table</a></li>
+  <li><a href="#to-combine-with-bullet-chart-and-sparklines" id="toc-to-combine-with-bullet-chart-and-sparklines" class="nav-link" data-scroll-target="#to-combine-with-bullet-chart-and-sparklines"><span class="toc-section-number">5.6</span>  To combine with bullet chart and sparklines</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Hands-on_Ex09</h1>
+<h1 class="title">Hands-on_Ex09: Information Dashboard Design using R</h1>
 </div>
 
 
@@ -218,7 +303,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">March 4, 2023</p>
+      <p class="date-modified">March 15, 2023</p>
     </div>
   </div>
     
@@ -227,8 +312,2664 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<section id="packages-installation" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="packages-installation"><span class="header-section-number">1</span> Packages installation</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(lubridate, </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               ggthemes, </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>               reactable,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>               reactablefmtr, </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>               gt, </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>               gtExtras, </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>               tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Take note that - <a href="https://jthomasmock.github.io/gtExtras/">gtExtras</a> provides some additional helper functions to assist in creating beautiful tables with <a href="https://gt.rstudio.com/">gt</a>, an R package specially designed for anyone to make wonderful-looking tables using the R programming language.</p>
+<ul>
+<li><a href="https://kcuilla.github.io/reactablefmtr/">reactablefmtr</a> provides various features to streamline and enhance the styling of interactive reactable tables with easy-to-use and highly-customizable functions and themes.</li>
+</ul>
+</section>
+<section id="data" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="data"><span class="header-section-number">2</span> Data</h2>
+<section id="dataset" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="dataset"><span class="header-section-number">2.1</span> Dataset</h3>
+<p>For this exercise, a personal database in Microsoft Access mdb format called Coffee Chain will be used.</p>
+<p>To import that, odbcConnectAccess() from RODBC package will be used.</p>
+<pre><code>library(RODBC)
+con &lt;- odbcConnectAccess('data/Coffee Chain.mdb')
+coffeechain &lt;- sqlFetch(con, 'CoffeeChain Query')
+write_rds(coffeechain, "data/CoffeeChain.rds")
+odbcClose(con)</code></pre>
+</section>
+<section id="data-preparation" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="data-preparation"><span class="header-section-number">2.2</span> Data preparation</h3>
+<p>This step below is used if coffeechain is already available in R.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>coffeechain <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/CoffeeChain.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Sales and Budgeted Sales data at Product level is aggregated below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>product <span class="ot">&lt;-</span> coffeechain <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(<span class="st">`</span><span class="at">Product</span><span class="st">`</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="st">`</span><span class="at">target</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Budget Sales</span><span class="st">`</span>),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">`</span><span class="at">current</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Sales</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="bullet-chart-in-ggplot2" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="bullet-chart-in-ggplot2"><span class="header-section-number">3</span> Bullet chart in ggplot2</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(product, <span class="fu">aes</span>(Product, current)) <span class="sc">+</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(Product, <span class="fu">max</span>(target) <span class="sc">*</span> <span class="fl">1.01</span>),</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill=</span><span class="st">"grey85"</span>, <span class="at">width=</span><span class="fl">0.85</span>) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(Product, target <span class="sc">*</span> <span class="fl">0.75</span>),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill=</span><span class="st">"grey60"</span>, <span class="at">width=</span><span class="fl">0.85</span>) <span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(Product, target <span class="sc">*</span> <span class="fl">0.5</span>),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill=</span><span class="st">"grey50"</span>, <span class="at">width=</span><span class="fl">0.85</span>) <span class="sc">+</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(Product, current), </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">width=</span><span class="fl">0.35</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> <span class="st">"black"</span>) <span class="sc">+</span> </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">y =</span> target,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>                    <span class="at">x =</span> Product, </span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymin =</span> target,</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymax=</span> target), </span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">width =</span> .<span class="dv">4</span>,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">colour =</span> <span class="st">"red"</span>,</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Hands-on_Ex09_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="sparklines-in-ggplot2" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="sparklines-in-ggplot2"><span class="header-section-number">4</span> Sparklines in ggplot2</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sales_report <span class="ot">&lt;-</span> coffeechain <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Date <span class="sc">&gt;=</span> <span class="st">"2013-01-01"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Month =</span> <span class="fu">month</span>(Date)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Month, Product) <span class="sc">%&gt;%</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Sales =</span> <span class="fu">sum</span>(Sales)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Month, Product, Sales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Minimum, maximum, 25th &amp; 75th percentiles are prepared below. End of the month sales are also prepared.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>mins <span class="ot">&lt;-</span> <span class="fu">group_by</span>(sales_report, Product) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="fu">which.min</span>(Sales))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>maxs <span class="ot">&lt;-</span> <span class="fu">group_by</span>(sales_report, Product) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="fu">which.max</span>(Sales))</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>ends <span class="ot">&lt;-</span> <span class="fu">group_by</span>(sales_report, Product) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Month <span class="sc">==</span> <span class="fu">max</span>(Month))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>quarts <span class="ot">&lt;-</span> sales_report <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Product) <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">quart1 =</span> <span class="fu">quantile</span>(Sales, </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                              <span class="fl">0.25</span>),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">quart2 =</span> <span class="fu">quantile</span>(Sales, </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                              <span class="fl">0.75</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">right_join</span>(sales_report)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sales_report, <span class="fu">aes</span>(<span class="at">x=</span>Month, <span class="at">y=</span>Sales)) <span class="sc">+</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(Product <span class="sc">~</span> ., <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> quarts, <span class="fu">aes</span>(<span class="at">ymin =</span> quart1, <span class="at">max =</span> quart2), </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill =</span> <span class="st">'grey90'</span>) <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">size=</span><span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> mins, <span class="at">col =</span> <span class="st">'red'</span>) <span class="sc">+</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> maxs, <span class="at">col =</span> <span class="st">'blue'</span>) <span class="sc">+</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data =</span> mins, <span class="fu">aes</span>(<span class="at">label =</span> Sales), <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data =</span> maxs, <span class="fu">aes</span>(<span class="at">label =</span> Sales), <span class="at">vjust =</span> <span class="fl">2.5</span>) <span class="sc">+</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data =</span> ends, <span class="fu">aes</span>(<span class="at">label =</span> Sales), <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">nudge_x =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data =</span> ends, <span class="fu">aes</span>(<span class="at">label =</span> Product), <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">nudge_x =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expand_limits</span>(<span class="at">x =</span> <span class="fu">max</span>(sales_report<span class="sc">$</span>Month) <span class="sc">+</span> </span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>                  (<span class="fl">0.25</span> <span class="sc">*</span> (<span class="fu">max</span>(sales_report<span class="sc">$</span>Month) <span class="sc">-</span> <span class="fu">min</span>(sales_report<span class="sc">$</span>Month)))) <span class="sc">+</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">12</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_tufte</span>(<span class="at">base_size =</span> <span class="dv">3</span>, <span class="at">base_family =</span> <span class="st">"Helvetica"</span>) <span class="sc">+</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title=</span><span class="fu">element_blank</span>(), <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(), </span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(), <span class="at">strip.text =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Hands-on_Ex09_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="static-information-dashboard-design-using-gt-and-gtextras" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="static-information-dashboard-design-using-gt-and-gtextras"><span class="header-section-number">5</span> Static information dashboard design using gt and gtExtras</h2>
+<section id="simeple-bullet-chart" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="simeple-bullet-chart"><span class="header-section-number">5.1</span> Simeple bullet chart</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>product <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  gt<span class="sc">::</span><span class="fu">gt</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_plt_bullet</span>(<span class="at">column =</span> current, </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">target =</span> target, </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">width =</span> <span class="dv">60</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"lightblue"</span>, </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"black"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_theme_538</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div id="axzfubfzkh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>@import url("https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+html {
+  font-family: Chivo, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+:where(#axzfubfzkh) .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: 300;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: none;
+  border-top-width: 3px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+:where(#axzfubfzkh) .gt_heading {
+  background-color: #FFFFFF;
+  text-align: left;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#axzfubfzkh) .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+:where(#axzfubfzkh) .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+:where(#axzfubfzkh) .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+:where(#axzfubfzkh) .gt_bottom_border {
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#axzfubfzkh) .gt_col_headings {
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #000000;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#axzfubfzkh) .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 80%;
+  font-weight: normal;
+  text-transform: uppercase;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+:where(#axzfubfzkh) .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 80%;
+  font-weight: normal;
+  text-transform: uppercase;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+:where(#axzfubfzkh) .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+:where(#axzfubfzkh) .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+:where(#axzfubfzkh) .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #000000;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+:where(#axzfubfzkh) .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 80%;
+  font-weight: bolder;
+  text-transform: uppercase;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #000000;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+:where(#axzfubfzkh) .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 80%;
+  font-weight: bolder;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #000000;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: #FFFFFF;
+  vertical-align: middle;
+}
+
+:where(#axzfubfzkh) .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+:where(#axzfubfzkh) .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+:where(#axzfubfzkh) .gt_row {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+:where(#axzfubfzkh) .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 80%;
+  font-weight: bolder;
+  text-transform: uppercase;
+  border-right-style: solid;
+  border-right-width: 0px;
+  border-right-color: #FFFFFF;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#axzfubfzkh) .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+:where(#axzfubfzkh) .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+:where(#axzfubfzkh) .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#axzfubfzkh) .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+:where(#axzfubfzkh) .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+:where(#axzfubfzkh) .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#axzfubfzkh) .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#axzfubfzkh) .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+:where(#axzfubfzkh) .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+:where(#axzfubfzkh) .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#axzfubfzkh) .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#axzfubfzkh) .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#axzfubfzkh) .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#axzfubfzkh) .gt_sourcenote {
+  font-size: 12px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#axzfubfzkh) .gt_left {
+  text-align: left;
+}
+
+:where(#axzfubfzkh) .gt_center {
+  text-align: center;
+}
+
+:where(#axzfubfzkh) .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+:where(#axzfubfzkh) .gt_font_normal {
+  font-weight: normal;
+}
+
+:where(#axzfubfzkh) .gt_font_bold {
+  font-weight: bold;
+}
+
+:where(#axzfubfzkh) .gt_font_italic {
+  font-style: italic;
+}
+
+:where(#axzfubfzkh) .gt_super {
+  font-size: 65%;
+}
+
+:where(#axzfubfzkh) .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+:where(#axzfubfzkh) .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+:where(#axzfubfzkh) .gt_indent_1 {
+  text-indent: 5px;
+}
+
+:where(#axzfubfzkh) .gt_indent_2 {
+  text-indent: 10px;
+}
+
+:where(#axzfubfzkh) .gt_indent_3 {
+  text-indent: 15px;
+}
+
+:where(#axzfubfzkh) .gt_indent_4 {
+  text-indent: 20px;
+}
+
+:where(#axzfubfzkh) .gt_indent_5 {
+  text-indent: 25px;
+}
+
+tbody tr:last-child {
+  border-bottom: 2px solid #ffffff00;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: black;" scope="col" id="Product">Product</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: black;" scope="col" id="current">current</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Product" class="gt_row gt_left">Amaretto</td>
+<td headers="current" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="170.08pt" height="14.17pt" viewbox="0 0 170.08 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==">    <rect x="0.00" y="0.00" width="170.08" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==)"><rect x="0.00" y="3.54" width="30.28" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="31.35" y1="14.17" x2="31.35" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Caffe Latte</td>
+<td headers="current" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="170.08pt" height="14.17pt" viewbox="0 0 170.08 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==">    <rect x="0.00" y="0.00" width="170.08" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==)"><rect x="0.00" y="3.54" width="41.38" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="35.20" y1="14.17" x2="35.20" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Caffe Mocha</td>
+<td headers="current" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="170.08pt" height="14.17pt" viewbox="0 0 170.08 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==">    <rect x="0.00" y="0.00" width="170.08" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==)"><rect x="0.00" y="3.54" width="97.86" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="97.51" y1="14.17" x2="97.51" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Chamomile</td>
+<td headers="current" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="170.08pt" height="14.17pt" viewbox="0 0 170.08 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==">    <rect x="0.00" y="0.00" width="170.08" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==)"><rect x="0.00" y="3.54" width="87.11" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="73.58" y1="14.17" x2="73.58" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Colombian</td>
+<td headers="current" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="170.08pt" height="14.17pt" viewbox="0 0 170.08 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==">    <rect x="0.00" y="0.00" width="170.08" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==)"><rect x="0.00" y="3.54" width="147.89" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="154.89" y1="14.17" x2="154.89" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Darjeeling</td>
+<td headers="current" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="170.08pt" height="14.17pt" viewbox="0 0 170.08 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==">    <rect x="0.00" y="0.00" width="170.08" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==)"><rect x="0.00" y="3.54" width="84.32" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="66.11" y1="14.17" x2="66.11" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Decaf Espresso</td>
+<td headers="current" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="170.08pt" height="14.17pt" viewbox="0 0 170.08 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==">    <rect x="0.00" y="0.00" width="170.08" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==)"><rect x="0.00" y="3.54" width="90.09" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="87.28" y1="14.17" x2="87.28" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Decaf Irish Cream</td>
+<td headers="current" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="170.08pt" height="14.17pt" viewbox="0 0 170.08 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==">    <rect x="0.00" y="0.00" width="170.08" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==)"><rect x="0.00" y="3.54" width="71.75" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="77.27" y1="14.17" x2="77.27" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Earl Grey</td>
+<td headers="current" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="170.08pt" height="14.17pt" viewbox="0 0 170.08 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==">    <rect x="0.00" y="0.00" width="170.08" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==)"><rect x="0.00" y="3.54" width="76.96" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="58.67" y1="14.17" x2="58.67" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Green Tea</td>
+<td headers="current" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="170.08pt" height="14.17pt" viewbox="0 0 170.08 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==">    <rect x="0.00" y="0.00" width="170.08" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==)"><rect x="0.00" y="3.54" width="37.86" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="29.21" y1="14.17" x2="29.21" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Lemon</td>
+<td headers="current" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="170.08pt" height="14.17pt" viewbox="0 0 170.08 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==">    <rect x="0.00" y="0.00" width="170.08" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==)"><rect x="0.00" y="3.54" width="110.57" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="90.25" y1="14.17" x2="90.25" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Mint</td>
+<td headers="current" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="170.08pt" height="14.17pt" viewbox="0 0 170.08 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==">    <rect x="0.00" y="0.00" width="170.08" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==)"><rect x="0.00" y="3.54" width="41.16" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="32.64" y1="14.17" x2="32.64" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Regular Espresso</td>
+<td headers="current" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="170.08pt" height="14.17pt" viewbox="0 0 170.08 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==">    <rect x="0.00" y="0.00" width="170.08" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHwxNzAuMDh8MC4wMHwxNC4xNw==)"><rect x="0.00" y="3.54" width="27.70" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="26.07" y1="14.17" x2="26.07" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="sparklines-using-gtextras" class="level3" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="sparklines-using-gtextras"><span class="header-section-number">5.2</span> Sparklines using gtExtras</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>report <span class="ot">&lt;-</span> coffeechain <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Year =</span> <span class="fu">year</span>(Date)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Year <span class="sc">==</span> <span class="st">"2013"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span> (<span class="at">Month =</span> <span class="fu">month</span>(Date, </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">label =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">abbr =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Product, Month) <span class="sc">%&gt;%</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Sales =</span> <span class="fu">sum</span>(Sales)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Take note that one of the requirements of gtExtras functions is that almost exclusively they require you to pass data.frame with list columns. In view of this, code chunk below will be used to convert the report data.frame into list columns.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>report <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Product) <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="st">'Monthly Sales'</span> <span class="ot">=</span> <span class="fu">list</span>(Sales), </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 13 × 2
+   Product           `Monthly Sales`
+   &lt;chr&gt;             &lt;list&gt;         
+ 1 Amaretto          &lt;dbl [12]&gt;     
+ 2 Caffe Latte       &lt;dbl [12]&gt;     
+ 3 Caffe Mocha       &lt;dbl [12]&gt;     
+ 4 Chamomile         &lt;dbl [12]&gt;     
+ 5 Colombian         &lt;dbl [12]&gt;     
+ 6 Darjeeling        &lt;dbl [12]&gt;     
+ 7 Decaf Espresso    &lt;dbl [12]&gt;     
+ 8 Decaf Irish Cream &lt;dbl [12]&gt;     
+ 9 Earl Grey         &lt;dbl [12]&gt;     
+10 Green Tea         &lt;dbl [12]&gt;     
+11 Lemon             &lt;dbl [12]&gt;     
+12 Mint              &lt;dbl [12]&gt;     
+13 Regular Espresso  &lt;dbl [12]&gt;     </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>report <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Product) <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="st">'Monthly Sales'</span> <span class="ot">=</span> <span class="fu">list</span>(Sales), </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">gt</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>   <span class="fu">gt_plt_sparkline</span>(<span class="st">'Monthly Sales'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div id="gkftblzwvg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+:where(#gkftblzwvg) .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+:where(#gkftblzwvg) .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#gkftblzwvg) .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+:where(#gkftblzwvg) .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+:where(#gkftblzwvg) .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+:where(#gkftblzwvg) .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#gkftblzwvg) .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#gkftblzwvg) .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+:where(#gkftblzwvg) .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+:where(#gkftblzwvg) .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+:where(#gkftblzwvg) .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+:where(#gkftblzwvg) .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+:where(#gkftblzwvg) .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+:where(#gkftblzwvg) .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+:where(#gkftblzwvg) .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+:where(#gkftblzwvg) .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+:where(#gkftblzwvg) .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+:where(#gkftblzwvg) .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#gkftblzwvg) .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+:where(#gkftblzwvg) .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+:where(#gkftblzwvg) .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#gkftblzwvg) .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+:where(#gkftblzwvg) .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+:where(#gkftblzwvg) .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#gkftblzwvg) .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#gkftblzwvg) .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+:where(#gkftblzwvg) .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+:where(#gkftblzwvg) .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#gkftblzwvg) .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#gkftblzwvg) .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#gkftblzwvg) .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#gkftblzwvg) .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#gkftblzwvg) .gt_left {
+  text-align: left;
+}
+
+:where(#gkftblzwvg) .gt_center {
+  text-align: center;
+}
+
+:where(#gkftblzwvg) .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+:where(#gkftblzwvg) .gt_font_normal {
+  font-weight: normal;
+}
+
+:where(#gkftblzwvg) .gt_font_bold {
+  font-weight: bold;
+}
+
+:where(#gkftblzwvg) .gt_font_italic {
+  font-style: italic;
+}
+
+:where(#gkftblzwvg) .gt_super {
+  font-size: 65%;
+}
+
+:where(#gkftblzwvg) .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+:where(#gkftblzwvg) .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+:where(#gkftblzwvg) .gt_indent_1 {
+  text-indent: 5px;
+}
+
+:where(#gkftblzwvg) .gt_indent_2 {
+  text-indent: 10px;
+}
+
+:where(#gkftblzwvg) .gt_indent_3 {
+  text-indent: 15px;
+}
+
+:where(#gkftblzwvg) .gt_indent_4 {
+  text-indent: 20px;
+}
+
+:where(#gkftblzwvg) .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Product">Product</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="Monthly Sales">Monthly Sales</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Product" class="gt_row gt_left">Amaretto</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="13.39" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">1.2K</text><polyline points="7.80,11.67 13.04,11.81 18.28,11.90 23.52,11.87 28.76,11.99 34.00,11.99 39.24,12.08 44.49,12.03 49.73,11.72 54.97,11.76 60.21,11.77 65.45,11.76 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="11.76" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="39.24" cy="12.08" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="7.80" cy="11.67" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Caffe Latte</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="12.61" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">1.5K</text><polyline points="7.80,10.76 13.04,10.95 18.28,10.87 23.52,10.85 28.76,10.99 34.00,11.10 39.24,10.96 44.49,11.28 49.73,11.13 54.97,11.16 60.21,11.14 65.45,10.99 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="10.99" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="44.49" cy="11.28" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="7.80" cy="10.76" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Caffe Mocha</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="8.11" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">3.7K</text><polyline points="7.80,6.72 13.04,6.80 18.28,6.84 23.52,6.85 28.76,7.30 34.00,6.96 39.24,6.78 44.49,6.25 49.73,6.52 54.97,6.32 60.21,6.53 65.45,6.49 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="6.49" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="28.76" cy="7.30" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="44.49" cy="6.25" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Chamomile</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="9.02" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">3.3K</text><polyline points="7.80,7.32 13.04,7.53 18.28,7.58 23.52,7.57 28.76,8.04 34.00,7.78 39.24,7.64 44.49,7.36 49.73,7.47 54.97,7.15 60.21,7.38 65.45,7.40 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="7.40" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="28.76" cy="8.04" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="54.97" cy="7.15" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Colombian</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="4.39" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">5.5K</text><polyline points="7.80,2.92 13.04,3.55 18.28,3.36 23.52,3.04 28.76,3.41 34.00,2.39 39.24,1.95 44.49,1.84 49.73,2.43 54.97,3.37 60.21,3.55 65.45,2.76 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="2.76" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="60.21" cy="3.55" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="44.49" cy="1.84" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Darjeeling</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="9.49" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">3.0K</text><polyline points="7.80,7.60 13.04,7.83 18.28,7.79 23.52,7.80 28.76,8.00 34.00,7.70 39.24,7.60 44.49,7.39 49.73,7.54 54.97,7.58 60.21,8.12 65.45,7.86 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="7.86" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="60.21" cy="8.12" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="44.49" cy="7.39" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Decaf Espresso</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="9.08" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">3.2K</text><polyline points="7.80,6.95 13.04,7.21 18.28,7.11 23.52,7.15 28.76,7.51 34.00,7.43 39.24,7.28 44.49,7.28 49.73,7.21 54.97,7.31 60.21,7.59 65.45,7.46 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="7.46" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="60.21" cy="7.59" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="7.80" cy="6.95" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Decaf Irish Cream</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="10.28" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">2.7K</text><polyline points="7.80,8.68 13.04,8.81 18.28,8.73 23.52,8.47 28.76,8.79 34.00,8.56 39.24,8.17 44.49,8.58 49.73,8.87 54.97,8.96 60.21,9.08 65.45,8.65 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="8.65" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="60.21" cy="9.08" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="39.24" cy="8.17" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Earl Grey</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="9.65" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">3.0K</text><polyline points="7.80,8.24 13.04,8.45 18.28,8.41 23.52,8.24 28.76,8.44 34.00,8.34 39.24,8.28 44.49,8.31 49.73,7.96 54.97,8.31 60.21,8.53 65.45,8.03 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="8.03" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="60.21" cy="8.53" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="49.73" cy="7.96" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Green Tea</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="12.75" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">1.5K</text><polyline points="7.80,11.28 13.04,11.34 18.28,11.31 23.52,11.22 28.76,11.41 34.00,11.40 39.24,11.34 44.49,11.36 49.73,11.29 54.97,11.17 60.21,11.14 65.45,11.12 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="11.12" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="28.76" cy="11.41" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="65.45" cy="11.12" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Lemon</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="6.66" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">4.4K</text><polyline points="7.80,6.03 13.04,6.21 18.28,6.13 23.52,5.62 28.76,5.99 34.00,5.72 39.24,5.06 44.49,5.33 49.73,5.82 54.97,5.97 60.21,5.85 65.45,5.03 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="5.03" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="13.04" cy="6.21" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="65.45" cy="5.03" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Mint</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="12.78" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">1.5K</text><polyline points="7.80,10.94 13.04,11.05 18.28,11.01 23.52,10.88 28.76,11.03 34.00,10.87 39.24,10.72 44.49,11.05 49.73,11.21 54.97,11.17 60.21,11.31 65.45,11.15 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="11.15" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="60.21" cy="11.31" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="39.24" cy="10.72" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Regular Espresso</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="13.58" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">1.1K</text><polyline points="7.80,12.10 13.04,12.00 18.28,12.14 23.52,12.08 28.76,12.30 34.00,12.02 39.24,12.28 44.49,12.34 49.73,12.13 54.97,11.66 60.21,11.72 65.45,11.96 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="11.96" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="44.49" cy="12.34" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="54.97" cy="11.66" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="to-add-statistics-elements" class="level3" data-number="5.3">
+<h3 data-number="5.3" class="anchored" data-anchor-id="to-add-statistics-elements"><span class="header-section-number">5.3</span> To add statistics elements</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>report <span class="sc">%&gt;%</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Product) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="st">"Min"</span> <span class="ot">=</span> <span class="fu">min</span>(Sales, <span class="at">na.rm =</span> T),</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Max"</span> <span class="ot">=</span> <span class="fu">max</span>(Sales, <span class="at">na.rm =</span> T),</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Average"</span> <span class="ot">=</span> <span class="fu">mean</span>(Sales, <span class="at">na.rm =</span> T)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>            ) <span class="sc">%&gt;%</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(<span class="at">columns =</span> <span class="dv">4</span>,</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">decimals =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div id="zmmkggnocd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+:where(#zmmkggnocd) .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+:where(#zmmkggnocd) .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#zmmkggnocd) .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+:where(#zmmkggnocd) .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+:where(#zmmkggnocd) .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+:where(#zmmkggnocd) .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#zmmkggnocd) .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#zmmkggnocd) .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+:where(#zmmkggnocd) .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+:where(#zmmkggnocd) .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+:where(#zmmkggnocd) .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+:where(#zmmkggnocd) .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+:where(#zmmkggnocd) .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+:where(#zmmkggnocd) .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+:where(#zmmkggnocd) .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+:where(#zmmkggnocd) .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+:where(#zmmkggnocd) .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+:where(#zmmkggnocd) .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#zmmkggnocd) .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+:where(#zmmkggnocd) .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+:where(#zmmkggnocd) .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#zmmkggnocd) .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+:where(#zmmkggnocd) .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+:where(#zmmkggnocd) .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#zmmkggnocd) .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#zmmkggnocd) .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+:where(#zmmkggnocd) .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+:where(#zmmkggnocd) .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#zmmkggnocd) .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#zmmkggnocd) .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#zmmkggnocd) .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#zmmkggnocd) .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#zmmkggnocd) .gt_left {
+  text-align: left;
+}
+
+:where(#zmmkggnocd) .gt_center {
+  text-align: center;
+}
+
+:where(#zmmkggnocd) .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+:where(#zmmkggnocd) .gt_font_normal {
+  font-weight: normal;
+}
+
+:where(#zmmkggnocd) .gt_font_bold {
+  font-weight: bold;
+}
+
+:where(#zmmkggnocd) .gt_font_italic {
+  font-style: italic;
+}
+
+:where(#zmmkggnocd) .gt_super {
+  font-size: 65%;
+}
+
+:where(#zmmkggnocd) .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+:where(#zmmkggnocd) .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+:where(#zmmkggnocd) .gt_indent_1 {
+  text-indent: 5px;
+}
+
+:where(#zmmkggnocd) .gt_indent_2 {
+  text-indent: 10px;
+}
+
+:where(#zmmkggnocd) .gt_indent_3 {
+  text-indent: 15px;
+}
+
+:where(#zmmkggnocd) .gt_indent_4 {
+  text-indent: 20px;
+}
+
+:where(#zmmkggnocd) .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Product">Product</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Min">Min</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Max">Max</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Average">Average</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Product" class="gt_row gt_left">Amaretto</td>
+<td headers="Min" class="gt_row gt_right">1016</td>
+<td headers="Max" class="gt_row gt_right">1210</td>
+<td headers="Average" class="gt_row gt_right">1,119.00</td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Caffe Latte</td>
+<td headers="Min" class="gt_row gt_right">1398</td>
+<td headers="Max" class="gt_row gt_right">1653</td>
+<td headers="Average" class="gt_row gt_right">1,528.33</td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Caffe Mocha</td>
+<td headers="Min" class="gt_row gt_right">3322</td>
+<td headers="Max" class="gt_row gt_right">3828</td>
+<td headers="Average" class="gt_row gt_right">3,613.92</td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Chamomile</td>
+<td headers="Min" class="gt_row gt_right">2967</td>
+<td headers="Max" class="gt_row gt_right">3395</td>
+<td headers="Average" class="gt_row gt_right">3,217.42</td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Colombian</td>
+<td headers="Min" class="gt_row gt_right">5132</td>
+<td headers="Max" class="gt_row gt_right">5961</td>
+<td headers="Average" class="gt_row gt_right">5,457.25</td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Darjeeling</td>
+<td headers="Min" class="gt_row gt_right">2926</td>
+<td headers="Max" class="gt_row gt_right">3281</td>
+<td headers="Average" class="gt_row gt_right">3,112.67</td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Decaf Espresso</td>
+<td headers="Min" class="gt_row gt_right">3181</td>
+<td headers="Max" class="gt_row gt_right">3493</td>
+<td headers="Average" class="gt_row gt_right">3,326.83</td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Decaf Irish Cream</td>
+<td headers="Min" class="gt_row gt_right">2463</td>
+<td headers="Max" class="gt_row gt_right">2901</td>
+<td headers="Average" class="gt_row gt_right">2,648.25</td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Earl Grey</td>
+<td headers="Min" class="gt_row gt_right">2730</td>
+<td headers="Max" class="gt_row gt_right">3005</td>
+<td headers="Average" class="gt_row gt_right">2,841.83</td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Green Tea</td>
+<td headers="Min" class="gt_row gt_right">1339</td>
+<td headers="Max" class="gt_row gt_right">1476</td>
+<td headers="Average" class="gt_row gt_right">1,398.75</td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Lemon</td>
+<td headers="Min" class="gt_row gt_right">3851</td>
+<td headers="Max" class="gt_row gt_right">4418</td>
+<td headers="Average" class="gt_row gt_right">4,080.83</td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Mint</td>
+<td headers="Min" class="gt_row gt_right">1388</td>
+<td headers="Max" class="gt_row gt_right">1669</td>
+<td headers="Average" class="gt_row gt_right">1,519.17</td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Regular Espresso</td>
+<td headers="Min" class="gt_row gt_right">890</td>
+<td headers="Max" class="gt_row gt_right">1218</td>
+<td headers="Average" class="gt_row gt_right">1,023.42</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="to-combine-the-data-frame" class="level3" data-number="5.4">
+<h3 data-number="5.4" class="anchored" data-anchor-id="to-combine-the-data-frame"><span class="header-section-number">5.4</span> To combine the data frame</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>spark <span class="ot">&lt;-</span> report <span class="sc">%&gt;%</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Product) <span class="sc">%&gt;%</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="st">'Monthly Sales'</span> <span class="ot">=</span> <span class="fu">list</span>(Sales), </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>sales <span class="ot">&lt;-</span> report <span class="sc">%&gt;%</span> </span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Product) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="st">"Min"</span> <span class="ot">=</span> <span class="fu">min</span>(Sales, <span class="at">na.rm =</span> T),</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Max"</span> <span class="ot">=</span> <span class="fu">max</span>(Sales, <span class="at">na.rm =</span> T),</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Average"</span> <span class="ot">=</span> <span class="fu">mean</span>(Sales, <span class="at">na.rm =</span> T)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>sales_data <span class="ot">=</span> <span class="fu">left_join</span>(sales, spark)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="plot-the-updated-data-table" class="level3" data-number="5.5">
+<h3 data-number="5.5" class="anchored" data-anchor-id="plot-the-updated-data-table"><span class="header-section-number">5.5</span> Plot the updated data table</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>sales_data <span class="sc">%&gt;%</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_plt_sparkline</span>(<span class="st">'Monthly Sales'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div id="mcdqckznxf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+:where(#mcdqckznxf) .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+:where(#mcdqckznxf) .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#mcdqckznxf) .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+:where(#mcdqckznxf) .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+:where(#mcdqckznxf) .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+:where(#mcdqckznxf) .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#mcdqckznxf) .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#mcdqckznxf) .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+:where(#mcdqckznxf) .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+:where(#mcdqckznxf) .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+:where(#mcdqckznxf) .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+:where(#mcdqckznxf) .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+:where(#mcdqckznxf) .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+:where(#mcdqckznxf) .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+:where(#mcdqckznxf) .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+:where(#mcdqckznxf) .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+:where(#mcdqckznxf) .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+:where(#mcdqckznxf) .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#mcdqckznxf) .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+:where(#mcdqckznxf) .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+:where(#mcdqckznxf) .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#mcdqckznxf) .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+:where(#mcdqckznxf) .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+:where(#mcdqckznxf) .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#mcdqckznxf) .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#mcdqckznxf) .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+:where(#mcdqckznxf) .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+:where(#mcdqckznxf) .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#mcdqckznxf) .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#mcdqckznxf) .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#mcdqckznxf) .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#mcdqckznxf) .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#mcdqckznxf) .gt_left {
+  text-align: left;
+}
+
+:where(#mcdqckznxf) .gt_center {
+  text-align: center;
+}
+
+:where(#mcdqckznxf) .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+:where(#mcdqckznxf) .gt_font_normal {
+  font-weight: normal;
+}
+
+:where(#mcdqckznxf) .gt_font_bold {
+  font-weight: bold;
+}
+
+:where(#mcdqckznxf) .gt_font_italic {
+  font-style: italic;
+}
+
+:where(#mcdqckznxf) .gt_super {
+  font-size: 65%;
+}
+
+:where(#mcdqckznxf) .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+:where(#mcdqckznxf) .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+:where(#mcdqckznxf) .gt_indent_1 {
+  text-indent: 5px;
+}
+
+:where(#mcdqckznxf) .gt_indent_2 {
+  text-indent: 10px;
+}
+
+:where(#mcdqckznxf) .gt_indent_3 {
+  text-indent: 15px;
+}
+
+:where(#mcdqckznxf) .gt_indent_4 {
+  text-indent: 20px;
+}
+
+:where(#mcdqckznxf) .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Product">Product</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Min">Min</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Max">Max</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Average">Average</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="Monthly Sales">Monthly Sales</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Product" class="gt_row gt_left">Amaretto</td>
+<td headers="Min" class="gt_row gt_right">1016</td>
+<td headers="Max" class="gt_row gt_right">1210</td>
+<td headers="Average" class="gt_row gt_right">1119.000</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="13.39" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">1.2K</text><polyline points="7.80,11.67 13.04,11.81 18.28,11.90 23.52,11.87 28.76,11.99 34.00,11.99 39.24,12.08 44.49,12.03 49.73,11.72 54.97,11.76 60.21,11.77 65.45,11.76 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="11.76" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="39.24" cy="12.08" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="7.80" cy="11.67" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Caffe Latte</td>
+<td headers="Min" class="gt_row gt_right">1398</td>
+<td headers="Max" class="gt_row gt_right">1653</td>
+<td headers="Average" class="gt_row gt_right">1528.333</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="12.61" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">1.5K</text><polyline points="7.80,10.76 13.04,10.95 18.28,10.87 23.52,10.85 28.76,10.99 34.00,11.10 39.24,10.96 44.49,11.28 49.73,11.13 54.97,11.16 60.21,11.14 65.45,10.99 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="10.99" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="44.49" cy="11.28" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="7.80" cy="10.76" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Caffe Mocha</td>
+<td headers="Min" class="gt_row gt_right">3322</td>
+<td headers="Max" class="gt_row gt_right">3828</td>
+<td headers="Average" class="gt_row gt_right">3613.917</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="8.11" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">3.7K</text><polyline points="7.80,6.72 13.04,6.80 18.28,6.84 23.52,6.85 28.76,7.30 34.00,6.96 39.24,6.78 44.49,6.25 49.73,6.52 54.97,6.32 60.21,6.53 65.45,6.49 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="6.49" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="28.76" cy="7.30" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="44.49" cy="6.25" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Chamomile</td>
+<td headers="Min" class="gt_row gt_right">2967</td>
+<td headers="Max" class="gt_row gt_right">3395</td>
+<td headers="Average" class="gt_row gt_right">3217.417</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="9.02" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">3.3K</text><polyline points="7.80,7.32 13.04,7.53 18.28,7.58 23.52,7.57 28.76,8.04 34.00,7.78 39.24,7.64 44.49,7.36 49.73,7.47 54.97,7.15 60.21,7.38 65.45,7.40 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="7.40" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="28.76" cy="8.04" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="54.97" cy="7.15" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Colombian</td>
+<td headers="Min" class="gt_row gt_right">5132</td>
+<td headers="Max" class="gt_row gt_right">5961</td>
+<td headers="Average" class="gt_row gt_right">5457.250</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="4.39" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">5.5K</text><polyline points="7.80,2.92 13.04,3.55 18.28,3.36 23.52,3.04 28.76,3.41 34.00,2.39 39.24,1.95 44.49,1.84 49.73,2.43 54.97,3.37 60.21,3.55 65.45,2.76 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="2.76" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="60.21" cy="3.55" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="44.49" cy="1.84" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Darjeeling</td>
+<td headers="Min" class="gt_row gt_right">2926</td>
+<td headers="Max" class="gt_row gt_right">3281</td>
+<td headers="Average" class="gt_row gt_right">3112.667</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="9.49" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">3.0K</text><polyline points="7.80,7.60 13.04,7.83 18.28,7.79 23.52,7.80 28.76,8.00 34.00,7.70 39.24,7.60 44.49,7.39 49.73,7.54 54.97,7.58 60.21,8.12 65.45,7.86 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="7.86" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="60.21" cy="8.12" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="44.49" cy="7.39" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Decaf Espresso</td>
+<td headers="Min" class="gt_row gt_right">3181</td>
+<td headers="Max" class="gt_row gt_right">3493</td>
+<td headers="Average" class="gt_row gt_right">3326.833</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="9.08" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">3.2K</text><polyline points="7.80,6.95 13.04,7.21 18.28,7.11 23.52,7.15 28.76,7.51 34.00,7.43 39.24,7.28 44.49,7.28 49.73,7.21 54.97,7.31 60.21,7.59 65.45,7.46 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="7.46" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="60.21" cy="7.59" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="7.80" cy="6.95" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Decaf Irish Cream</td>
+<td headers="Min" class="gt_row gt_right">2463</td>
+<td headers="Max" class="gt_row gt_right">2901</td>
+<td headers="Average" class="gt_row gt_right">2648.250</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="10.28" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">2.7K</text><polyline points="7.80,8.68 13.04,8.81 18.28,8.73 23.52,8.47 28.76,8.79 34.00,8.56 39.24,8.17 44.49,8.58 49.73,8.87 54.97,8.96 60.21,9.08 65.45,8.65 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="8.65" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="60.21" cy="9.08" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="39.24" cy="8.17" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Earl Grey</td>
+<td headers="Min" class="gt_row gt_right">2730</td>
+<td headers="Max" class="gt_row gt_right">3005</td>
+<td headers="Average" class="gt_row gt_right">2841.833</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="9.65" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">3.0K</text><polyline points="7.80,8.24 13.04,8.45 18.28,8.41 23.52,8.24 28.76,8.44 34.00,8.34 39.24,8.28 44.49,8.31 49.73,7.96 54.97,8.31 60.21,8.53 65.45,8.03 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="8.03" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="60.21" cy="8.53" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="49.73" cy="7.96" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Green Tea</td>
+<td headers="Min" class="gt_row gt_right">1339</td>
+<td headers="Max" class="gt_row gt_right">1476</td>
+<td headers="Average" class="gt_row gt_right">1398.750</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="12.75" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">1.5K</text><polyline points="7.80,11.28 13.04,11.34 18.28,11.31 23.52,11.22 28.76,11.41 34.00,11.40 39.24,11.34 44.49,11.36 49.73,11.29 54.97,11.17 60.21,11.14 65.45,11.12 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="11.12" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="28.76" cy="11.41" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="65.45" cy="11.12" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Lemon</td>
+<td headers="Min" class="gt_row gt_right">3851</td>
+<td headers="Max" class="gt_row gt_right">4418</td>
+<td headers="Average" class="gt_row gt_right">4080.833</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="6.66" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">4.4K</text><polyline points="7.80,6.03 13.04,6.21 18.28,6.13 23.52,5.62 28.76,5.99 34.00,5.72 39.24,5.06 44.49,5.33 49.73,5.82 54.97,5.97 60.21,5.85 65.45,5.03 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="5.03" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="13.04" cy="6.21" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="65.45" cy="5.03" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Mint</td>
+<td headers="Min" class="gt_row gt_right">1388</td>
+<td headers="Max" class="gt_row gt_right">1669</td>
+<td headers="Average" class="gt_row gt_right">1519.167</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="12.78" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">1.5K</text><polyline points="7.80,10.94 13.04,11.05 18.28,11.01 23.52,10.88 28.76,11.03 34.00,10.87 39.24,10.72 44.49,11.05 49.73,11.21 54.97,11.17 60.21,11.31 65.45,11.15 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="11.15" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="60.21" cy="11.31" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="39.24" cy="10.72" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Regular Espresso</td>
+<td headers="Min" class="gt_row gt_right">890</td>
+<td headers="Max" class="gt_row gt_right">1218</td>
+<td headers="Average" class="gt_row gt_right">1023.417</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="13.58" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">1.1K</text><polyline points="7.80,12.10 13.04,12.00 18.28,12.14 23.52,12.08 28.76,12.30 34.00,12.02 39.24,12.28 44.49,12.34 49.73,12.13 54.97,11.66 60.21,11.72 65.45,11.96 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="11.96" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="44.49" cy="12.34" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="54.97" cy="11.66" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="to-combine-with-bullet-chart-and-sparklines" class="level3" data-number="5.6">
+<h3 data-number="5.6" class="anchored" data-anchor-id="to-combine-with-bullet-chart-and-sparklines"><span class="header-section-number">5.6</span> To combine with bullet chart and sparklines</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>bullet <span class="ot">&lt;-</span> coffeechain <span class="sc">%&gt;%</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Date <span class="sc">&gt;=</span> <span class="st">"2013-01-01"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(<span class="st">`</span><span class="at">Product</span><span class="st">`</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="st">`</span><span class="at">Target</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Budget Sales</span><span class="st">`</span>),</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">`</span><span class="at">Actual</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Sales</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() </span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>sales_data <span class="ot">=</span> sales_data <span class="sc">%&gt;%</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(bullet)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>sales_data <span class="sc">%&gt;%</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_plt_sparkline</span>(<span class="st">'Monthly Sales'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_plt_bullet</span>(<span class="at">column =</span> Actual, </span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">target =</span> Target, </span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">width =</span> <span class="dv">28</span>,</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"lightblue"</span>, </span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"black"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_theme_538</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div id="ucuhqwiskj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>@import url("https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+html {
+  font-family: Chivo, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+:where(#ucuhqwiskj) .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: 300;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: none;
+  border-top-width: 3px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+:where(#ucuhqwiskj) .gt_heading {
+  background-color: #FFFFFF;
+  text-align: left;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#ucuhqwiskj) .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+:where(#ucuhqwiskj) .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+:where(#ucuhqwiskj) .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+:where(#ucuhqwiskj) .gt_bottom_border {
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#ucuhqwiskj) .gt_col_headings {
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #000000;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#ucuhqwiskj) .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 80%;
+  font-weight: normal;
+  text-transform: uppercase;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+:where(#ucuhqwiskj) .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 80%;
+  font-weight: normal;
+  text-transform: uppercase;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+:where(#ucuhqwiskj) .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+:where(#ucuhqwiskj) .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+:where(#ucuhqwiskj) .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #000000;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+:where(#ucuhqwiskj) .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 80%;
+  font-weight: bolder;
+  text-transform: uppercase;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #000000;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+:where(#ucuhqwiskj) .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 80%;
+  font-weight: bolder;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #000000;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: #FFFFFF;
+  vertical-align: middle;
+}
+
+:where(#ucuhqwiskj) .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+:where(#ucuhqwiskj) .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+:where(#ucuhqwiskj) .gt_row {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+:where(#ucuhqwiskj) .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 80%;
+  font-weight: bolder;
+  text-transform: uppercase;
+  border-right-style: solid;
+  border-right-width: 0px;
+  border-right-color: #FFFFFF;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#ucuhqwiskj) .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+:where(#ucuhqwiskj) .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+:where(#ucuhqwiskj) .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#ucuhqwiskj) .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+:where(#ucuhqwiskj) .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+:where(#ucuhqwiskj) .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#ucuhqwiskj) .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#ucuhqwiskj) .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+:where(#ucuhqwiskj) .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+:where(#ucuhqwiskj) .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#ucuhqwiskj) .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#ucuhqwiskj) .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#ucuhqwiskj) .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#ucuhqwiskj) .gt_sourcenote {
+  font-size: 12px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#ucuhqwiskj) .gt_left {
+  text-align: left;
+}
+
+:where(#ucuhqwiskj) .gt_center {
+  text-align: center;
+}
+
+:where(#ucuhqwiskj) .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+:where(#ucuhqwiskj) .gt_font_normal {
+  font-weight: normal;
+}
+
+:where(#ucuhqwiskj) .gt_font_bold {
+  font-weight: bold;
+}
+
+:where(#ucuhqwiskj) .gt_font_italic {
+  font-style: italic;
+}
+
+:where(#ucuhqwiskj) .gt_super {
+  font-size: 65%;
+}
+
+:where(#ucuhqwiskj) .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+:where(#ucuhqwiskj) .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+:where(#ucuhqwiskj) .gt_indent_1 {
+  text-indent: 5px;
+}
+
+:where(#ucuhqwiskj) .gt_indent_2 {
+  text-indent: 10px;
+}
+
+:where(#ucuhqwiskj) .gt_indent_3 {
+  text-indent: 15px;
+}
+
+:where(#ucuhqwiskj) .gt_indent_4 {
+  text-indent: 20px;
+}
+
+:where(#ucuhqwiskj) .gt_indent_5 {
+  text-indent: 25px;
+}
+
+tbody tr:last-child {
+  border-bottom: 2px solid #ffffff00;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: black;" scope="col" id="Product">Product</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: black;" scope="col" id="Min">Min</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: black;" scope="col" id="Max">Max</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: black;" scope="col" id="Average">Average</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: black;" scope="col" id="Monthly Sales">Monthly Sales</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: black;" scope="col" id="Actual">Actual</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Product" class="gt_row gt_left">Amaretto</td>
+<td headers="Min" class="gt_row gt_right">1016</td>
+<td headers="Max" class="gt_row gt_right">1210</td>
+<td headers="Average" class="gt_row gt_right">1119.000</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="13.39" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">1.2K</text><polyline points="7.80,11.67 13.04,11.81 18.28,11.90 23.52,11.87 28.76,11.99 34.00,11.99 39.24,12.08 44.49,12.03 49.73,11.72 54.97,11.76 60.21,11.77 65.45,11.76 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="11.76" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="39.24" cy="12.08" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="7.80" cy="11.67" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td>
+<td headers="Actual" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="79.37pt" height="14.17pt" viewbox="0 0 79.37 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="79.37" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3)"><rect x="0.00" y="3.54" width="14.15" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="14.33" y1="14.17" x2="14.33" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Caffe Latte</td>
+<td headers="Min" class="gt_row gt_right">1398</td>
+<td headers="Max" class="gt_row gt_right">1653</td>
+<td headers="Average" class="gt_row gt_right">1528.333</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="12.61" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">1.5K</text><polyline points="7.80,10.76 13.04,10.95 18.28,10.87 23.52,10.85 28.76,10.99 34.00,11.10 39.24,10.96 44.49,11.28 49.73,11.13 54.97,11.16 60.21,11.14 65.45,10.99 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="10.99" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="44.49" cy="11.28" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="7.80" cy="10.76" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td>
+<td headers="Actual" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="79.37pt" height="14.17pt" viewbox="0 0 79.37 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="79.37" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3)"><rect x="0.00" y="3.54" width="19.33" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="16.09" y1="14.17" x2="16.09" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Caffe Mocha</td>
+<td headers="Min" class="gt_row gt_right">3322</td>
+<td headers="Max" class="gt_row gt_right">3828</td>
+<td headers="Average" class="gt_row gt_right">3613.917</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="8.11" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">3.7K</text><polyline points="7.80,6.72 13.04,6.80 18.28,6.84 23.52,6.85 28.76,7.30 34.00,6.96 39.24,6.78 44.49,6.25 49.73,6.52 54.97,6.32 60.21,6.53 65.45,6.49 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="6.49" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="28.76" cy="7.30" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="44.49" cy="6.25" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td>
+<td headers="Actual" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="79.37pt" height="14.17pt" viewbox="0 0 79.37 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="79.37" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3)"><rect x="0.00" y="3.54" width="45.70" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="44.58" y1="14.17" x2="44.58" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Chamomile</td>
+<td headers="Min" class="gt_row gt_right">2967</td>
+<td headers="Max" class="gt_row gt_right">3395</td>
+<td headers="Average" class="gt_row gt_right">3217.417</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="9.02" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">3.3K</text><polyline points="7.80,7.32 13.04,7.53 18.28,7.58 23.52,7.57 28.76,8.04 34.00,7.78 39.24,7.64 44.49,7.36 49.73,7.47 54.97,7.15 60.21,7.38 65.45,7.40 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="7.40" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="28.76" cy="8.04" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="54.97" cy="7.15" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td>
+<td headers="Actual" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="79.37pt" height="14.17pt" viewbox="0 0 79.37 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="79.37" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3)"><rect x="0.00" y="3.54" width="40.69" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="33.64" y1="14.17" x2="33.64" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Colombian</td>
+<td headers="Min" class="gt_row gt_right">5132</td>
+<td headers="Max" class="gt_row gt_right">5961</td>
+<td headers="Average" class="gt_row gt_right">5457.250</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="4.39" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">5.5K</text><polyline points="7.80,2.92 13.04,3.55 18.28,3.36 23.52,3.04 28.76,3.41 34.00,2.39 39.24,1.95 44.49,1.84 49.73,2.43 54.97,3.37 60.21,3.55 65.45,2.76 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="2.76" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="60.21" cy="3.55" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="44.49" cy="1.84" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td>
+<td headers="Actual" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="79.37pt" height="14.17pt" viewbox="0 0 79.37 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="79.37" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3)"><rect x="0.00" y="3.54" width="69.02" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="70.81" y1="14.17" x2="70.81" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Darjeeling</td>
+<td headers="Min" class="gt_row gt_right">2926</td>
+<td headers="Max" class="gt_row gt_right">3281</td>
+<td headers="Average" class="gt_row gt_right">3112.667</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="9.49" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">3.0K</text><polyline points="7.80,7.60 13.04,7.83 18.28,7.79 23.52,7.80 28.76,8.00 34.00,7.70 39.24,7.60 44.49,7.39 49.73,7.54 54.97,7.58 60.21,8.12 65.45,7.86 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="7.86" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="60.21" cy="8.12" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="44.49" cy="7.39" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td>
+<td headers="Actual" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="79.37pt" height="14.17pt" viewbox="0 0 79.37 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="79.37" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3)"><rect x="0.00" y="3.54" width="39.37" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="30.23" y1="14.17" x2="30.23" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Decaf Espresso</td>
+<td headers="Min" class="gt_row gt_right">3181</td>
+<td headers="Max" class="gt_row gt_right">3493</td>
+<td headers="Average" class="gt_row gt_right">3326.833</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="9.08" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">3.2K</text><polyline points="7.80,6.95 13.04,7.21 18.28,7.11 23.52,7.15 28.76,7.51 34.00,7.43 39.24,7.28 44.49,7.28 49.73,7.21 54.97,7.31 60.21,7.59 65.45,7.46 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="7.46" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="60.21" cy="7.59" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="7.80" cy="6.95" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td>
+<td headers="Actual" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="79.37pt" height="14.17pt" viewbox="0 0 79.37 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="79.37" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3)"><rect x="0.00" y="3.54" width="42.07" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="39.90" y1="14.17" x2="39.90" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Decaf Irish Cream</td>
+<td headers="Min" class="gt_row gt_right">2463</td>
+<td headers="Max" class="gt_row gt_right">2901</td>
+<td headers="Average" class="gt_row gt_right">2648.250</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="10.28" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">2.7K</text><polyline points="7.80,8.68 13.04,8.81 18.28,8.73 23.52,8.47 28.76,8.79 34.00,8.56 39.24,8.17 44.49,8.58 49.73,8.87 54.97,8.96 60.21,9.08 65.45,8.65 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="8.65" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="60.21" cy="9.08" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="39.24" cy="8.17" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td>
+<td headers="Actual" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="79.37pt" height="14.17pt" viewbox="0 0 79.37 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="79.37" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3)"><rect x="0.00" y="3.54" width="33.49" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="35.33" y1="14.17" x2="35.33" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Earl Grey</td>
+<td headers="Min" class="gt_row gt_right">2730</td>
+<td headers="Max" class="gt_row gt_right">3005</td>
+<td headers="Average" class="gt_row gt_right">2841.833</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="9.65" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">3.0K</text><polyline points="7.80,8.24 13.04,8.45 18.28,8.41 23.52,8.24 28.76,8.44 34.00,8.34 39.24,8.28 44.49,8.31 49.73,7.96 54.97,8.31 60.21,8.53 65.45,8.03 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="8.03" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="60.21" cy="8.53" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="49.73" cy="7.96" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td>
+<td headers="Actual" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="79.37pt" height="14.17pt" viewbox="0 0 79.37 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="79.37" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3)"><rect x="0.00" y="3.54" width="35.94" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="26.82" y1="14.17" x2="26.82" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Green Tea</td>
+<td headers="Min" class="gt_row gt_right">1339</td>
+<td headers="Max" class="gt_row gt_right">1476</td>
+<td headers="Average" class="gt_row gt_right">1398.750</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="12.75" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">1.5K</text><polyline points="7.80,11.28 13.04,11.34 18.28,11.31 23.52,11.22 28.76,11.41 34.00,11.40 39.24,11.34 44.49,11.36 49.73,11.29 54.97,11.17 60.21,11.14 65.45,11.12 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="11.12" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="28.76" cy="11.41" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="65.45" cy="11.12" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td>
+<td headers="Actual" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="79.37pt" height="14.17pt" viewbox="0 0 79.37 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="79.37" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3)"><rect x="0.00" y="3.54" width="17.69" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="13.35" y1="14.17" x2="13.35" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Lemon</td>
+<td headers="Min" class="gt_row gt_right">3851</td>
+<td headers="Max" class="gt_row gt_right">4418</td>
+<td headers="Average" class="gt_row gt_right">4080.833</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="6.66" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">4.4K</text><polyline points="7.80,6.03 13.04,6.21 18.28,6.13 23.52,5.62 28.76,5.99 34.00,5.72 39.24,5.06 44.49,5.33 49.73,5.82 54.97,5.97 60.21,5.85 65.45,5.03 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="5.03" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="13.04" cy="6.21" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="65.45" cy="5.03" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td>
+<td headers="Actual" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="79.37pt" height="14.17pt" viewbox="0 0 79.37 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="79.37" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3)"><rect x="0.00" y="3.54" width="51.61" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="41.26" y1="14.17" x2="41.26" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Mint</td>
+<td headers="Min" class="gt_row gt_right">1388</td>
+<td headers="Max" class="gt_row gt_right">1669</td>
+<td headers="Average" class="gt_row gt_right">1519.167</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="12.78" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">1.5K</text><polyline points="7.80,10.94 13.04,11.05 18.28,11.01 23.52,10.88 28.76,11.03 34.00,10.87 39.24,10.72 44.49,11.05 49.73,11.21 54.97,11.17 60.21,11.31 65.45,11.15 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="11.15" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="60.21" cy="11.31" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="39.24" cy="10.72" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td>
+<td headers="Actual" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="79.37pt" height="14.17pt" viewbox="0 0 79.37 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="79.37" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3)"><rect x="0.00" y="3.54" width="19.21" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="14.92" y1="14.17" x2="14.92" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+    <tr><td headers="Product" class="gt_row gt_left">Regular Espresso</td>
+<td headers="Min" class="gt_row gt_right">890</td>
+<td headers="Max" class="gt_row gt_right">1218</td>
+<td headers="Average" class="gt_row gt_right">1023.417</td>
+<td headers="Monthly Sales" class="gt_row gt_center"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="85.04pt" height="14.17pt" viewbox="0 0 85.04 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="85.04" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)"><text x="68.59" y="13.58" style="font-size: 5.69px; font-family: &quot;Arial&quot;;" textlength="13.65px" lengthadjust="spacingAndGlyphs">1.1K</text><polyline points="7.80,12.10 13.04,12.00 18.28,12.14 23.52,12.08 28.76,12.30 34.00,12.02 39.24,12.28 44.49,12.34 49.73,12.13 54.97,11.66 60.21,11.72 65.45,11.96 " style="stroke-width: 1.07; stroke-linecap: butt;"></polyline><circle cx="65.45" cy="11.96" r="0.89" style="stroke-width: 0.71; fill: #000000;"></circle><circle cx="44.49" cy="12.34" r="0.89" style="stroke-width: 0.71; stroke: #A020F0; fill: #A020F0;"></circle><circle cx="54.97" cy="11.66" r="0.89" style="stroke-width: 0.71; stroke: #00FF00; fill: #00FF00;"></circle></g></svg></td>
+<td headers="Actual" class="gt_row gt_left"><!--?xml version='1.0' encoding='UTF-8' ?--><svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" class="svglite" width="79.37pt" height="14.17pt" viewbox="0 0 79.37 14.17"><defs>  <style type="text/css">    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }    .svglite text {      white-space: pre;    }  </style></defs><rect width="100%" height="100%" style="stroke: none; fill: none;"></rect><defs>  <clippath id="cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3">    <rect x="0.00" y="0.00" width="79.37" height="14.17"></rect>  </clippath></defs><g clip-path="url(#cpMC4wMHw3OS4zN3wwLjAwfDE0LjE3)"><rect x="0.00" y="3.54" width="12.94" height="7.09" style="stroke-width: 1.07; stroke: #ADD8E6; stroke-linecap: butt; stroke-linejoin: miter; fill: #ADD8E6;"></rect><line x1="11.92" y1="14.17" x2="11.92" y2="0.0000000000000018" style="stroke-width: 3.20; stroke: #000000; stroke-opacity: 0.70; stroke-linecap: butt;"></line><line x1="0.00" y1="14.17" x2="0.00" y2="0.0000000000000018" style="stroke-width: 2.13; stroke-linecap: butt;"></line></g></svg></td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
