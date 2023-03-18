@@ -111,6 +111,8 @@ quarts <- sales_report %>%
 ```
 
 ```{r}
+#| fig-width: 14
+#| fig-height: 12 
 ggplot(sales_report, aes(x=Month, y=Sales)) + 
   facet_grid(Product ~ ., scales = "free_y") + 
   geom_ribbon(data = quarts, aes(ymin = quart1, max = quart2), 
